@@ -26,7 +26,7 @@ class Round:
 
 
 class Point:
-    def __init__(self, x, y, color, ):
+    def __init__(self, x=None, y=None, color= None):
         self.x = x
         self.y = y
         self.color = color
@@ -39,15 +39,18 @@ class Point:
 
 class Snake(Point):
     def __init__(self, len_ = 1, color = (0, 255,130)):
+        self.x = 400
+        self.y = 300
         self.len = len_
         self.color = color
 
-    def change_dir(self):
+    def change_dir(self, screen):
         pressed = pygame.key.get_pressed()
         if pressed[pygame.K_UP]: self.y -= 2
-        if pressed[pygame.K_DOWN]: self.y += 2
-        if pressed[pygame.K_LEFT]: self.x -= 2
-        if pressed[pygame.K_RIGHT]: self.x += 2
+        elif pressed[pygame.K_DOWN]: self.y += 2
+        elif pressed[pygame.K_LEFT]: self.x -= 2
+        elif pressed[pygame.K_RIGHT]: self.x += 2
+
 
 
     def add_node(self):
@@ -67,8 +70,8 @@ class Border(Point):
             Border.draw()
 
 class Food(Point):
-    def __init__(self):
-        self.color = (10, 100,30)
+    def __init__(self, color = (10, 100,30)):
+        self.color = color
 
 
     def create(self):
@@ -76,7 +79,7 @@ class Food(Point):
 
 
 r1 = Round(True)
-p1 = Point(400, 300, (0, 255,130))
+p1 = Point()
 s1 = Snake()
 done = False
 
@@ -84,7 +87,7 @@ while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
-    p1.draw(r1.screen())
-    s1.change_dir()
+    s1.change_dir(r1.screen())
+    s1.draw(r1.screen())
     pygame.display.flip()
 
