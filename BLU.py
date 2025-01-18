@@ -66,9 +66,7 @@ class Border(Point):
         self.color = color
 
     def create(self, screen):
-        self.y = 1
-        for self.x in range(0, 800, 5):
-            Border.draw(self, screen)
+        pygame.draw.rect(screen, self.color, (0, 0, 800,600), 15)
         pygame.display.flip()
 
 class Food(Point):
@@ -85,15 +83,16 @@ p1 = Point()
 s1 = Snake()
 b1 = Border()
 
-
 done = False
 
 while not done:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            done = True
     b1.create(r1.screen())
     s1.change_dir(r1.screen())
     s1.draw(r1.screen())
     pygame.display.flip()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
+
+
 
