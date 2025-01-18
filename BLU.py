@@ -8,6 +8,7 @@ class Round:
     def __init__(self, drive):
         self.drive = drive
 
+
     def screen(self):
         weight_screen = 800
         hight_screen = 600
@@ -33,7 +34,6 @@ class Point:
 
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (self.x, self.y), 5)
-        pygame.display.flip()
 
 
 
@@ -65,9 +65,11 @@ class Border(Point):
     def __init__(self, color = (130, 0,20)):
         self.color = color
 
-    def create(self):
-        for self.x in range(800, 5):
-            Border.draw()
+    def create(self, screen):
+        self.y = 1
+        for self.x in range(0, 800, 5):
+            Border.draw(self, screen)
+        pygame.display.flip()
 
 class Food(Point):
     def __init__(self, color = (10, 100,30)):
@@ -81,12 +83,16 @@ class Food(Point):
 r1 = Round(True)
 p1 = Point()
 s1 = Snake()
+b1 = Border()
+
+
 done = False
 
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
+    b1.create(r1.screen())
     s1.change_dir(r1.screen())
     s1.draw(r1.screen())
     pygame.display.flip()
