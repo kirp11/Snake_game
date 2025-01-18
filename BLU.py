@@ -4,20 +4,16 @@ pygame.init()
 
 
 
-class Game:
-    def __init__(self):
+class Round:
+    def __init__(self, drive):
+        self.drive = drive
 
-    def screen(self):
-        screen = pygame.display.set_mode((800, 600))
-        done = False
+    @staticmethod
 
-        while not done:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    done = True
+
 
     def start(self):
-        pygame.display.flip()
+
         pass
 
     def play(self):
@@ -30,13 +26,6 @@ class Game:
         pass
 
 
-        pressed = pygame.key.get_pressed()
-        if pressed[pygame.K_UP]: y -= 2
-        if pressed[pygame.K_DOWN]: y += 2
-        if pressed[pygame.K_LEFT]: x -= 2
-        if pressed[pygame.K_RIGHT]: x += 2
-
-
 class Point:
     def __init__(self, x, y, color):
         self.x = x
@@ -44,15 +33,29 @@ class Point:
         self.color = color
 
     def draw(self):
-        return pygame.draw.circle(screen, self.color, (self.x, self.y), 5)
+        screen = pygame.display.set_mode((800, 600))
+        done = False
 
-    pass
+        while not done:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    done = True
+            pygame.draw.circle(screen, self.color, (self.x, self.y), 5)
+            pygame.display.flip()
+
+
 
 class Snake(Point):
-    def __init__(self):
+    def __init__(self, x, y, color):
+        self.len = 1
         self.color = (0, 255,130)
 
     def change_dir(self):
+        pressed = pygame.key.get_pressed()
+        if pressed[pygame.K_UP]: y -= 2
+        if pressed[pygame.K_DOWN]: y += 2
+        if pressed[pygame.K_LEFT]: x -= 2
+        if pressed[pygame.K_RIGHT]: x += 2
         pass
 
     def add_node(self):
@@ -75,7 +78,9 @@ class Food(Point):
 
 
     def create(self):
+        pass
 
 
 
-    pass
+p1 = Point(400,300,(0, 255,130))
+p1.draw()
