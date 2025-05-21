@@ -26,7 +26,7 @@ class Game:
     def control(self):
         self.snake.movie()
         self.food.create()
-        if self.food.food_x <= self.snake.x + FAKTOR and self.food.food_x >= self.snake.x - FAKTOR and self.food.food_y <= self.snake.y + FAKTOR and self.food.food_y >= self.snake.y - FAKTOR:
+        if abs(self.food.food_x- self.snake.x) <= FAKTOR and abs(self.food.food_y - self.snake.y)<= FAKTOR:
             self.food.leave()
             self.food = Food(self.window.start(), self.snake.x, self.snake.y)
             self.food.create()
