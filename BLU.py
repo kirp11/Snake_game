@@ -34,10 +34,30 @@ class Game:
 
         if self.condition_of_cross():
             surface = pygame.display.get_surface()
-            chain = Snake(surface, self.food.food_x, self.food.food_y, self.snake[0].direction)
+            chain = Snake(surface, self.coordinate_of_last_chain_x(), self.coordinate_of_last_chain_y(), self.snake[-1].direction)
             self.snake.append(chain)
             self.food = Food(surface, self.snake[0].x, self.snake[0].y)
             self.food.create()
+
+    def coordinate_of_last_chain_x(self):
+        if self.snake[-1].direction == "right":
+            return self.snake[-1].x-FAKTOR
+        elif self.snake[-1].direction == "left":
+            return self.snake[-1].x+FAKTOR
+        elif self.snake[-1].direction == "down":
+            return self.snake[-1].x
+        else:
+            return self.snake[-1].x
+    def coordinate_of_last_chain_y(self):
+        if self.snake[-1].direction == "right":
+            return self.snake[-1].y
+        elif self.snake[-1].direction == "left":
+            return self.snake[-1].y
+        elif self.snake[-1].direction == "down":
+            return self.snake[-1].y - FAKTOR
+        else:
+            return self.snake[-1].y + FAKTOR
+
 
     def condition_of_cross(self):
         return (abs(self.food.food_x - self.snake[0].x) <= FAKTOR and abs(self.food.food_y - self.snake[0].y)<= FAKTOR)
@@ -50,16 +70,15 @@ class Generator_window:
         pass
 
 class Snake:
-    def __init__(self, screen, x, y, direction= "right"):
+    def __init__(self, screen, x, y, direction):
         self.screen = screen
         self.x = x
         self.y = y
-        self.delta_x = 0
-        self.delta_y = 0
         self.direction = direction
 
-    def movie(self):
 
+    def movie(self):
+        self.choose()
         pygame.draw.circle(self.screen, (0, 128, 255), (self.x, self.y), FAKTOR)
         self.x += self.delta_x
         self.y += self.delta_y
@@ -68,21 +87,28 @@ class Snake:
     def handler_press(self):
         pressed = pygame.key.get_pressed()
         if  pressed[pygame.K_LEFT]:
-            self.delta_y = 0
-            self.delta_x = -FAKTOR
             self.direction = "left"
         if pressed[pygame.K_RIGHT]:
-            self.delta_y = 0
-            self.delta_x = FAKTOR
             self.direction = "right"
         if pressed[pygame.K_UP]:
-            self.delta_x = 0
-            self.delta_y = -FAKTOR
             self.direction = "up"
         if pressed[pygame.K_DOWN]:
-            self.delta_x = 0
-            self.delta_y = FAKTOR
             self.direction = "down"
+        self.choose()
+
+    def choose(self):
+        if self.direction == "right":
+            self.delta_x = FAKTOR/2
+            self.delta_y = 0
+        elif self.direction == "left":
+            self.delta_y = 0
+            self.delta_x = -FAKTOR/2
+        elif self.direction == "up":
+            self.delta_x = 0
+            self.delta_y = -FAKTOR/2
+        elif self.direction == "down":
+            self.delta_x = 0
+            self.delta_y = FAKTOR/2
 
 
 class Food:
