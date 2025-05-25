@@ -4,7 +4,7 @@ import pygame
 import random
 pygame.init()
 
-FAKTOR = 5
+FAKTOR = 10
 
 class Window:
     def __init__(self, lenght, high, frase):
@@ -19,19 +19,28 @@ class Window:
 
 class Game:
     def __init__(self):
-        self.window = Window(500, 600, "Snake game")
-        self.snake = Snake(self.window.start())
-        self.food = Food(self.window.start(), self.snake.x, self.snake.y)
+        self.window = Window(600, 600, "Snake game")
+        self.snake = []
+        self.snake.append(Snake(self.window.start(), 300, 300, "right"))
+        self.food = Food(self.window.start(), self.snake[0].x, self.snake[0].y)
 
     def control(self):
-        self.snake.movie()
+        surface = pygame.display.get_surface()
+        surface.fill((0, 0, 0))
+        for i in range(len(self.snake)):
+            self.snake[i].movie()
+
         self.food.create()
-        if abs(self.food.food_x- self.snake.x) <= FAKTOR and abs(self.food.food_y - self.snake.y)<= FAKTOR:
-            self.food.leave()
-            self.food = Food(self.window.start(), self.snake.x, self.snake.y)
+
+        if self.condition_of_cross():
+            surface = pygame.display.get_surface()
+            chain = Snake(surface, self.food.food_x, self.food.food_y, self.snake[0].direction)
+            self.snake.append(chain)
+            self.food = Food(surface, self.snake[0].x, self.snake[0].y)
             self.food.create()
 
-
+    def condition_of_cross(self):
+        return (abs(self.food.food_x - self.snake[0].x) <= FAKTOR and abs(self.food.food_y - self.snake[0].y)<= FAKTOR)
 
 class Generator_window:
     def __init__(self, event):
@@ -41,16 +50,16 @@ class Generator_window:
         pass
 
 class Snake:
-    def __init__(self, screen):
+    def __init__(self, screen, x, y, direction= "right"):
         self.screen = screen
-        self.x = 250
-        self.y = 300
+        self.x = x
+        self.y = y
         self.delta_x = 0
         self.delta_y = 0
-
+        self.direction = direction
 
     def movie(self):
-        self.screen.fill((0, 0, 0))
+
         pygame.draw.circle(self.screen, (0, 128, 255), (self.x, self.y), FAKTOR)
         self.x += self.delta_x
         self.y += self.delta_y
@@ -61,15 +70,20 @@ class Snake:
         if  pressed[pygame.K_LEFT]:
             self.delta_y = 0
             self.delta_x = -FAKTOR
+            self.direction = "left"
         if pressed[pygame.K_RIGHT]:
             self.delta_y = 0
             self.delta_x = FAKTOR
+            self.direction = "right"
         if pressed[pygame.K_UP]:
             self.delta_x = 0
             self.delta_y = -FAKTOR
+            self.direction = "up"
         if pressed[pygame.K_DOWN]:
             self.delta_x = 0
             self.delta_y = FAKTOR
+            self.direction = "down"
+
 
 class Food:
     def __init__(self, screen, stop_x, stop_y):
@@ -88,21 +102,13 @@ class Food:
             self.food_y = random.randint(10,(height_w-10))
         pygame.draw.circle(self.screen, (0, 0, 128), (self.food_x, self.food_y), FAKTOR)
 
-    def leave(self):
-        pass
-
-
-
-
 
 running = True
 game = Game()
 
 while running:
     pygame.time.delay(60)
-
     game.control()
-
     pygame.display.update()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
