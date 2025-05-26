@@ -25,10 +25,7 @@ class Game:
         self.food = Food(self.window.start(), self.snake[0].x, self.snake[0].y)
 
     def control(self):
-        surface = pygame.display.get_surface()
-        surface.fill((0, 0, 0))
-        for i in range(len(self.snake)):
-            self.snake[i].movie()
+
 
         self.food.create()
 
@@ -69,19 +66,30 @@ class Generator_window:
     def select(self):
         pass
 
-class Snake:
-    def __init__(self, screen, x, y, direction):
-        self.screen = screen
+class Chain:
+    def __init__(self, x, y, direction):
         self.x = x
         self.y = y
         self.direction = direction
 
 
+class Snake:
+    def __init__(self, screen):
+        self.screen = screen
+        self.head = Chain(300, 300, 'right')
+        self.snake = []
+        self.snake.append(self.head)
+
     def movie(self):
-        self.choose()
-        pygame.draw.circle(self.screen, (0, 128, 255), (self.x, self.y), FAKTOR)
-        self.x += self.delta_x
-        self.y += self.delta_y
+        surface = pygame.display.get_surface()
+        surface.fill((0, 0, 0))
+        for i in range(len(self.snake)):
+            pygame.draw.circle(self.screen, (0, 128, 255), (self.snake[i].x, self.snake[i].y), FAKTOR)
+
+
+    def handler_direction_head(self):
+        self.head.x += self.delta_x
+        self.head.y += self.delta_y
         self.handler_press()
 
     def handler_press(self):
