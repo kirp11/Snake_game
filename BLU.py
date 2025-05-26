@@ -66,9 +66,14 @@ class Snake:
     def movie(self):
         self.screen.fill((0, 0, 0))
         self.handler_direction_head()
-        pygame.draw.circle(self.screen, (0, 128, 255), (self.head.x, self.head.y), FAKTOR)
-        for i in range(1, len(self.body)):
+        for i in range(len(self.body)):
+            if i != 0:
+                self.body[i].x = self.body[i-1].x_next
+                self.body[i].y = self.body[i-1].y_next
             pygame.draw.circle(self.screen, (0, 128, 255), (self.body[i].x, self.body[i].y), FAKTOR)
+            self.body[i].x_next = self.body[i].x
+            self.body[i].y_next = self.body[i].y
+
 
 
     def handler_direction_head(self):
@@ -105,17 +110,17 @@ class Snake:
 
     def add_chain(self):
         if self.head.direction == "right":
-            x_chain = self.head.x - FAKTOR
+            x_chain = self.head.x - FAKTOR*2
             y_chain = self.head.y
         elif self.head.direction == "left":
-            x_chain = self.head.x + FAKTOR
+            x_chain = self.head.x + FAKTOR*2
             y_chain = self.head.y
         elif self.head.direction == "up":
             x_chain = self.head.x
-            y_chain = self.head.y - FAKTOR
+            y_chain = self.head.y + FAKTOR*2
         elif self.head.direction == "down":
             x_chain = self.head.x
-            y_chain = self.head.y + FAKTOR
+            y_chain = self.head.y - FAKTOR*2
         chain = Chain(x_chain, y_chain, None, None, "right")
         self.body.append(chain)
 
