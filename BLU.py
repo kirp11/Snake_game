@@ -20,21 +20,13 @@ class Window:
 class Game:
     def __init__(self):
         self.window = Window(600, 600, "Snake game")
-        self.snake = []
-        self.snake.append(Snake(self.window.start(), 300, 300, "right"))
+        self.snake = Snake(self.window.start())
         self.food = Food(self.window.start(), self.snake[0].x, self.snake[0].y)
 
     def control(self):
-
-
+        self.snake.movie()
         self.food.create()
-
-        if self.condition_of_cross():
-            surface = pygame.display.get_surface()
-            chain = Snake(surface, self.coordinate_of_last_chain_x(), self.coordinate_of_last_chain_y(), self.snake[-1].direction)
-            self.snake.append(chain)
-            self.food = Food(surface, self.snake[0].x, self.snake[0].y)
-            self.food.create()
+        self.cross_with_food()
 
     def coordinate_of_last_chain_x(self):
         if self.snake[-1].direction == "right":
@@ -58,6 +50,14 @@ class Game:
 
     def condition_of_cross(self):
         return (abs(self.food.food_x - self.snake[0].x) <= FAKTOR and abs(self.food.food_y - self.snake[0].y)<= FAKTOR)
+
+    def cross_with_food(self):
+        if self.condition_of_cross():
+            surface = pygame.display.get_surface()
+            chain = Snake(surface, self.coordinate_of_last_chain_x(), self.coordinate_of_last_chain_y(), self.snake[-1].direction)
+            self.snake.append(chain)
+            self.food = Food(surface, self.snake[0].x, self.snake[0].y)
+            self.food.create()
 
 class Generator_window:
     def __init__(self, event):
