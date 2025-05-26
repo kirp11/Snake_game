@@ -33,6 +33,7 @@ class Game:
 
     def cross_with_food(self):
         if self.condition_of_cross():
+            self.snake.add_chain()
             surface = pygame.display.get_surface()
             self.food = Food(surface, self.snake.head.x, self.snake.head.y)
             self.food.create()
@@ -101,6 +102,9 @@ class Snake:
             self.delta_x = 0
             self.delta_y = FAKTOR/2
 
+    def add_chain(self):
+        chain = Chain(300, 300, None, None, "right")
+        self.body.append(chain)
 
 class Food:
     def __init__(self, screen, stop_x, stop_y):
