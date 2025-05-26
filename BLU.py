@@ -67,24 +67,28 @@ class Generator_window:
         pass
 
 class Chain:
-    def __init__(self, x, y, direction):
+    def __init__(self, x, y, x_next, y_next, direction):
         self.x = x
         self.y = y
+        self.x_next = x_next
+        self.y_next = y_next
         self.direction = direction
 
 
 class Snake:
     def __init__(self, screen):
         self.screen = screen
-        self.head = Chain(300, 300, 'right')
-        self.snake = []
-        self.snake.append(self.head)
+        self.head = Chain(300, 300, None, None, 'right')
+        self.body = []
+        self.delta_x = 0
+        self.delta_y = 0
+        self.body.append(self.head)
 
     def movie(self):
         surface = pygame.display.get_surface()
         surface.fill((0, 0, 0))
-        for i in range(len(self.snake)):
-            pygame.draw.circle(self.screen, (0, 128, 255), (self.snake[i].x, self.snake[i].y), FAKTOR)
+        for i in range(len(self.body)):
+            pygame.draw.circle(self.screen, (0, 128, 255), (self.body[i].x, self.body[i].y), FAKTOR)
 
 
     def handler_direction_head(self):
@@ -95,26 +99,26 @@ class Snake:
     def handler_press(self):
         pressed = pygame.key.get_pressed()
         if  pressed[pygame.K_LEFT]:
-            self.direction = "left"
-        if pressed[pygame.K_RIGHT]:
-            self.direction = "right"
-        if pressed[pygame.K_UP]:
-            self.direction = "up"
-        if pressed[pygame.K_DOWN]:
-            self.direction = "down"
+            self.head.direction = "left"
+        elif pressed[pygame.K_RIGHT]:
+            self.head.direction = "right"
+        elif pressed[pygame.K_UP]:
+            self.head.direction = "up"
+        elif pressed[pygame.K_DOWN]:
+            self.head.direction = "down"
         self.choose()
 
     def choose(self):
-        if self.direction == "right":
+        if self.head.direction == "right":
             self.delta_x = FAKTOR/2
             self.delta_y = 0
-        elif self.direction == "left":
+        elif self.head.direction == "left":
             self.delta_y = 0
             self.delta_x = -FAKTOR/2
-        elif self.direction == "up":
+        elif self.head.direction == "up":
             self.delta_x = 0
             self.delta_y = -FAKTOR/2
-        elif self.direction == "down":
+        elif self.head.direction == "down":
             self.delta_x = 0
             self.delta_y = FAKTOR/2
 
