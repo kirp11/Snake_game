@@ -28,26 +28,6 @@ class Game:
         self.food.create()
         self.cross_with_food()
 
-    def coordinate_of_last_chain_x(self):
-        if self.snake[-1].direction == "right":
-            return self.snake[-1].x-FAKTOR
-        elif self.snake[-1].direction == "left":
-            return self.snake[-1].x+FAKTOR
-        elif self.snake[-1].direction == "down":
-            return self.snake[-1].x
-        else:
-            return self.snake[-1].x
-    def coordinate_of_last_chain_y(self):
-        if self.snake[-1].direction == "right":
-            return self.snake[-1].y
-        elif self.snake[-1].direction == "left":
-            return self.snake[-1].y
-        elif self.snake[-1].direction == "down":
-            return self.snake[-1].y - FAKTOR
-        else:
-            return self.snake[-1].y + FAKTOR
-
-
     def condition_of_cross(self):
         return (abs(self.food.food_x - self.snake[0].x) <= FAKTOR and abs(self.food.food_y - self.snake[0].y)<= FAKTOR)
 
