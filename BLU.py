@@ -102,8 +102,21 @@ class Snake:
             self.delta_x = 0
             self.delta_y = FAKTOR/2
 
+
     def add_chain(self):
-        chain = Chain(300, 300, None, None, "right")
+        if self.head.direction == "right":
+            x_chain = self.head.x - FAKTOR
+            y_chain = self.head.y
+        elif self.head.direction == "left":
+            x_chain = self.head.x + FAKTOR
+            y_chain = self.head.y
+        elif self.head.direction == "up":
+            x_chain = self.head.x
+            y_chain = self.head.y - FAKTOR
+        elif self.head.direction == "down":
+            x_chain = self.head.x
+            y_chain = self.head.y + FAKTOR
+        chain = Chain(x_chain, y_chain, None, None, "right")
         self.body.append(chain)
 
 class Food:
