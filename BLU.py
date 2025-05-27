@@ -66,12 +66,24 @@ class Snake:
         self.screen.fill((0, 0, 0))
         self.handler_direction_head()
         for i in range(len(self.body)):
-            if i != 0:
-                self.body[i].x = self.body[i-1].x_next
-                self.body[i].y = self.body[i-1].y_next
-                self.body[i].x_next = self.body[i].x - 4*self.delta_x
-                self.body[i].y_next = self.body[i].y - 4*self.delta_y
+            if i == 1 :
+            #     self.body[i].x = self.body[i - 1].x_next
+            #     self.body[i].y = self.body[i - 1].y_next
+            # elif i > 1:
+            #     chain_delta_x = self.body[i-1].x - self.body[i - 1].x_next
+            #     chain_delta_y = self.body[i-1].y - self.body[i - 1].y_next
+            #
+            #     self.body[i].x = self.body[i-1].x + chain_delta_x
+            #     self.body[i].y = self.body[i-1].y + chain_delta_y
+            #
+            #
+            #     self.body[i].x_next = self.body[i].x + chain_delta_x
+            #     self.body[i].y_next = self.body[i].y + chain_delta_y
+
             pygame.draw.circle(self.screen, (0, 128, 255), (self.body[i].x, self.body[i].y), 2*FAKTOR)
+
+            # chain_delta_x= self.delta_x
+            # chain_delta_y = self.delta_y
 
 
 
