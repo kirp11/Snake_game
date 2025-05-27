@@ -4,7 +4,7 @@ import pygame
 import random
 pygame.init()
 
-FAKTOR = 10
+FAKTOR = 5
 
 class Window:
     def __init__(self, lenght, high, frase):
@@ -29,12 +29,12 @@ class Game:
         self.cross_with_food()
 
     def condition_of_cross(self):
-        return (abs(self.food.food_x - self.snake.body[0].x) <= FAKTOR and abs(self.food.food_y - self.snake.body[0].y)<= FAKTOR)
+        return (abs(self.food.food_x - self.snake.body[0].x) <= 2*FAKTOR and abs(self.food.food_y - self.snake.body[0].y)<= 2*FAKTOR)
 
     def cross_with_food(self):
+        surface = pygame.display.get_surface()
         if self.condition_of_cross():
             self.snake.add_chain()
-            surface = pygame.display.get_surface()
             self.food = Food(surface, self.snake.head.x, self.snake.head.y)
             self.food.create()
 
@@ -70,10 +70,9 @@ class Snake:
             if i != 0:
                 self.body[i].x = self.body[i-1].x_next
                 self.body[i].y = self.body[i-1].y_next
-                self.body[i].x_next = self.body[i-1].x - 4 * self.delta_x
-                self.body[i].y_next = self.body[i-1].y - 4 * self.delta_y
-            pygame.draw.circle(self.screen, (0, 128, 255), (self.body[i].x, self.body[i].y), FAKTOR)
-
+                self.body[i].x_next = self.body[i-1].x - self.delta_x
+                self.body[i].y_next = self.body[i-1].y - self.delta_y
+            pygame.draw.circle(self.screen, (0, 128, 255), (self.body[i].x, self.body[i].y), 2*FAKTOR)
 
 
 
@@ -94,37 +93,50 @@ class Snake:
             self.head.direction = "up"
         elif pressed[pygame.K_DOWN]:
             self.head.direction = "down"
-        self.choose()
+        self.choose_head_direction()
 
-    def choose(self):
+    def choose_head_direction(self):
         if self.head.direction == "right":
-            self.delta_x = FAKTOR/2
+            self.delta_x = FAKTOR
             self.delta_y = 0
         elif self.head.direction == "left":
             self.delta_y = 0
-            self.delta_x = -FAKTOR/2
+            self.delta_x = -FAKTOR
         elif self.head.direction == "up":
             self.delta_x = 0
-            self.delta_y = -FAKTOR/2
+            self.delta_y = -FAKTOR
         elif self.head.direction == "down":
             self.delta_x = 0
-            self.delta_y = FAKTOR/2
+            self.delta_y = FAKTOR
 
+    def choose_chain_direction(self, chain):
+        if chain.direction == "right":
+            chain.delta_x = FAKTOR
+            chain.delta_y = 0
+        elif chain.direction == "left":
+            chain.delta_y = 0
+            chain.delta_x = -FAKTOR
+        elif chain.direction == "up":
+            chain.delta_x = 0
+            chain.delta_y = -FAKTOR
+        elif chain.direction == "down":
+            chain.delta_x = 0
+            chain.delta_y = FAKTOR
 
     def add_chain(self):
-        if self.head.direction == "right":
-            x_chain = self.head.x - FAKTOR*2
-            y_chain = self.head.y
-        elif self.head.direction == "left":
-            x_chain = self.head.x + FAKTOR*2
-            y_chain = self.head.y
-        elif self.head.direction == "up":
-            x_chain = self.head.x
-            y_chain = self.head.y + FAKTOR*2
-        elif self.head.direction == "down":
-            x_chain = self.head.x
-            y_chain = self.head.y - FAKTOR*2
-        chain = Chain(x_chain, y_chain, None, None, "right")
+        # if self.head.direction == "right":
+        #     x_chain = self.body[-1].x - FAKTOR
+        #     y_chain = self.body[-1].y
+        # elif self.head.direction == "left":
+        #     x_chain = self.body[-1].x + FAKTOR
+        #     y_chain = self.body[-1].y
+        # elif self.head.direction == "up":
+        #     x_chain = self.body[-1].x
+        #     y_chain = self.body[-1].y + FAKTOR
+        # elif self.head.direction == "down":
+        #     x_chain = self.body[-1].x
+        #     y_chain = self.body[-1].y - FAKTOR
+        chain = Chain(None, None, None, None, None)
         self.body.append(chain)
 
 class Food:
@@ -142,7 +154,7 @@ class Food:
         while self.food_x == self.stop_x and self.food_y == self.stop_y:
             self.food_x = random.randint(20,(width_w-20))
             self.food_y = random.randint(20,(height_w-20))
-        pygame.draw.circle(self.screen, (0, 0, 128), (self.food_x, self.food_y), FAKTOR)
+        pygame.draw.circle(self.screen, (0, 0, 128), (self.food_x, self.food_y), FAKTOR*2)
 
 
 running = True
