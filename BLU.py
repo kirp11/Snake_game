@@ -71,14 +71,15 @@ class Snake:
                 self.body[i].x = self.body[i-1].x_next
                 self.body[i].y = self.body[i-1].y_next
             pygame.draw.circle(self.screen, (0, 128, 255), (self.body[i].x, self.body[i].y), FAKTOR)
-            self.body[i].x_next = self.body[i].x
-            self.body[i].y_next = self.body[i].y
+
 
 
 
     def handler_direction_head(self):
         self.head.x += self.delta_x
         self.head.y += self.delta_y
+        self.head.x_next = self.head.x - 2*self.delta_x
+        self.head.y_next = self.head.y - 2*self.delta_y
         self.handler_press()
 
     def handler_press(self):
@@ -137,8 +138,8 @@ class Food:
         width_w = surface.get_width()
         height_w = surface.get_height()
         while self.food_x == self.stop_x and self.food_y == self.stop_y:
-            self.food_x = random.randint(10,(width_w-10))
-            self.food_y = random.randint(10,(height_w-10))
+            self.food_x = random.randint(20,(width_w-20))
+            self.food_y = random.randint(20,(height_w-20))
         pygame.draw.circle(self.screen, (0, 0, 128), (self.food_x, self.food_y), FAKTOR)
 
 
