@@ -70,6 +70,8 @@ class Snake:
             if i != 0:
                 self.body[i].x = self.body[i-1].x_next
                 self.body[i].y = self.body[i-1].y_next
+                self.body[i].x_next = self.body[i-1].x - 4 * self.delta_x
+                self.body[i].y_next = self.body[i-1].y - 4 * self.delta_y
             pygame.draw.circle(self.screen, (0, 128, 255), (self.body[i].x, self.body[i].y), FAKTOR)
 
 
@@ -78,8 +80,8 @@ class Snake:
     def handler_direction_head(self):
         self.head.x += self.delta_x
         self.head.y += self.delta_y
-        self.head.x_next = self.head.x - 2*self.delta_x
-        self.head.y_next = self.head.y - 2*self.delta_y
+        self.head.x_next = self.head.x - 4*self.delta_x
+        self.head.y_next = self.head.y - 4*self.delta_y
         self.handler_press()
 
     def handler_press(self):
