@@ -36,7 +36,6 @@ class Game:
         if self.condition_of_cross():
             self.snake.add_chain()
             self.food = Food(surface, self.snake.head.x, self.snake.head.y)
-            self.food.create()
 
 class Generator_window:
     def __init__(self, event):
@@ -70,8 +69,8 @@ class Snake:
             if i != 0:
                 self.body[i].x = self.body[i-1].x_next
                 self.body[i].y = self.body[i-1].y_next
-                self.body[i].x_next = self.body[i-1].x - self.delta_x
-                self.body[i].y_next = self.body[i-1].y - self.delta_y
+                self.body[i].x_next = self.body[i].x - 4*self.delta_x
+                self.body[i].y_next = self.body[i].y - 4*self.delta_y
             pygame.draw.circle(self.screen, (0, 128, 255), (self.body[i].x, self.body[i].y), 2*FAKTOR)
 
 
@@ -122,6 +121,7 @@ class Snake:
         elif chain.direction == "down":
             chain.delta_x = 0
             chain.delta_y = FAKTOR
+        return chain.delta_x, chain.delta_y
 
     def add_chain(self):
         # if self.head.direction == "right":
