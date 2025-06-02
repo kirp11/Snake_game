@@ -4,7 +4,7 @@ import pygame
 import random
 pygame.init()
 
-FAKTOR = 10
+FAKTOR = 5
 
 class Window:
     def __init__(self, lenght, high, frase):
@@ -64,12 +64,12 @@ class Snake:
     def movie(self):
         self.screen.fill((0, 0, 0))
         self.handler_direction_head()
-        pygame.draw.circle(self.screen, (0, 128, 255), (self.body[0].x, self.body[0].y), FAKTOR)
+        pygame.draw.circle(self.screen, (0, 128, 255), (self.body[0].x, self.body[0].y), FAKTOR*2)
         for i in range(1, len(self.body)):
-            self.body[i].x = self.way_head[i][0]
-            self.body[i].y = self.way_head[i][1]
+            self.body[i].x = self.way_head[i*4][0]
+            self.body[i].y = self.way_head[i*4][1]
 
-            pygame.draw.circle(self.screen, (0, 128, 255), (self.body[i].x, self.body[i].y), FAKTOR)
+            pygame.draw.circle(self.screen, (0, 128, 255), (self.body[i].x, self.body[i].y), FAKTOR*2)
 
 
     def handler_direction_head(self):
@@ -151,7 +151,7 @@ class Food:
         while self.food_x == self.stop_x and self.food_y == self.stop_y:
             self.food_x = random.randint(20,(width_w-20))
             self.food_y = random.randint(20,(height_w-20))
-        pygame.draw.circle(self.screen, (0, 0, 128), (self.food_x, self.food_y), FAKTOR)
+        pygame.draw.circle(self.screen, (0, 0, 128), (self.food_x, self.food_y), FAKTOR*2)
 
 
 running = True
