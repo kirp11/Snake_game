@@ -4,7 +4,7 @@ import pygame
 import random
 pygame.init()
 
-FAKTOR = 5
+FAKTOR = 10
 
 class Window:
     def __init__(self, lenght, high, frase):
@@ -45,19 +45,18 @@ class Generator_window:
         pass
 
 class Chain:
-    def __init__(self, x, y, x_next, y_next, direction):
+    def __init__(self, x, y, direction):
         self.x = x
         self.y = y
-        self.x_next = x_next
-        self.y_next = y_next
         self.direction = direction
 
 
 class Snake:
     def __init__(self, screen):
         self.screen = screen
-        self.head = Chain(300, 300, None, None, "right")
+        self.head = Chain(300, 300, "right")
         self.body = []
+        self.way_head = [[]]
         self.delta_x = 0
         self.delta_y = 0
         self.body.append(self.head)
@@ -65,33 +64,19 @@ class Snake:
     def movie(self):
         self.screen.fill((0, 0, 0))
         self.handler_direction_head()
-        for i in range(len(self.body)):
-            if i == 1 :
-            #     self.body[i].x = self.body[i - 1].x_next
-            #     self.body[i].y = self.body[i - 1].y_next
-            # elif i > 1:
-            #     chain_delta_x = self.body[i-1].x - self.body[i - 1].x_next
-            #     chain_delta_y = self.body[i-1].y - self.body[i - 1].y_next
-            #
-            #     self.body[i].x = self.body[i-1].x + chain_delta_x
-            #     self.body[i].y = self.body[i-1].y + chain_delta_y
-            #
-            #
-            #     self.body[i].x_next = self.body[i].x + chain_delta_x
-            #     self.body[i].y_next = self.body[i].y + chain_delta_y
+        pygame.draw.circle(self.screen, (0, 128, 255), (self.body[0].x, self.body[0].y), FAKTOR)
+        for i in range(1, len(self.body)):
+            self.body[i].x = self.way_head[i][0]
+            self.body[i].y = self.way_head[i][1]
 
-            pygame.draw.circle(self.screen, (0, 128, 255), (self.body[i].x, self.body[i].y), 2*FAKTOR)
-
-            # chain_delta_x= self.delta_x
-            # chain_delta_y = self.delta_y
-
+            pygame.draw.circle(self.screen, (0, 128, 255), (self.body[i].x, self.body[i].y), FAKTOR)
 
 
     def handler_direction_head(self):
         self.head.x += self.delta_x
         self.head.y += self.delta_y
-        self.head.x_next = self.head.x - 4*self.delta_x
-        self.head.y_next = self.head.y - 4*self.delta_y
+        self.way_head.insert(0, [self.head.x, self.head.y])
+
         self.handler_press()
 
     def handler_press(self):
@@ -120,20 +105,20 @@ class Snake:
             self.delta_x = 0
             self.delta_y = FAKTOR
 
-    def choose_chain_direction(self, chain):
-        if chain.direction == "right":
-            chain.delta_x = FAKTOR
-            chain.delta_y = 0
-        elif chain.direction == "left":
-            chain.delta_y = 0
-            chain.delta_x = -FAKTOR
-        elif chain.direction == "up":
-            chain.delta_x = 0
-            chain.delta_y = -FAKTOR
-        elif chain.direction == "down":
-            chain.delta_x = 0
-            chain.delta_y = FAKTOR
-        return chain.delta_x, chain.delta_y
+    # def choose_chain_direction(self, chain):
+    #     if chain.direction == "right":
+    #         chain.delta_x = FAKTOR
+    #         chain.delta_y = 0
+    #     elif chain.direction == "left":
+    #         chain.delta_y = 0
+    #         chain.delta_x = -FAKTOR
+    #     elif chain.direction == "up":
+    #         chain.delta_x = 0
+    #         chain.delta_y = -FAKTOR
+    #     elif chain.direction == "down":
+    #         chain.delta_x = 0
+    #         chain.delta_y = FAKTOR
+    #     return chain.delta_x, chain.delta_y
 
     def add_chain(self):
         # if self.head.direction == "right":
@@ -148,7 +133,7 @@ class Snake:
         # elif self.head.direction == "down":
         #     x_chain = self.body[-1].x
         #     y_chain = self.body[-1].y - FAKTOR
-        chain = Chain(None, None, None, None, None)
+        chain = Chain(None, None, None)
         self.body.append(chain)
 
 class Food:
@@ -166,7 +151,7 @@ class Food:
         while self.food_x == self.stop_x and self.food_y == self.stop_y:
             self.food_x = random.randint(20,(width_w-20))
             self.food_y = random.randint(20,(height_w-20))
-        pygame.draw.circle(self.screen, (0, 0, 128), (self.food_x, self.food_y), FAKTOR*2)
+        pygame.draw.circle(self.screen, (0, 0, 128), (self.food_x, self.food_y), FAKTOR)
 
 
 running = True
