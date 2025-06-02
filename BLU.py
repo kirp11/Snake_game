@@ -105,34 +105,7 @@ class Snake:
             self.delta_x = 0
             self.delta_y = FAKTOR
 
-    # def choose_chain_direction(self, chain):
-    #     if chain.direction == "right":
-    #         chain.delta_x = FAKTOR
-    #         chain.delta_y = 0
-    #     elif chain.direction == "left":
-    #         chain.delta_y = 0
-    #         chain.delta_x = -FAKTOR
-    #     elif chain.direction == "up":
-    #         chain.delta_x = 0
-    #         chain.delta_y = -FAKTOR
-    #     elif chain.direction == "down":
-    #         chain.delta_x = 0
-    #         chain.delta_y = FAKTOR
-    #     return chain.delta_x, chain.delta_y
-
     def add_chain(self):
-        # if self.head.direction == "right":
-        #     x_chain = self.body[-1].x - FAKTOR
-        #     y_chain = self.body[-1].y
-        # elif self.head.direction == "left":
-        #     x_chain = self.body[-1].x + FAKTOR
-        #     y_chain = self.body[-1].y
-        # elif self.head.direction == "up":
-        #     x_chain = self.body[-1].x
-        #     y_chain = self.body[-1].y + FAKTOR
-        # elif self.head.direction == "down":
-        #     x_chain = self.body[-1].x
-        #     y_chain = self.body[-1].y - FAKTOR
         chain = Chain(None, None, None)
         self.body.append(chain)
 
@@ -152,7 +125,6 @@ class Food:
             self.food_x = random.randint(20,(width_w-20))
             self.food_y = random.randint(20,(height_w-20))
         pygame.draw.circle(self.screen, (0, 0, 128), (self.food_x, self.food_y), FAKTOR*2)
-
 
 running = True
 game = Game()
