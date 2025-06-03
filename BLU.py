@@ -64,7 +64,7 @@ class Snake:
         self.body.append(self.head)
 
     def movie(self):
-        self.screen.fill((0, 0, 0))
+        self.screen.fill((153,255,153))
         self.handler_direction_head()
         pygame.draw.circle(self.screen, (0, 128, 255), (self.body[0].x, self.body[0].y), FAKTOR*2)
         for i in range(1, len(self.body)):
