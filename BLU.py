@@ -22,8 +22,10 @@ class Game:
         self.window = Window(600, 600, "Snake game")
         self.snake = Snake(self.window.start())
         self.food = Food(self.window.start(), self.snake.body[0].x, self.snake.body[0].y)
+        self.barrier = Barrier(self.window.start())
 
     def control(self):
+        self.barrier.frame()
         self.snake.movie()
         self.food.create()
         self.cross_with_food()
@@ -131,14 +133,12 @@ class Barrier:
         self.screen = screen
 
     def frame(self):
+
         width_w = self.screen.get_width()
         height_w = self.screen.get_height()
-        for column in range(0, width_w, FAKTOR):
-            pygame.draw.rect(self.screen, (165, 42, 42), [5, column, FAKTOR*2, FAKTOR*2])
-            pygame.draw.rect(self.screen, (165, 42, 42), [height_w - 5, column, FAKTOR * 2, FAKTOR * 2])
-        for row in range(0, height_w, FAKTOR):
-            pygame.draw.rect(self.screen, (165, 42, 42), [row, 5, FAKTOR*2, FAKTOR*2])
-            pygame.draw.rect(self.screen, (165, 42, 42), [row, width_w - 5, FAKTOR * 2, FAKTOR * 2])
+        pygame.draw.rect(self.screen, (51,102,0), [0, 0, width_w, height_w], FAKTOR*3)
+        pygame.display.flip()
+
     def field(self):
         pass
 
@@ -149,7 +149,7 @@ game = Game()
 while running:
     pygame.time.delay(60)
     game.control()
-    pygame.display.update()
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
