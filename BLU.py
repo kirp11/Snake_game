@@ -126,6 +126,23 @@ class Food:
             self.food_y = random.randint(20,(height_w-20))
         pygame.draw.circle(self.screen, (0, 0, 128), (self.food_x, self.food_y), FAKTOR*2)
 
+class Barrier:
+    def __init__(self, screen):
+        self.screen = screen
+
+    def frame(self):
+        width_w = self.screen.get_width()
+        height_w = self.screen.get_height()
+        for column in range(0, width_w, FAKTOR):
+            pygame.draw.rect(self.screen, (165, 42, 42), [5, column, FAKTOR*2, FAKTOR*2])
+            pygame.draw.rect(self.screen, (165, 42, 42), [height_w - 5, column, FAKTOR * 2, FAKTOR * 2])
+        for row in range(0, height_w, FAKTOR):
+            pygame.draw.rect(self.screen, (165, 42, 42), [row, 5, FAKTOR*2, FAKTOR*2])
+            pygame.draw.rect(self.screen, (165, 42, 42), [row, width_w - 5, FAKTOR * 2, FAKTOR * 2])
+    def field(self):
+        pass
+
+
 running = True
 game = Game()
 
