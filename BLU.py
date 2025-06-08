@@ -12,6 +12,7 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 WGREEN = (153,255,153)
+end_image = pygame.image.load('game_over.jpg')
 
 class Window:
     def __init__(self, lenght, high, frase, color):
@@ -24,6 +25,8 @@ class Window:
         screen = pygame.display.set_mode((self.lenght, self.high))
         pygame.display.set_caption(self.frase)
         screen.fill(self.color)
+        if self.frase == "Game over":
+            screen.blit(end_image, (40, 60))
         pygame.display.flip()
         return screen
 
@@ -58,7 +61,7 @@ class Game:
 
     def cross_barrier(self):
         if not self.check_crash():
-            self.window = Window(400,200,"Game over", BLUE)
+            self.window = Window(400,400,"Game over", BLUE)
 
 
     def check_crash(self):
