@@ -17,6 +17,7 @@ class Window:
         pygame.display.set_caption(self.frase)
         return screen
 
+
 class Game:
     def __init__(self):
         self.window = Window(600, 600, "Snake game")
@@ -47,13 +48,6 @@ class Game:
     def check_crash(self):
         frame = self.barrier.frame()
         return not(frame.collidepoint(self.snake.head.x, self.snake.head.y))
-
-class Generator_window:
-    def __init__(self, event):
-        self.event = event
-
-    def select(self):
-        pass
 
 class Chain:
     def __init__(self, x, y, direction):
