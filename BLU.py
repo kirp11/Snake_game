@@ -29,6 +29,7 @@ class Game:
         self.snake.movie()
         self.food.create()
         self.cross_with_food()
+        self.cross_barrier()
 
     def condition_of_cross(self):
         return (abs(self.food.food_x - self.snake.body[0].x) <= 2*FAKTOR and abs(self.food.food_y - self.snake.body[0].y)<= 2*FAKTOR)
@@ -38,6 +39,14 @@ class Game:
         if self.condition_of_cross():
             self.snake.add_chain()
             self.food = Food(surface, self.snake.head.x, self.snake.head.y)
+
+    def cross_barrier(self):
+        if self.check_crash():
+            pygame.quit()
+
+    def check_crash(self):
+        frame = self.barrier.frame()
+        return not(frame.collidepoint(self.snake.head.x, self.snake.head.y))
 
 class Generator_window:
     def __init__(self, event):
@@ -80,6 +89,7 @@ class Snake:
         self.way_head.insert(0, [self.head.x, self.head.y])
 
         self.handler_press()
+
 
     def handler_press(self):
         pressed = pygame.key.get_pressed()
@@ -136,8 +146,9 @@ class Barrier:
 
         width_w = self.screen.get_width()
         height_w = self.screen.get_height()
-        pygame.draw.rect(self.screen, (51,102,0), [0, 0, width_w, height_w], FAKTOR*3)
+        frame = pygame.draw.rect(self.screen, (51,102,0), [0, 0, width_w, height_w], FAKTOR*3)
         pygame.display.flip()
+        return frame
 
     def field(self):
         pass
