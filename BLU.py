@@ -5,32 +5,47 @@ import random
 pygame.init()
 
 FAKTOR = 5
+# Цвета (R, G, B)
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+WGREEN = (153,255,153)
 
 class Window:
-    def __init__(self, lenght, high, frase):
+    def __init__(self, lenght, high, frase, color):
         self.lenght = lenght
         self.high = high
         self.frase = frase
+        self.color = color
 
     def start(self):
         screen = pygame.display.set_mode((self.lenght, self.high))
         pygame.display.set_caption(self.frase)
+        screen.fill(self.color)
+        pygame.display.flip()
         return screen
 
 
 class Game:
     def __init__(self):
-        self.window = Window(600, 600, "Snake game")
+        self.window = Window(600, 600, "Snake game", WGREEN)
         self.snake = Snake(self.window.start())
         self.food = Food(self.window.start(), self.snake.body[0].x, self.snake.body[0].y)
         self.barrier = Barrier(self.window.start())
 
     def control(self):
-        self.barrier.frame()
-        self.snake.movie()
-        self.food.create()
-        self.cross_with_food()
-        self.cross_barrier()
+        if self.window.frase == "Snake game":
+            self.window.start()
+            self.barrier.frame()
+            self.snake.movie()
+            self.food.create()
+            self.cross_with_food()
+            self.cross_barrier()
+        else:
+            self.window.start()
+
 
     def condition_of_cross(self):
         return (abs(self.food.food_x - self.snake.body[0].x) <= 2*FAKTOR and abs(self.food.food_y - self.snake.body[0].y)<= 2*FAKTOR)
@@ -42,19 +57,18 @@ class Game:
             self.food = Food(surface, self.snake.head.x, self.snake.head.y)
 
     def cross_barrier(self):
-        if self.check_crash():
-            pygame.quit()
+        if not self.check_crash():
+            self.window = Window(400,200,"Game over", BLUE)
+
 
     def check_crash(self):
-        frame = self.barrier.frame()
-        return not(frame.collidepoint(self.snake.head.x, self.snake.head.y))
+        return self.barrier.frame().collidepoint(self.snake.head.x, self.snake.head.y)
 
 class Chain:
     def __init__(self, x, y, direction):
         self.x = x
         self.y = y
         self.direction = direction
-
 
 class Snake:
     def __init__(self, screen):
@@ -67,14 +81,13 @@ class Snake:
         self.body.append(self.head)
 
     def movie(self):
-        self.screen.fill((153,255,153))
         self.handler_direction_head()
-        pygame.draw.circle(self.screen, (0, 128, 255), (self.body[0].x, self.body[0].y), FAKTOR*2)
+        pygame.draw.circle(self.screen, BLUE, (self.body[0].x, self.body[0].y), FAKTOR*2)
         for i in range(1, len(self.body)):
             self.body[i].x = self.way_head[i*4][0]
             self.body[i].y = self.way_head[i*4][1]
 
-            pygame.draw.circle(self.screen, (0, 128, 255), (self.body[i].x, self.body[i].y), FAKTOR*2)
+            pygame.draw.circle(self.screen, BLUE, (self.body[i].x, self.body[i].y), FAKTOR*2)
 
 
     def handler_direction_head(self):
