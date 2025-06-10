@@ -12,6 +12,7 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 WGREEN = (153,255,153)
+YELLOW = (255, 255, 0)
 end_image = pygame.image.load('game_over.jpg')
 
 class Window:
@@ -21,14 +22,30 @@ class Window:
         self.frase = frase
         self.color = color
 
-    def start(self):
+    def view(self):
         screen = pygame.display.set_mode((self.lenght, self.high))
         pygame.display.set_caption(self.frase)
         screen.fill(self.color)
-        if self.frase == "Game over":
-            screen.blit(end_image, (40, 60))
         pygame.display.flip()
         return screen
+
+
+class Main_window(Window):
+    def __init__(self, lenght, high, frase, color):
+        super().__init__(lenght, high, frase, color)
+
+class Gameover_window(Window):
+    def __init__(self, lenght, high, frase, color):
+        super().__init__(lenght, high, frase, color)
+
+    # def view_game_over(self):
+    #     window = Window(400, 400, "Game over", BLUE)
+    #     over_font = pygame.font.SysFont('Verdana', 80)
+    #     text_surface = over_font.render('GAME OVER', False, YELLOW)
+    #     window.blit(end_image, (100, 80))
+    #     window.blit(text_surface, (0, 0))
+    #     return window
+
 
 
 class Game:
@@ -61,7 +78,11 @@ class Game:
 
     def cross_barrier(self):
         if not self.check_crash():
-            self.window = Window(400,400,"Game over", BLUE)
+            self.window = Window(400, 400, "Game over", BLUE)
+            over_font = pygame.font.SysFont('Verdana', 80)
+            text_surface = over_font.render('GAME OVER', False, YELLOW)
+            self.window.blit(end_image, (100, 80))
+            self.window.blit(text_surface, (0, 0))
 
 
     def check_crash(self):
