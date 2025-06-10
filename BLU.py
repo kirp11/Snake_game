@@ -27,7 +27,6 @@ class Window:
         self.screen = pygame.display.set_mode((self.lenght, self.high))
         pygame.display.set_caption(self.frase)
         self.screen.fill(self.color)
-        pygame.display.flip()
         return self.screen
 
     def get_frase(self):
@@ -39,10 +38,17 @@ class Window:
         self.frase = "Game over"
         self.color = BLUE
         self.view()
-        over_font = pygame.font.SysFont('Verdana', 40)
+        over_font = pygame.font.SysFont('Verdana', 50)
         text_surface = over_font.render('GAME OVER', False, YELLOW)
-        self.view().blit(end_image, (100, 80))
-        self.view().blit(text_surface, (0, 0))
+        over_font_result = pygame.font.SysFont('Verdana', 25)
+        text_surface_result = over_font_result.render('ВАШ РЕЗУЛЬТАТ:', False, YELLOW)
+        over_font_low = pygame.font.SysFont('Verdana', 25)
+        text_surface_low = over_font_low.render('НАЧАТЬ ЗАНОВО?', False, GREEN)
+        screen = self.view()
+        screen.blit(text_surface, (40, 0))
+        screen.blit(end_image, (100, 80))
+        screen.blit(text_surface_result, (70, 220))
+        screen.blit(text_surface_low, (80, 260))
 
 
 
@@ -199,7 +205,6 @@ class Barrier:
         width_w = self.screen.get_width()
         height_w = self.screen.get_height()
         frame = pygame.draw.rect(self.screen, (51,102,0), [0, 0, width_w, height_w], FAKTOR*3)
-        pygame.display.flip()
         return frame
 
     def field(self):
