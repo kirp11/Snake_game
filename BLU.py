@@ -21,55 +21,56 @@ class Window:
         self.high = high
         self.frase = frase
         self.color = color
+        self.screen = None
 
     def view(self):
-        screen = pygame.display.set_mode((self.lenght, self.high))
+        self.screen = pygame.display.set_mode((self.lenght, self.high))
         pygame.display.set_caption(self.frase)
-        screen.fill(self.color)
+        self.screen.fill(self.color)
         pygame.display.flip()
-        return screen
+        return self.screen
 
     def get_frase(self):
         return self.frase
+
+    def game_over(self):
+        self.lenght = 400
+        self.high = 400
+        self.frase = "Game over"
+        self.color = BLUE
+        self.view()
+        over_font = pygame.font.SysFont('Verdana', 40)
+        text_surface = over_font.render('GAME OVER', False, YELLOW)
+        self.view().blit(end_image, (100, 80))
+        self.view().blit(text_surface, (0, 0))
+
 
 
 class Game_window(Window):
     def __init__(self, lenght=600, high=600, frase= "Snake game", color=WGREEN):
         super().__init__(lenght, high, frase, color)
 
-class Gameover_window(Window):
-    def __init__(self, lenght=400, high=400, frase="Game over", color=BLUE):
-        super().__init__(lenght, high, frase, color)
-        # over_font = pygame.font.SysFont('Verdana', 30)
-        # text_surface = over_font.render('GAME OVER', False, YELLOW)
-        # blit(end_image, (100, 80))
-        # window.blit(text_surface, (0, 0))
-        # return window
 
-class Start_window(Window):
-    def __init__(self, lenght, high, frase, color):
-        super().__init__(lenght, high, frase, color)
-
-class Pause_window(Window):
-    def __init__(self, lenght, high, frase, color):
-        super().__init__(lenght, high, frase, color)
-
-class Settings_window(Window):
-    def __init__(self, lenght, high, frase, color):
-        super().__init__(lenght, high, frase, color)
-
-
-class Complexity_window(Window):
-    def __init__(self, lenght, high, frase, color):
-        super().__init__(lenght, high, frase, color)
-
-class Themes_window(Window):
-    def __init__(self, lenght, high, frase, color):
-        super().__init__(lenght, high, frase, color)
-
-
-
-
+# class Start_window(Window):
+#     def __init__(self, lenght, high, frase, color):
+#         super().__init__(lenght, high, frase, color)
+#
+# class Pause_window(Window):
+#     def __init__(self, lenght, high, frase, color):
+#         super().__init__(lenght, high, frase, color)
+#
+# class Settings_window(Window):
+#     def __init__(self, lenght, high, frase, color):
+#         super().__init__(lenght, high, frase, color)
+#
+#
+# class Complexity_window(Window):
+#     def __init__(self, lenght, high, frase, color):
+#         super().__init__(lenght, high, frase, color)
+#
+# class Themes_window(Window):
+#     def __init__(self, lenght, high, frase, color):
+#         super().__init__(lenght, high, frase, color)
 
 
 class Game:
@@ -88,7 +89,7 @@ class Game:
             self.cross_with_food()
             self.cross_barrier()
         else:
-            self.window.view()
+            self.window.game_over()
         pygame.display.flip()
 
 
@@ -103,12 +104,7 @@ class Game:
 
     def cross_barrier(self):
         if not self.check_crash():
-            self.window = Gameover_window()
-            over_font = pygame.font.SysFont('Verdana', 40)
-            text_surface = over_font.render('GAME OVER', False, YELLOW)
-            self.window.view().blit(end_image, (100, 80))
-            # self.window.view().blit(text_surface, (0, 0))
-
+            self.window.frase = "Game over"
 
     def check_crash(self):
         return self.barrier.frame().collidepoint(self.snake.head.x, self.snake.head.y)
