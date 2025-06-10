@@ -1,8 +1,13 @@
 from venv import create
 
 import pygame
+from pygame_widgets.button import Button
+
 import random
 pygame.init()
+
+
+
 
 FAKTOR = 5
 # Цвета (R, G, B)
@@ -16,7 +21,7 @@ YELLOW = (255, 255, 0)
 end_image = pygame.image.load('game_over.jpg')
 
 class Window:
-    def __init__(self, lenght, high, frase, color):
+    def __init__(self, lenght=None, high=None, frase=None, color=None):
         self.lenght = lenght
         self.high = high
         self.frase = frase
@@ -27,10 +32,16 @@ class Window:
         self.screen = pygame.display.set_mode((self.lenght, self.high))
         pygame.display.set_caption(self.frase)
         self.screen.fill(self.color)
-        return self.screen
 
     def get_frase(self):
         return self.frase
+
+    def game(self):
+        self.lenght = 600
+        self.high = 600
+        self.frase = "Snake game"
+        self.color = WGREEN
+        self.view()
 
     def game_over(self):
         self.lenght = 400
@@ -44,17 +55,15 @@ class Window:
         text_surface_result = over_font_result.render('ВАШ РЕЗУЛЬТАТ:', False, YELLOW)
         over_font_low = pygame.font.SysFont('Verdana', 25)
         text_surface_low = over_font_low.render('НАЧАТЬ ЗАНОВО?', False, GREEN)
-        screen = self.view()
-        screen.blit(text_surface, (40, 0))
-        screen.blit(end_image, (100, 80))
-        screen.blit(text_surface_result, (70, 220))
-        screen.blit(text_surface_low, (80, 260))
 
-
-
-class Game_window(Window):
-    def __init__(self, lenght=600, high=600, frase= "Snake game", color=WGREEN):
-        super().__init__(lenght, high, frase, color)
+        yes_button = Button(self.screen, 260, 320, 120, 50, text="ДА", onClick= None)
+        no_button = Button(self.screen, 30, 320, 120, 50, text="НЕТ", onClick= None)
+        yes_button.draw()
+        no_button.draw()
+        self.screen.blit(text_surface, (40, 0))
+        self.screen.blit(end_image, (100, 80))
+        self.screen.blit(text_surface_result, (80, 220))
+        self.screen.blit(text_surface_low, (80, 260))
 
 
 # class Start_window(Window):
@@ -81,14 +90,16 @@ class Game_window(Window):
 
 class Game:
     def __init__(self):
-        self.window = Game_window()
-        self.snake = Snake(self.window.view())
-        self.food = Food(self.window.view(), self.snake.body[0].x, self.snake.body[0].y)
-        self.barrier = Barrier(self.window.view())
+
+        self.window = Window()
+        self.window.game()
+        self.snake = Snake(self.window.screen)
+        self.food = Food(self.window.screen, self.snake.body[0].x, self.snake.body[0].y)
+        self.barrier = Barrier(self.window.screen)
 
     def control(self):
-        if self.window.get_frase() == "Snake game":
-            self.window.view()
+        if self.window.frase == "Snake game":
+            self.window.game()
             self.barrier.frame()
             self.snake.movie()
             self.food.create()
