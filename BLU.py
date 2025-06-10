@@ -2,6 +2,7 @@ from venv import create
 
 import pygame
 from pygame_widgets.button import Button
+import pygame_widgets
 
 import random
 pygame.init()
@@ -36,6 +37,9 @@ class Window:
     def get_frase(self):
         return self.frase
 
+    def set_frase(self, frase):
+        self.frase = frase
+
     def game(self):
         self.lenght = 600
         self.high = 600
@@ -56,14 +60,22 @@ class Window:
         over_font_low = pygame.font.SysFont('Verdana', 25)
         text_surface_low = over_font_low.render('НАЧАТЬ ЗАНОВО?', False, GREEN)
 
-        yes_button = Button(self.screen, 260, 320, 120, 50, text="ДА", onClick= None)
-        no_button = Button(self.screen, 30, 320, 120, 50, text="НЕТ", onClick= None)
+        yes_button = Button(self.screen, 260, 320, 120, 50, inactiveColour=(255, 0, 0),
+        pressedColour=(0, 255, 0), text="ДА", onClick= self.set_frase("Snake game"))
+        no_button = Button(self.screen, 30, 320, 120, 50, inactiveColour=(255, 0, 0),
+        pressedColour=(0, 255, 0), text="НЕТ", onClick= self.start_menu())
         yes_button.draw()
         no_button.draw()
         self.screen.blit(text_surface, (40, 0))
         self.screen.blit(end_image, (100, 80))
         self.screen.blit(text_surface_result, (80, 220))
         self.screen.blit(text_surface_low, (80, 260))
+        events = pygame.event.get()
+        pygame_widgets.update(events)
+        pygame.display.update()
+
+    def start_menu(self):
+        pass
 
 
 # class Start_window(Window):
@@ -98,15 +110,15 @@ class Game:
         self.barrier = Barrier(self.window.screen)
 
     def control(self):
-        if self.window.frase == "Snake game":
-            self.window.game()
-            self.barrier.frame()
-            self.snake.movie()
-            self.food.create()
-            self.cross_with_food()
-            self.cross_barrier()
-        else:
-            self.window.game_over()
+        # if self.window.frase == "Snake game":
+        self.window.game()
+        self.barrier.frame()
+        self.snake.movie()
+        self.food.create()
+        self.cross_with_food()
+        self.cross_barrier()
+        # else:
+        #     self.window.game_over()
         pygame.display.flip()
 
 
@@ -121,7 +133,7 @@ class Game:
 
     def cross_barrier(self):
         if not self.check_crash():
-            self.window.frase = "Game over"
+            self.window.game_over()
 
     def check_crash(self):
         return self.barrier.frame().collidepoint(self.snake.head.x, self.snake.head.y)
