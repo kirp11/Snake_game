@@ -56,14 +56,14 @@ class Window:
         over_font = pygame.font.SysFont('Verdana', 50)
         text_surface = over_font.render('GAME OVER', False, YELLOW)
         over_font_result = pygame.font.SysFont('Verdana', 25)
-        text_surface_result = over_font_result.render('ВАШ РЕЗУЛЬТАТ:', False, YELLOW)
-        over_font_low = pygame.font.SysFont('Verdana', 25)
+        text_surface_result = over_font_result.render("ВАШ РЕЗУЛЬТАТ: ", False, YELLOW)
+        over_font_low = pygame.font.SysFont('Verdana', 20)
         text_surface_low = over_font_low.render('НАЧАТЬ ЗАНОВО?', False, GREEN)
 
-        yes_button = Button(self.screen, 260, 320, 120, 50, inactiveColour=(255, 0, 0),
-        pressedColour=(0, 255, 0), text="ДА", onClick=lambda: self.game())
-        no_button = Button(self.screen, 30, 320, 120, 50, inactiveColour=(255, 0, 0),
-        pressedColour=(0, 255, 0), text="НЕТ", onClick=lambda:self.start_menu())
+        yes_button = Button(self.screen, 260, 320, 120, 50, inactiveColour=YELLOW,
+        pressedColour=(0, 255, 0), text="ДА", onClick=lambda: self.set_frase("Snake game"))
+        no_button = Button(self.screen, 30, 320, 120, 50, inactiveColour=YELLOW,
+        pressedColour=(0, 255, 0), text="НЕТ", onClick=lambda: self.start_menu())
         yes_button.draw()
         no_button.draw()
         self.screen.blit(text_surface, (40, 0))
@@ -72,8 +72,11 @@ class Window:
         self.screen.blit(text_surface_low, (80, 260))
         events = pygame.event.get()
         pygame_widgets.update(events)
+
         # yes_button.listen(events)
         # no_button.listen(events)
+
+
 
 
     def start_menu(self):
@@ -121,7 +124,8 @@ class Game:
             self.cross_barrier()
         elif self.window.frase == "Game over":
             self.window.game_over()
-        pygame.display.flip()
+
+        pygame.display.update()
 
 
     def condition_of_cross(self):
@@ -135,7 +139,7 @@ class Game:
 
     def cross_barrier(self):
         if not self.check_crash():
-            self.window.game_over()
+            self.window.set_frase("Game over")
 
     def check_crash(self):
         return self.barrier.frame().collidepoint(self.snake.head.x, self.snake.head.y)
