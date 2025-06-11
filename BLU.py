@@ -69,23 +69,49 @@ class Window:
         self.screen.blit(text_surface, (40, 0))
         self.screen.blit(end_image, (100, 80))
         self.screen.blit(text_surface_result, (80, 220))
-        self.screen.blit(text_surface_low, (80, 260))
+        self.screen.blit(text_surface_low, (100, 260))
         events = pygame.event.get()
         pygame_widgets.update(events)
+        # pygame.display.update()
 
         # yes_button.listen(events)
         # no_button.listen(events)
 
 
+    def menu(self):
+        self.lenght = 500
+        self.high = 500
+        self.frase = "Main menu"
+        self.color = WHITE
+        self.view()
+        over_font = pygame.font.SysFont('Verdana', 30)
+        text_surface = over_font.render('Выберите действие', False, GREEN)
 
+        game_button = Button(self.screen, 100, 80, 300, 80, inactiveColour=YELLOW,
+        pressedColour=(0, 255, 0), text="НАЧАТЬ ИГРУ", onClick=lambda: self.set_frase("Snake game"))
+        record_button = Button(self.screen, 100, 180, 300, 80, inactiveColour=YELLOW,
+        pressedColour=(0, 255, 0), text="ТАБЛИЦА РЕКОРДОВ",onClick=None)
+        setting_button = Button(self.screen, 100, 280, 300, 80, inactiveColour=YELLOW,
+        pressedColour=(0, 255, 0), text="НАСТРОЙКИ",onClick=None)
+        exit_button = Button(self.screen, 100, 380, 300, 80, inactiveColour=YELLOW,
+        pressedColour=(0, 255, 0), text="НАСТРОЙКИ",onClick=None)
+        game_button.draw()
+        record_button.draw()
+        setting_button.draw()
+        exit_button.draw()
+
+        self.screen.blit(text_surface, (100, 20))
+
+        events = pygame.event.get()
+        pygame_widgets.update(events)
+        # pygame.display.update()
+
+        # yes_button.listen(events)
+        # no_button.listen(events)
 
     def start_menu(self):
         pass
 
-
-# class Start_window(Window):
-#     def __init__(self, lenght, high, frase, color):
-#         super().__init__(lenght, high, frase, color)
 #
 # class Pause_window(Window):
 #     def __init__(self, lenght, high, frase, color):
@@ -109,7 +135,7 @@ class Game:
     def __init__(self):
 
         self.window = Window()
-        self.window.game()
+        self.window.menu()
         self.snake = Snake(self.window.screen)
         self.food = Food(self.window.screen, self.snake.body[0].x, self.snake.body[0].y)
         self.barrier = Barrier(self.window.screen)
@@ -124,6 +150,8 @@ class Game:
             self.cross_barrier()
         elif self.window.frase == "Game over":
             self.window.game_over()
+        elif self.window.frase == "Main menu":
+            self.window.menu()
 
         pygame.display.update()
 
