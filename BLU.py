@@ -61,9 +61,9 @@ class Window:
         text_surface_low = over_font_low.render('НАЧАТЬ ЗАНОВО?', False, GREEN)
 
         yes_button = Button(self.screen, 260, 320, 120, 50, inactiveColour=(255, 0, 0),
-        pressedColour=(0, 255, 0), text="ДА", onClick= self.set_frase("Snake game"))
+        pressedColour=(0, 255, 0), text="ДА", onClick=lambda: self.game())
         no_button = Button(self.screen, 30, 320, 120, 50, inactiveColour=(255, 0, 0),
-        pressedColour=(0, 255, 0), text="НЕТ", onClick= self.start_menu())
+        pressedColour=(0, 255, 0), text="НЕТ", onClick=lambda:self.start_menu())
         yes_button.draw()
         no_button.draw()
         self.screen.blit(text_surface, (40, 0))
@@ -72,7 +72,9 @@ class Window:
         self.screen.blit(text_surface_low, (80, 260))
         events = pygame.event.get()
         pygame_widgets.update(events)
-        pygame.display.update()
+        # yes_button.listen(events)
+        # no_button.listen(events)
+
 
     def start_menu(self):
         pass
@@ -110,15 +112,15 @@ class Game:
         self.barrier = Barrier(self.window.screen)
 
     def control(self):
-        # if self.window.frase == "Snake game":
-        self.window.game()
-        self.barrier.frame()
-        self.snake.movie()
-        self.food.create()
-        self.cross_with_food()
-        self.cross_barrier()
-        # else:
-        #     self.window.game_over()
+        if self.window.frase == "Snake game":
+            self.window.game()
+            self.barrier.frame()
+            self.snake.movie()
+            self.food.create()
+            self.cross_with_food()
+            self.cross_barrier()
+        elif self.window.frase == "Game over":
+            self.window.game_over()
         pygame.display.flip()
 
 
