@@ -63,7 +63,7 @@ class Window:
         yes_button = Button(self.screen, 260, 320, 120, 50, inactiveColour=YELLOW,
         pressedColour=(0, 255, 0), text="ДА", onClick=lambda: self.set_frase("Snake game"))
         no_button = Button(self.screen, 30, 320, 120, 50, inactiveColour=YELLOW,
-        pressedColour=(0, 255, 0), text="НЕТ", onClick=lambda: self.start_menu())
+        pressedColour=(0, 255, 0), text="НЕТ", onClick=lambda: self.set_frase("Main menu"))
         yes_button.draw()
         no_button.draw()
         self.screen.blit(text_surface, (40, 0))
@@ -94,7 +94,7 @@ class Window:
         setting_button = Button(self.screen, 100, 280, 300, 80, inactiveColour=YELLOW,
         pressedColour=(0, 255, 0), text="НАСТРОЙКИ",onClick=None)
         exit_button = Button(self.screen, 100, 380, 300, 80, inactiveColour=YELLOW,
-        pressedColour=(0, 255, 0), text="НАСТРОЙКИ",onClick=None)
+        pressedColour=(0, 255, 0), text="ВЫХОД",onClick=None)
         game_button.draw()
         record_button.draw()
         setting_button.draw()
@@ -167,7 +167,8 @@ class Game:
 
     def cross_barrier(self):
         if not self.check_crash():
-            self.window.set_frase("Game over")
+            self.snake = Snake(self.window.screen)
+            self.window.game_over()
 
     def check_crash(self):
         return self.barrier.frame().collidepoint(self.snake.head.x, self.snake.head.y)
