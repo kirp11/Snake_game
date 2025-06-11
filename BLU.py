@@ -153,7 +153,7 @@ class Game:
         elif self.window.frase == "Main menu":
             self.window.menu()
 
-        pygame.display.update()
+        # pygame.display.update()
 
 
     def condition_of_cross(self):
@@ -279,6 +279,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+    pygame.display.flip()
 
 pygame.quit()
 
