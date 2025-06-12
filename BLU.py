@@ -28,6 +28,7 @@ class Window:
         self.frase = frase
         self.color = color
         self.screen = None
+        self.paused = False
 
     def view(self):
         self.screen = pygame.display.set_mode((self.lenght, self.high))
@@ -60,9 +61,9 @@ class Window:
         over_font_low = pygame.font.SysFont('Verdana', 20)
         text_surface_low = over_font_low.render('НАЧАТЬ ЗАНОВО?', False, GREEN)
 
-        yes_button = Button(self.screen, 260, 320, 120, 50, inactiveColour=YELLOW,
+        yes_button = Button(self.screen, 260, 320, 120, 50, inactiveColour=YELLOW, radius=50,
         pressedColour=(0, 255, 0), text="ДА", onClick=lambda: self.set_frase("Snake game"))
-        no_button = Button(self.screen, 30, 320, 120, 50, inactiveColour=YELLOW,
+        no_button = Button(self.screen, 30, 320, 120, 50, inactiveColour=YELLOW, radius=50,
         pressedColour=(0, 255, 0), text="НЕТ", onClick=lambda: self.set_frase("Main menu"))
         yes_button.draw()
         no_button.draw()
@@ -72,10 +73,7 @@ class Window:
         self.screen.blit(text_surface_low, (100, 260))
         events = pygame.event.get()
         pygame_widgets.update(events)
-        # pygame.display.update()
 
-        # yes_button.listen(events)
-        # no_button.listen(events)
 
 
     def menu(self):
@@ -87,13 +85,13 @@ class Window:
         over_font = pygame.font.SysFont('Verdana', 30)
         text_surface = over_font.render('Выберите действие', False, GREEN)
 
-        game_button = Button(self.screen, 100, 80, 300, 80, inactiveColour=YELLOW,
+        game_button = Button(self.screen, 100, 80, 300, 80, inactiveColour=YELLOW, radius=40,
         pressedColour=(0, 255, 0), text="НАЧАТЬ ИГРУ", onClick=lambda: self.set_frase("Snake game"))
-        record_button = Button(self.screen, 100, 180, 300, 80, inactiveColour=YELLOW,
+        record_button = Button(self.screen, 100, 180, 300, 80, inactiveColour=YELLOW, radius=40,
         pressedColour=(0, 255, 0), text="ТАБЛИЦА РЕКОРДОВ",onClick=None)
-        setting_button = Button(self.screen, 100, 280, 300, 80, inactiveColour=YELLOW,
+        setting_button = Button(self.screen, 100, 280, 300, 80, inactiveColour=YELLOW, radius=40,
         pressedColour=(0, 255, 0), text="НАСТРОЙКИ",onClick=None)
-        exit_button = Button(self.screen, 100, 380, 300, 80, inactiveColour=YELLOW,
+        exit_button = Button(self.screen, 100, 380, 300, 80, inactiveColour=YELLOW, radius=40,
         pressedColour=(0, 255, 0), text="ВЫХОД",onClick=None)
         game_button.draw()
         record_button.draw()
@@ -104,10 +102,7 @@ class Window:
 
         events = pygame.event.get()
         pygame_widgets.update(events)
-        # pygame.display.update()
 
-        # yes_button.listen(events)
-        # no_button.listen(events)
 
     def pause(self):
         self.lenght = 400
@@ -118,17 +113,29 @@ class Window:
 
         question = pygame.font.SysFont('Verdana', 20)
         text_surface_low = question.render('ВЫЙТИ ИЗ ИГРЫ?', False, YELLOW)
-
-        output_button = Button(self.screen, 210, 120, 160, 30, inactiveColour=YELLOW,
+        output_button = Button(self.screen, 210, 120, 160, 30, inactiveColour=YELLOW, radius=40,
         pressedColour=(0, 255, 0), text="ВЫЙТИ В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
-        input_button = Button(self.screen, 20, 120, 160, 30, inactiveColour=YELLOW,
+        input_button = Button(self.screen, 20, 120, 160, 30, inactiveColour=YELLOW, radius=40,
         pressedColour=(0, 255, 0), text="ВЕРНУТЬСЯ В ИГРУ", onClick=lambda: self.set_frase("Snake game"))
+        # output_button = Button(self.screen, 210, 120, 160, 30, inactiveColour=YELLOW, radius=40,
+        # pressedColour=(0, 255, 0), text="ВЫЙТИ В МЕНЮ", onClick=lambda: self.chose_for_pause("ВЫЙТИ В МЕНЮ"))
+        # input_button = Button(self.screen, 20, 120, 160, 30, inactiveColour=YELLOW, radius=40,
+        # pressedColour=(0, 255, 0), text="ВЕРНУТЬСЯ В ИГРУ", onClick=lambda: self.chose_for_pause("ВЕРНУТЬСЯ В ИГРУ"))
         output_button.draw()
         input_button.draw()
 
         self.screen.blit(text_surface_low, (110, 50))
         events = pygame.event.get()
         pygame_widgets.update(events)
+
+    # def chose_for_pause(self, button_text):
+    #     self.paused = False
+    #     if button_text == "ВЫЙТИ В МЕНЮ":
+    #         self.set_frase("Main menu")
+    #     else:
+    #         self.set_frase("Snake game")
+
+
         # pygame.display.flip()
 
 
@@ -163,7 +170,13 @@ class Game:
         self.food = Food(self.window.screen, self.snake.body[0].x, self.snake.body[0].y)
         self.barrier = Barrier(self.window.screen)
 
+
     def control(self):
+        if pygame.key.get_pressed()[pygame.K_ESCAPE]:
+            self.window.pause()
+            # self.window.paused = True
+            # pygame.display.flip()
+        # if not self.window.paused:
         if self.window.frase == "Snake game":
             self.window.game()
             self.barrier.frame()
@@ -175,8 +188,6 @@ class Game:
             self.window.game_over()
         elif self.window.frase == "Main menu":
             self.window.menu()
-        elif self.window.frase == "Pause menu":
-            self.window.pause()
 
 
         # pygame.display.update()
@@ -300,20 +311,15 @@ paused = False
 game = Game()
 
 while running:
+    pygame.time.delay(60)
+    game.control()
 
     for event in pygame.event.get():
-        if pygame.key.get_pressed()[pygame.K_ESCAPE]:
-            paused = True
-            game.window.pause()
-            pygame.display.flip()
-
         if event.type == pygame.QUIT:
             running = False
-    if not paused:
-        pygame.time.delay(60)
-        game.control()
+
     pygame.display.flip()
-    
+
 pygame.quit()
 
 
