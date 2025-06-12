@@ -109,9 +109,32 @@ class Window:
         # yes_button.listen(events)
         # no_button.listen(events)
 
+    def pause(self):
+        self.lenght = 400
+        self.high = 200
+        self.frase = "Pause menu"
+        self.color = BLUE
+        self.view()
+
+        question = pygame.font.SysFont('Verdana', 20)
+        text_surface_low = question.render('ВЫЙТИ ИЗ ИГРЫ?', False, YELLOW)
+
+        output_button = Button(self.screen, 210, 120, 160, 30, inactiveColour=YELLOW,
+        pressedColour=(0, 255, 0), text="ВЫЙТИ В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
+        input_button = Button(self.screen, 20, 120, 160, 30, inactiveColour=YELLOW,
+        pressedColour=(0, 255, 0), text="ВЕРНУТЬСЯ В ИГРУ", onClick=lambda: self.set_frase("Snake game"))
+        output_button.draw()
+        input_button.draw()
+
+        self.screen.blit(text_surface_low, (110, 50))
+        events = pygame.event.get()
+        pygame_widgets.update(events)
+        # pygame.display.flip()
+
+
+
     def start_menu(self):
         pass
-
 #
 # class Pause_window(Window):
 #     def __init__(self, lenght, high, frase, color):
@@ -152,6 +175,9 @@ class Game:
             self.window.game_over()
         elif self.window.frase == "Main menu":
             self.window.menu()
+        elif self.window.frase == "Pause menu":
+            self.window.pause()
+
 
         # pygame.display.update()
 
@@ -270,17 +296,24 @@ class Barrier:
 
 
 running = True
+paused = False
 game = Game()
 
 while running:
-    pygame.time.delay(60)
-    game.control()
 
     for event in pygame.event.get():
+        if pygame.key.get_pressed()[pygame.K_ESCAPE]:
+            paused = True
+            game.window.pause()
+            pygame.display.flip()
+
         if event.type == pygame.QUIT:
             running = False
+    if not paused:
+        pygame.time.delay(60)
+        game.control()
     pygame.display.flip()
-
+    
 pygame.quit()
 
 
