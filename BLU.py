@@ -128,25 +128,10 @@ class Window:
         events = pygame.event.get()
         pygame_widgets.update(events)
 
-    # def chose_for_pause(self, button_text):
-    #     self.paused = False
-    #     if button_text == "ВЫЙТИ В МЕНЮ":
-    #         self.set_frase("Main menu")
-    #     else:
-    #         self.set_frase("Snake game")
-
-
-        # pygame.display.flip()
-
-
 
     def start_menu(self):
         pass
-#
-# class Pause_window(Window):
-#     def __init__(self, lenght, high, frase, color):
-#         super().__init__(lenght, high, frase, color)
-#
+
 # class Settings_window(Window):
 #     def __init__(self, lenght, high, frase, color):
 #         super().__init__(lenght, high, frase, color)
@@ -189,7 +174,6 @@ class Game:
             self.window.pause()
 
 
-        # pygame.display.update()
     def check_on_pause(self):
         if pygame.key.get_pressed()[pygame.K_ESCAPE]:
             self.window.set_frase("Pause menu")
