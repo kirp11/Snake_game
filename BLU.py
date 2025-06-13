@@ -2,7 +2,7 @@ from venv import create
 
 import pygame
 pygame.init()
-from pygame_widgets.button import Button
+from pygame_widgets.button import Button, ButtonArray
 import pygame_widgets
 
 import random
@@ -89,31 +89,35 @@ class Window:
         theme_font = pygame.font.SysFont('Verdana', 25)
         theme_text_surface = theme_font.render('Выберите тему оформления:', False, BLACK)
 
-        easy_comlex_button = Button(self.screen, 30, 60, 170, 50, inactiveColour=WHITE, radius=0,
-        pressedColour=WGREEN, text="НОВИЧОК", onClick=None)
-        medium_comlex_button = Button(self.screen, 220, 60, 170, 50, inactiveColour=WHITE, radius=0,
-        pressedColour=WGREEN, text="ЛЮБИТЕЛЬ", onClick=None)
-        hard_comlex_button = Button(self.screen, 410, 60, 170, 50, inactiveColour=WHITE, radius=0,
-        pressedColour=WGREEN, text="ПРОФИ", onClick=None)
+        comlex_button = ButtonArray(self.screen, 40, 60, 500, 80, (3, 1),
+        border=20,  texts=('НОВИЧОК', 'ЛЮБИТЕЛЬ', 'ПРОФИ'),onClicks=(None, None, None), color=WHITE)
 
 
-        winter_theme_button = Button(self.screen, 30, 200, 170, 50, inactiveColour=WHITE, radius=0,
-        pressedColour=WGREEN, text="WINTER", onClick=None)
-        summer_comlex_button = Button(self.screen, 220, 200, 170, 50, inactiveColour=WHITE, radius=0,
-        pressedColour=WGREEN, text="SUMMER", onClick=None)
-        voice_theme_button = Button(self.screen, 410, 200, 170, 50, inactiveColour=WHITE, radius=0,
-        pressedColour=WGREEN, text="Voice", onClick=None)
+        #     Button(self.screen, 30, 60, 170, 50, inactiveColour=WHITE, radius=0,
+        # pressedColour=WGREEN, text="НОВИЧОК", onClick=None))
+        # medium_comlex_button = Button(self.screen, 220, 60, 170, 50, inactiveColour=WHITE, radius=0,
+        # pressedColour=WGREEN, text="ЛЮБИТЕЛЬ", onClick=None)
+        # hard_comlex_button = Button(self.screen, 410, 60, 170, 50, inactiveColour=WHITE, radius=0,
+        # pressedColour=WGREEN, text="ПРОФИ", onClick=None)
+
+
+        # winter_theme_button = Button(self.screen, 30, 200, 170, 50, inactiveColour=WHITE, radius=0,
+        # pressedColour=WGREEN, text="WINTER", onClick=None))
+        # summer_comlex_button = Button(self.screen, 220, 200, 170, 50, inactiveColour=WHITE, radius=0,
+        # pressedColour=WGREEN, text="SUMMER", onClick=None)
+        # voice_theme_button = Button(self.screen, 410, 200, 170, 50, inactiveColour=WHITE, radius=0,
+        # pressedColour=WGREEN, text="Voice", onClick=None)
 
         to_menu_button = Button(self.screen, 240, 290, 130, 50, inactiveColour=GREEN, radius=30,
         pressedColour=WGREEN, text="В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
 
-        easy_comlex_button.draw()
-        medium_comlex_button.draw()
-        hard_comlex_button.draw()
+        comlex_button.draw()
+        # medium_comlex_button.draw()
+        # hard_comlex_button.draw()
         to_menu_button.draw()
-        winter_theme_button.draw()
-        summer_comlex_button.draw()
-        voice_theme_button.draw()
+        # winter_theme_button.draw()
+        # summer_comlex_button.draw()
+        # voice_theme_button.draw()
 
 
         self.screen.blit(comlex_text_surface, (100, 10))
