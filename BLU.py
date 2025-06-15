@@ -38,6 +38,10 @@ food = pygame.image.load('food.jpg')
 food.set_colorkey(WHITE)
 food_image = pygame.transform.scale(food, (25, 25))
 
+bariere = pygame.image.load('bariere.jpg')
+bariere.set_colorkey(WHITE)
+bariere_image = pygame.transform.scale(bariere, (25, 25))
+
 class Window:
     def __init__(self, lenght=None, high=None, frase=None, color=None):
         self.lenght = lenght
@@ -467,6 +471,8 @@ class Barrier:
             rect_position = [self.lst_barier_x[i], self.lst_barier_y[i], 25, 25]
             barrier = pygame.draw.rect(self.screen, BLACK, rect_position)
             self.barrier_list.append(barrier)
+            # barrier.blit(bariere_image, self.lst_barier_x[i], self.lst_barier_y[i])
+
 
 
 
