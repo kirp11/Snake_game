@@ -43,7 +43,7 @@ class Window:
 
     def game(self):
         self.lenght = 600
-        self.high = 600
+        self.high = 700
         self.frase = "Snake game"
         self.color = WGREEN
         self.view()
@@ -89,46 +89,51 @@ class Window:
         theme_font = pygame.font.SysFont('Verdana', 25)
         theme_text_surface = theme_font.render('Выберите тему оформления:', False, BLACK)
 
-        comlex_button = ButtonArray(self.screen, 40, 60, 500, 80, (3, 1),
-        border=20,  texts=('НОВИЧОК', 'ЛЮБИТЕЛЬ', 'ПРОФИ'),onClicks=(None, None, None), color=WHITE)
+        choose_font = pygame.font.SysFont('Verdana', 25)
+        choose_text_surface = theme_font.render('Выбран вариант игры:', False, BLACK)
+
+        # comlex_button = ButtonArray(self.screen, 40, 60, 500, 80, (3, 1),
+        # border=20,  texts=('НОВИЧОК', 'ЛЮБИТЕЛЬ', 'ПРОФИ'),onClicks=(None, None, None), color=WHITE)
 
 
-        #     Button(self.screen, 30, 60, 170, 50, inactiveColour=WHITE, radius=0,
-        # pressedColour=WGREEN, text="НОВИЧОК", onClick=None))
-        # medium_comlex_button = Button(self.screen, 220, 60, 170, 50, inactiveColour=WHITE, radius=0,
-        # pressedColour=WGREEN, text="ЛЮБИТЕЛЬ", onClick=None)
-        # hard_comlex_button = Button(self.screen, 410, 60, 170, 50, inactiveColour=WHITE, radius=0,
-        # pressedColour=WGREEN, text="ПРОФИ", onClick=None)
+        easy_comlex_button = Button(self.screen, 30, 60, 170, 50, inactiveColour=WHITE, radius=0,
+        pressedColour=WGREEN, text="НОВИЧОК", onClick=None)
+        medium_comlex_button = Button(self.screen, 220, 60, 170, 50, inactiveColour=WHITE, radius=0,
+        pressedColour=WGREEN, text="ЛЮБИТЕЛЬ", onClick=None)
+        hard_comlex_button = Button(self.screen, 410, 60, 170, 50, inactiveColour=WHITE, radius=0,
+        pressedColour=WGREEN, text="ПРОФИ", onClick=None)
 
 
-        # winter_theme_button = Button(self.screen, 30, 200, 170, 50, inactiveColour=WHITE, radius=0,
-        # pressedColour=WGREEN, text="WINTER", onClick=None))
-        # summer_comlex_button = Button(self.screen, 220, 200, 170, 50, inactiveColour=WHITE, radius=0,
-        # pressedColour=WGREEN, text="SUMMER", onClick=None)
-        # voice_theme_button = Button(self.screen, 410, 200, 170, 50, inactiveColour=WHITE, radius=0,
-        # pressedColour=WGREEN, text="Voice", onClick=None)
+        winter_theme_button = Button(self.screen, 30, 180, 170, 50, inactiveColour=WHITE, radius=0,
+        pressedColour=WGREEN, text="WINTER", onClick=None)
+        summer_comlex_button = Button(self.screen, 220, 180, 170, 50, inactiveColour=WHITE, radius=0,
+        pressedColour=WGREEN, text="SUMMER", onClick=None)
+        voice_theme_button = Button(self.screen, 410, 180, 170, 50, inactiveColour=WHITE, radius=0,
+        pressedColour=WGREEN, text="Voice", onClick=None)
 
-        to_menu_button = Button(self.screen, 240, 290, 130, 50, inactiveColour=GREEN, radius=30,
+        to_menu_button = Button(self.screen, 460, 290, 130, 50, inactiveColour=GREEN, radius=30,
         pressedColour=WGREEN, text="В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
 
-        comlex_button.draw()
-        # medium_comlex_button.draw()
-        # hard_comlex_button.draw()
+        easy_comlex_button.draw()
+        medium_comlex_button.draw()
+        hard_comlex_button.draw()
         to_menu_button.draw()
-        # winter_theme_button.draw()
-        # summer_comlex_button.draw()
-        # voice_theme_button.draw()
+        winter_theme_button.draw()
+        summer_comlex_button.draw()
+        voice_theme_button.draw()
 
 
         self.screen.blit(comlex_text_surface, (100, 10))
 
-        self.screen.blit(theme_text_surface, (100, 150))
+        self.screen.blit(theme_text_surface, (100, 130))
+
+        self.screen.blit(choose_text_surface, (100, 250))
 
         events = pygame.event.get()
         pygame_widgets.update(events)
 
 
-    def game_over(self):
+    def game_over(self, count):
         self.lenght = 400
         self.high = 400
         self.frase = "Game over"
@@ -137,7 +142,7 @@ class Window:
         over_font = pygame.font.SysFont('Verdana', 50)
         text_surface = over_font.render('GAME OVER', False, YELLOW)
         over_font_result = pygame.font.SysFont('Verdana', 25)
-        text_surface_result = over_font_result.render("ВАШ РЕЗУЛЬТАТ: ", False, YELLOW)
+        text_surface_result = over_font_result.render("ВАШ РЕЗУЛЬТАТ: "+str(count), False, YELLOW)
         over_font_low = pygame.font.SysFont('Verdana', 20)
         text_surface_low = over_font_low.render('НАЧАТЬ ЗАНОВО?', False, GREEN)
 
@@ -185,11 +190,14 @@ class Game:
         self.snake = Snake(self.window.screen)
         self.food = Food(self.window.screen, self.snake.body[0].x, self.snake.body[0].y)
         self.barrier = Barrier(self.window.screen)
+        self.count = 0
+        self.rezult = 0
 
 
     def control(self):
         if self.window.frase == "Snake game":
             self.window.game()
+            self.counter()
             self.barrier.frame()
             self.snake.movie()
             self.food.create()
@@ -197,7 +205,7 @@ class Game:
             self.cross_barrier()
             self.check_on_pause()
         elif self.window.frase == "Game over":
-            self.window.game_over()
+            self.window.game_over(self.rezult)
         elif self.window.frase == "Main menu":
             self.window.menu()
         elif self.window.frase == "Pause menu":
@@ -216,16 +224,25 @@ class Game:
     def condition_of_cross(self):
         return (abs(self.food.food_x - self.snake.body[0].x) <= 2*FAKTOR and abs(self.food.food_y - self.snake.body[0].y)<= 2*FAKTOR)
 
+    def counter(self):
+        surface = pygame.display.get_surface()
+        font_count = pygame.font.SysFont('Verdana', 30)
+        text_count = font_count.render("Ваш счет: "+str(self.count), True, BLUE)
+        surface.blit(text_count,(10,10))
     def cross_with_food(self):
         surface = pygame.display.get_surface()
         if self.condition_of_cross():
             self.snake.add_chain()
+            self.count += 1
             self.food = Food(surface, self.snake.head.x, self.snake.head.y)
 
     def cross_barrier(self):
         if not self.check_crash():
             self.snake = Snake(self.window.screen)
-            self.window.game_over()
+            self.rezult = self.count
+            self.window.set_frase("Game over")
+            self.count = 0
+
 
     def check_crash(self):
         return self.barrier.frame().collidepoint(self.snake.head.x, self.snake.head.y)
@@ -308,7 +325,7 @@ class Food:
         height_w = surface.get_height()
         while self.food_x == self.stop_x and self.food_y == self.stop_y:
             self.food_x = random.randint(20,(width_w-20))
-            self.food_y = random.randint(20,(height_w-20))
+            self.food_y = random.randint(70,(height_w-20))
         pygame.draw.circle(self.screen, (0, 0, 128), (self.food_x, self.food_y), FAKTOR*2)
 
 class Barrier:
@@ -318,8 +335,8 @@ class Barrier:
     def frame(self):
 
         width_w = self.screen.get_width()
-        height_w = self.screen.get_height()
-        frame = pygame.draw.rect(self.screen, (51,102,0), [0, 0, width_w, height_w], FAKTOR*3)
+        height_w = self.screen.get_height()-50
+        frame = pygame.draw.rect(self.screen, (51,102,0), [0, 50, width_w, height_w], FAKTOR*3)
         return frame
 
     def field(self):
@@ -340,82 +357,4 @@ while running:
 
 
 pygame.quit()
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-class RadioButton(pygame.sprite.Sprite):
-    def __init__(self, x, y, w, h, font, text):
-        super().__init__()
-        text_surf = font.render(text, True, (0, 0, 0))
-        self.button_image = pygame.Surface((w, h))
-        self.button_image.fill((96, 96, 96))
-        self.button_image.blit(text_surf, text_surf.get_rect(center=(w // 2, h // 2)))
-        self.hover_image = pygame.Surface((w, h))
-        self.hover_image.fill((96, 96, 96))
-        self.hover_image.blit(text_surf, text_surf.get_rect(center=(w // 2, h // 2)))
-        pygame.draw.rect(self.hover_image, (96, 196, 96), self.hover_image.get_rect(), 3)
-        self.clicked_image = pygame.Surface((w, h))
-        self.clicked_image.fill((96, 196, 96))
-        self.clicked_image.blit(text_surf, text_surf.get_rect(center=(w // 2, h // 2)))
-        self.image = self.button_image
-        self.rect = pygame.Rect(x, y, w, h)
-        self.clicked = False
-        self.buttons = None
-
-    def setRadioButtons(self, buttons):
-        self.buttons = buttons
-
-    def update(self, event_list):
-        hover = self.rect.collidepoint(pygame.mouse.get_pos())
-        for event in event_list:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if hover and event.button == 1:
-                    for rb in self.buttons:
-                        rb.clicked = False
-                    self.clicked = True
-
-        self.image = self.button_image
-        if self.clicked:
-            self.image = self.clicked_image
-        elif hover:
-            self.image = self.hover_image
-
-
-pygame.init()
-window = pygame.display.set_mode((300, 300))
-clock = pygame.time.Clock()
-font50 = pygame.font.SysFont(None, 50)
-
-radioButtons = [
-    RadioButton(50, 40, 200, 60, font50, "option 1"),
-    RadioButton(50, 120, 200, 60, font50, "option 2"),
-    RadioButton(50, 200, 200, 60, font50, "option 3")
-]
-for rb in radioButtons:
-    rb.setRadioButtons(radioButtons)
-radioButtons[0].clicked = True
-
-group = pygame.sprite.Group(radioButtons)
-
-run = True
-while run:
-    clock.tick(60)
-    event_list = pygame.event.get()
-    for event in event_list:
-        if event.type == pygame.QUIT:
-            run = False
-
-    group.update(event_list)
-
-    window.fill('black')
-    group.draw(window)
-    pygame.display.flip()
-
-pygame.quit()
-exit()
-
 
