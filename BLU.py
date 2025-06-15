@@ -287,6 +287,7 @@ class Game:
                 self.window.game()
                 self.counter()
                 self.barrier.frame()
+                self.barrier.field()
                 self.snake.movie()
                 self.food.create()
                 self.cross_with_food()
@@ -338,6 +339,8 @@ class Game:
             self.rezult = self.count
             self.window.set_frase("Game over")
             self.count = 0
+            self.barrier.lst_barier_x = []
+            self.barrier.lst_barier_y = []
 
 
     def check_crash(self):
@@ -429,6 +432,8 @@ class Food:
 class Barrier:
     def __init__(self, screen):
         self.screen = screen
+        self.lst_barier_x = []
+        self.lst_barier_y = []
 
     def frame(self):
 
@@ -438,7 +443,22 @@ class Barrier:
         return frame
 
     def field(self):
-        pass
+        surface = pygame.display.get_surface()
+        width_w = surface.get_width()
+        height_w = surface.get_height()
+        count_barriers = 6
+        n = 0
+        while n!= count_barriers:
+            barrier_x = random.randint(20, (width_w - 20))
+            self.lst_barier_x.append(barrier_x)
+            barrier_y = random.randint(70, (height_w - 20))
+            self.lst_barier_y.append(barrier_y)
+            n +=1
+        for i in range(count_barriers):
+            rect_position = [self.lst_barier_x[i], self.lst_barier_y[i], 25, 25]
+            pygame.draw.rect(self.screen, BLACK, rect_position)
+
+
 
 
 running = True
