@@ -7,7 +7,12 @@ import pygame_widgets
 
 import random
 
-
+text_easy_level = "Идеальный выбор для начинающих"
+text_medium_level = "Скорость выше + препятствия на поле"
+text_hard_level = "Змейка сталкивается с собой"
+text_winter_theme = "Тема холодной зимы"
+text_summer_theme = "Тема жаркого лета"
+text_voice_theme = "Озвучка голосом"
 
 
 
@@ -84,6 +89,27 @@ class Window:
     def set_theme(self, theme):
         self.theme = theme
 
+    def display_tooltip(self):
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        text_dir = "Наведите на кнопку для описания"
+        if 30 <= mouse_x <= 200 and 60 <= mouse_y <= 110:
+            text_dir = text_easy_level
+        elif 220 <= mouse_x <= 390 and 60 <= mouse_y <= 110:
+            text_dir = text_medium_level
+        elif 410 <= mouse_x <= 580 and 60 <= mouse_y <= 110:
+            text_dir = text_hard_level
+        elif 30 <= mouse_x <= 200 and 180 <= mouse_y <= 230:
+            text_dir = text_winter_theme
+        elif 220 <= mouse_x <= 390 and 180 <= mouse_y <= 230:
+            text_dir = text_summer_theme
+        elif 410 <= mouse_x <= 580 and 180 <= mouse_y <= 230:
+            text_dir = text_voice_theme
+
+        font_mouse = pygame.font.SysFont(None, 20)
+        text_mouse = font_mouse.render(text_dir, False, RED)
+
+        self.screen.blit(text_mouse, (mouse_x-110, mouse_y+30))
+
     def setting_menu(self):
         self.lenght = 600
         self.high = 350
@@ -151,6 +177,9 @@ class Window:
         self.screen.blit(choose_text_theme, (260, 280))
 
         self.screen.blit(choose_theme, (230, 300))
+
+
+        self.display_tooltip()
 
         events = pygame.event.get()
         pygame_widgets.update(events)
