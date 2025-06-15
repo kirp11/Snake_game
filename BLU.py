@@ -16,6 +16,7 @@ text_voice_theme = "Озвучка голосом"
 
 
 
+
 FAKTOR = 5
 # Цвета (R, G, B)
 BLACK = (0, 0, 0)
@@ -24,8 +25,18 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 WGREEN = (153,255,153)
+BGREEN = (0,69,36)
 YELLOW = (255, 255, 0)
+
 end_image = pygame.image.load('game_over.jpg')
+# snake_head_image = pygame.image.load('snake_head.png')
+snake_head = pygame.image.load('snake_head.png')
+snake_head.set_colorkey((246,246,246))
+snake_head_image = pygame.transform.scale(snake_head, (20, 20))
+
+food = pygame.image.load('food.jpg')
+food.set_colorkey(WHITE)
+food_image = pygame.transform.scale(food, (25, 25))
 
 class Window:
     def __init__(self, lenght=None, high=None, frase=None, color=None):
@@ -317,12 +328,13 @@ class Snake:
 
     def movie(self):
         self.handler_direction_head()
-        pygame.draw.circle(self.screen, BLUE, (self.body[0].x, self.body[0].y), FAKTOR*2)
+        # pygame.draw.circle(self.screen, BLUE, (self.body[0].x, self.body[0].y), FAKTOR*2)
+        self.screen.blit(snake_head_image, dest = (self.body[0].x-10, self.body[0].y-10))
         for i in range(1, len(self.body)):
             self.body[i].x = self.way_head[i*4][0]
             self.body[i].y = self.way_head[i*4][1]
 
-            pygame.draw.circle(self.screen, BLUE, (self.body[i].x, self.body[i].y), FAKTOR*2)
+            pygame.draw.circle(self.screen, BGREEN, (self.body[i].x, self.body[i].y), FAKTOR*2)
 
 
     def handler_direction_head(self):
@@ -378,7 +390,8 @@ class Food:
         while self.food_x == self.stop_x and self.food_y == self.stop_y:
             self.food_x = random.randint(20,(width_w-20))
             self.food_y = random.randint(70,(height_w-20))
-        pygame.draw.circle(self.screen, (0, 0, 128), (self.food_x, self.food_y), FAKTOR*2)
+        # pygame.draw.circle(self.screen, (0, 0, 128), (self.food_x, self.food_y), FAKTOR*2)
+        self.screen.blit(food_image, dest=(self.food_x-10, self.food_y-10))
 
 class Barrier:
     def __init__(self, screen):
