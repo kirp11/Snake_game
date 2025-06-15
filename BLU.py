@@ -29,6 +29,8 @@ class Window:
         self.frase = frase
         self.color = color
         self.screen = None
+        self.level = "Не выбрано"
+        self.theme = "Не выбрано"
 
     def view(self):
         self.screen = pygame.display.set_mode((self.lenght, self.high))
@@ -76,6 +78,11 @@ class Window:
         events = pygame.event.get()
         pygame_widgets.update(events)
 
+    def set_level(self, level):
+        self.level = level
+
+    def set_theme(self, theme):
+        self.theme = theme
 
     def setting_menu(self):
         self.lenght = 600
@@ -83,33 +90,38 @@ class Window:
         self.frase = "Settings menu"
         self.color = YELLOW
         self.view()
+
         comlex_font = pygame.font.SysFont('Verdana', 25)
         comlex_text_surface = comlex_font.render('Выберите уровень сложности:', False, BLACK)
 
         theme_font = pygame.font.SysFont('Verdana', 25)
         theme_text_surface = theme_font.render('Выберите тему оформления:', False, BLACK)
 
-        choose_font = pygame.font.SysFont('Verdana', 25)
+
         choose_text_surface = theme_font.render('Выбран вариант игры:', False, BLACK)
+        choose_font_comlex = pygame.font.SysFont('Verdana', 15)
+        choose_text_comlex = choose_font_comlex.render('Сложность', False, BLACK)
+        choose_font_theme = pygame.font.SysFont('Verdana', 15)
+        choose_text_theme = choose_font_theme.render('Тема', False, BLACK)
 
         # comlex_button = ButtonArray(self.screen, 40, 60, 500, 80, (3, 1),
         # border=20,  texts=('НОВИЧОК', 'ЛЮБИТЕЛЬ', 'ПРОФИ'),onClicks=(None, None, None), color=WHITE)
 
 
         easy_comlex_button = Button(self.screen, 30, 60, 170, 50, inactiveColour=WHITE, radius=0,
-        pressedColour=WGREEN, text="НОВИЧОК", onClick=None)
+        pressedColour=WGREEN, text="НОВИЧОК", onClick=lambda: self.set_level("НОВИЧОК"))
         medium_comlex_button = Button(self.screen, 220, 60, 170, 50, inactiveColour=WHITE, radius=0,
-        pressedColour=WGREEN, text="ЛЮБИТЕЛЬ", onClick=None)
+        pressedColour=WGREEN, text="ЛЮБИТЕЛЬ", onClick=lambda: self.set_level("ЛЮБИТЕЛЬ"))
         hard_comlex_button = Button(self.screen, 410, 60, 170, 50, inactiveColour=WHITE, radius=0,
-        pressedColour=WGREEN, text="ПРОФИ", onClick=None)
+        pressedColour=WGREEN, text="ПРОФИ", onClick=lambda: self.set_level("ПРОФИ"))
 
 
         winter_theme_button = Button(self.screen, 30, 180, 170, 50, inactiveColour=WHITE, radius=0,
-        pressedColour=WGREEN, text="WINTER", onClick=None)
+        pressedColour=WGREEN, text="WINTER", onClick=lambda: self.set_theme("WINTER"))
         summer_comlex_button = Button(self.screen, 220, 180, 170, 50, inactiveColour=WHITE, radius=0,
-        pressedColour=WGREEN, text="SUMMER", onClick=None)
+        pressedColour=WGREEN, text="SUMMER", onClick=lambda: self.set_theme("SUMMER"))
         voice_theme_button = Button(self.screen, 410, 180, 170, 50, inactiveColour=WHITE, radius=0,
-        pressedColour=WGREEN, text="Voice", onClick=None)
+        pressedColour=WGREEN, text="Voice", onClick=lambda: self.set_theme("Voice"))
 
         to_menu_button = Button(self.screen, 460, 290, 130, 50, inactiveColour=GREEN, radius=30,
         pressedColour=WGREEN, text="В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
@@ -122,12 +134,23 @@ class Window:
         summer_comlex_button.draw()
         voice_theme_button.draw()
 
+        choose_level = comlex_font.render(self.level, False, RED)
+        choose_theme = comlex_font.render(self.theme, False, RED)
+
 
         self.screen.blit(comlex_text_surface, (100, 10))
 
         self.screen.blit(theme_text_surface, (100, 130))
 
         self.screen.blit(choose_text_surface, (100, 250))
+
+        self.screen.blit(choose_text_comlex, (70, 280))
+
+        self.screen.blit(choose_level, (40, 300))
+
+        self.screen.blit(choose_text_theme, (260, 280))
+
+        self.screen.blit(choose_theme, (230, 300))
 
         events = pygame.event.get()
         pygame_widgets.update(events)
