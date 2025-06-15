@@ -245,6 +245,30 @@ class Window:
         events = pygame.event.get()
         pygame_widgets.update(events)
 
+
+    def warning(self):
+        self.lenght = 400
+        self.high = 200
+        self.frase = "Warning window"
+        self.color = BLUE
+        self.view()
+
+        warning_font_text = pygame.font.SysFont('Verdana', 15)
+        warning_text = warning_font_text.render('ВЫБЕРИТЕ УРОВЕНЬ СЛОЖНОСТИ И / ИЛИ ТЕМУ', False, YELLOW)
+        output_button = Button(self.screen, 210, 120, 160, 30, inactiveColour=YELLOW, radius=40,
+        pressedColour=RED, hoverColour = RED, text="НАЗАД В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
+        input_button = Button(self.screen, 20, 120, 160, 30, inactiveColour=YELLOW, radius=40,
+        pressedColour=GREEN, hoverColour = GREEN, text="К НАСТРОЙКАМ", onClick=lambda: self.set_frase("Settings menu"))
+
+        output_button.draw()
+        input_button.draw()
+
+        self.screen.blit(warning_text, (15, 50))
+        events = pygame.event.get()
+        pygame_widgets.update(events)
+
+
+
 class Game:
     def __init__(self):
 
@@ -259,24 +283,33 @@ class Game:
 
     def control(self):
         if self.window.frase == "Snake game":
-            self.window.game()
-            self.counter()
-            self.barrier.frame()
-            self.snake.movie()
-            self.food.create()
-            self.cross_with_food()
-            self.cross_barrier()
-            self.check_on_pause()
+            if self.check_full():
+                self.window.game()
+                self.counter()
+                self.barrier.frame()
+                self.snake.movie()
+                self.food.create()
+                self.cross_with_food()
+                self.cross_barrier()
+                self.check_on_pause()
         elif self.window.frase == "Game over":
             self.window.game_over(self.rezult)
         elif self.window.frase == "Main menu":
             self.window.menu()
+        elif self.window.frase == "Warning window":
+            self.window.warning()
         elif self.window.frase == "Pause menu":
             self.window.pause()
         elif self.window.frase == "Settings menu":
             self.window.setting_menu()
         # elif self.window.frase == "Quit":
         #     event.type = pygame.QUIT
+
+    def check_full(self):
+        if self.window.level == "Не выбрано" or self.window.theme == "Не выбрано":
+            self.window.set_frase("Warning window")
+            return False
+        return True
 
 
     def check_on_pause(self):
