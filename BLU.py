@@ -334,17 +334,25 @@ class Game:
             self.food = Food(surface, self.snake.head.x, self.snake.head.y)
 
     def cross_barrier(self):
-        if not self.check_crash():
+        if self.check_cross_frame() or self.check_cross_field_barrier():
             self.snake = Snake(self.window.screen)
             self.rezult = self.count
             self.window.set_frase("Game over")
             self.count = 0
             self.barrier.lst_barier_x = []
             self.barrier.lst_barier_y = []
+            self.barrier_list = []
 
 
-    def check_crash(self):
-        return self.barrier.frame().collidepoint(self.snake.head.x, self.snake.head.y)
+    def check_cross_frame(self):
+        return not self.barrier.frame().collidepoint(self.snake.head.x, self.snake.head.y)
+
+    def check_cross_field_barrier(self):
+        for i in range(len(self.barrier.barrier_list)):
+            if self.barrier.barrier_list[i].collidepoint(self.snake.head.x, self.snake.head.y):
+                return True
+
+
 
 class Chain:
     def __init__(self, x, y, direction):
@@ -434,6 +442,7 @@ class Barrier:
         self.screen = screen
         self.lst_barier_x = []
         self.lst_barier_y = []
+        self.barrier_list = []
 
     def frame(self):
 
@@ -456,7 +465,8 @@ class Barrier:
             n +=1
         for i in range(count_barriers):
             rect_position = [self.lst_barier_x[i], self.lst_barier_y[i], 25, 25]
-            pygame.draw.rect(self.screen, BLACK, rect_position)
+            barrier = pygame.draw.rect(self.screen, BLACK, rect_position)
+            self.barrier_list.append(barrier)
 
 
 
