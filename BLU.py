@@ -16,7 +16,6 @@ text_voice_theme = "Озвучка голосом"
 
 
 
-
 FAKTOR = 5
 # Цвета (R, G, B)
 BLACK = (0, 0, 0)
@@ -32,7 +31,7 @@ end_image = pygame.image.load('game_over.jpg')
 # snake_head_image = pygame.image.load('snake_head.png')
 snake_head = pygame.image.load('snake_head.png')
 snake_head.set_colorkey((246,246,246))
-snake_head_image = pygame.transform.scale(snake_head, (20, 20))
+snake_head_image = pygame.transform.scale(snake_head, (22, 22))
 
 food = pygame.image.load('food.jpg')
 food.set_colorkey(WHITE)
@@ -69,6 +68,9 @@ class Window:
         self.frase = "Snake game"
         self.color = WGREEN
         self.view()
+        esc_font_text = pygame.font.SysFont('Verdana', 18)
+        esc_text = esc_font_text.render('Чтобы взять паузу - нажмите Esc', False, BLUE)
+        self.screen.blit(esc_text, (270, 20))
 
 
     def menu(self):
@@ -120,8 +122,8 @@ class Window:
         elif 410 <= mouse_x <= 580 and 180 <= mouse_y <= 230:
             text_dir = text_voice_theme
 
-        font_mouse = pygame.font.SysFont(None, 20)
-        text_mouse = font_mouse.render(text_dir, False, RED)
+        font_mouse = pygame.font.SysFont(None, 28)
+        text_mouse = font_mouse.render(text_dir, False, BLUE)
 
         self.screen.blit(text_mouse, (mouse_x-110, mouse_y+30))
 
@@ -291,12 +293,18 @@ class Game:
                 self.window.game()
                 self.counter()
                 self.barrier.frame()
-                self.barrier.field()
                 self.snake.movie()
                 self.food.create()
                 self.cross_with_food()
                 self.cross_barrier()
                 self.check_on_pause()
+                if self.window.level == "ЛЮБИТЕЛЬ":
+                    self.snake.speed = 8
+                    self.barrier.field()
+                elif self.window.level == "ПРОФИ":
+                    self.snake.speed = 12
+                    self.barrier.field()
+                    self.cross_with_self()
         elif self.window.frase == "Game over":
             self.window.game_over(self.rezult)
         elif self.window.frase == "Main menu":
@@ -330,6 +338,7 @@ class Game:
         font_count = pygame.font.SysFont('Verdana', 30)
         text_count = font_count.render("Ваш счет: "+str(self.count), True, BLUE)
         surface.blit(text_count,(10,10))
+
     def cross_with_food(self):
         surface = pygame.display.get_surface()
         if self.condition_of_cross():
@@ -356,6 +365,21 @@ class Game:
             if self.barrier.barrier_list[i].collidepoint(self.snake.head.x, self.snake.head.y):
                 return True
 
+    def condition_of_cross_self(self):
+        for i in range(len(self.snake.body)):
+            if self.snake.head.x == self.snake.body[i].x and  self.snake.head.y ==self.snake.body[i].y:
+                return True
+
+    def cross_with_self(self):
+        if self.condition_of_cross_self():
+            self.snake = Snake(self.window.screen)
+            self.rezult = self.count
+            self.window.set_frase("Game over")
+            self.count = 0
+            self.barrier.lst_barier_x = []
+            self.barrier.lst_barier_y = []
+            self.barrier_list = []
+
 
 
 class Chain:
@@ -373,6 +397,7 @@ class Snake:
         self.delta_x = 0
         self.delta_y = 0
         self.body.append(self.head)
+        self.speed = 5
 
     def movie(self):
         self.handler_direction_head()
@@ -407,17 +432,17 @@ class Snake:
 
     def choose_head_direction(self):
         if self.head.direction == "right":
-            self.delta_x = FAKTOR
+            self.delta_x = self.speed
             self.delta_y = 0
         elif self.head.direction == "left":
             self.delta_y = 0
-            self.delta_x = -FAKTOR
+            self.delta_x = -self.speed
         elif self.head.direction == "up":
             self.delta_x = 0
-            self.delta_y = -FAKTOR
+            self.delta_y = -self.speed
         elif self.head.direction == "down":
             self.delta_x = 0
-            self.delta_y = FAKTOR
+            self.delta_y = self.speed
 
     def add_chain(self):
         chain = Chain(None, None, None)
@@ -452,7 +477,7 @@ class Barrier:
 
         width_w = self.screen.get_width()
         height_w = self.screen.get_height()-50
-        frame = pygame.draw.rect(self.screen, (51,102,0), [0, 50, width_w, height_w], FAKTOR*3)
+        frame = pygame.draw.rect(self.screen, (51,102,0), [0, 50, width_w, height_w], FAKTOR*2)
         return frame
 
     def field(self):
