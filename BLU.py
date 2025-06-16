@@ -68,9 +68,9 @@ class Window:
         self.frase = "Snake game"
         self.color = WGREEN
         self.view()
-        esc_font_text = pygame.font.SysFont('Verdana', 18)
-        esc_text = esc_font_text.render('Чтобы взять паузу - нажмите Esc', False, BLUE)
-        self.screen.blit(esc_text, (270, 20))
+        esc_font_text = pygame.font.SysFont('Verdana', 16)
+        esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, BLUE)
+        self.screen.blit(esc_text, (240, 20))
 
 
     def menu(self):
@@ -299,11 +299,11 @@ class Game:
                 self.cross_barrier()
                 self.check_on_pause()
                 if self.window.level == "ЛЮБИТЕЛЬ":
-                    self.snake.speed = 8
-                    self.barrier.field()
+                    self.snake.speed = 10
+                    self.barrier.field(5)
                 elif self.window.level == "ПРОФИ":
-                    self.snake.speed = 12
-                    self.barrier.field()
+                    self.snake.speed = 10
+                    self.barrier.field(10)
                     self.cross_with_self()
         elif self.window.frase == "Game over":
             self.window.game_over(self.rezult)
@@ -366,7 +366,7 @@ class Game:
                 return True
 
     def condition_of_cross_self(self):
-        for i in range(len(self.snake.body)):
+        for i in range(1, len(self.snake.body)):
             if self.snake.head.x == self.snake.body[i].x and  self.snake.head.y ==self.snake.body[i].y:
                 return True
 
@@ -404,8 +404,8 @@ class Snake:
         # pygame.draw.circle(self.screen, BLUE, (self.body[0].x, self.body[0].y), FAKTOR*2)
         self.screen.blit(snake_head_image, dest = (self.body[0].x-10, self.body[0].y-10))
         for i in range(1, len(self.body)):
-            self.body[i].x = self.way_head[i*4][0]
-            self.body[i].y = self.way_head[i*4][1]
+            self.body[i].x = self.way_head[i*int(20/self.speed)][0]
+            self.body[i].y = self.way_head[i*int(20/self.speed)][1]
 
             pygame.draw.circle(self.screen, BGREEN, (self.body[i].x, self.body[i].y), FAKTOR*2)
 
@@ -480,11 +480,10 @@ class Barrier:
         frame = pygame.draw.rect(self.screen, (51,102,0), [0, 50, width_w, height_w], FAKTOR*2)
         return frame
 
-    def field(self):
+    def field(self,count_barriers):
         surface = pygame.display.get_surface()
         width_w = surface.get_width()
         height_w = surface.get_height()
-        count_barriers = 6
         n = 0
         while n!= count_barriers:
             barrier_x = random.randint(20, (width_w - 20))
