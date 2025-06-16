@@ -354,7 +354,7 @@ class Game:
             self.count = 0
             self.barrier.lst_barier_x = []
             self.barrier.lst_barier_y = []
-            self.barrier_list = []
+            self.barrier.barrier_list = []
 
 
     def check_cross_frame(self):
@@ -367,7 +367,7 @@ class Game:
 
     def condition_of_cross_self(self):
         for i in range(1, len(self.snake.body)):
-            if self.snake.head.x == self.snake.body[i].x and  self.snake.head.y ==self.snake.body[i].y:
+            if self.snake.head.x == self.snake.body[i].x and self.snake.head.y == self.snake.body[i].y:
                 return True
 
     def cross_with_self(self):
@@ -378,7 +378,7 @@ class Game:
             self.count = 0
             self.barrier.lst_barier_x = []
             self.barrier.lst_barier_y = []
-            self.barrier_list = []
+            self.barrier.barrier_list = []
 
 
 
@@ -480,7 +480,7 @@ class Barrier:
         frame = pygame.draw.rect(self.screen, (51,102,0), [0, 50, width_w, height_w], FAKTOR*2)
         return frame
 
-    def field(self,count_barriers):
+    def field(self, count_barriers):
         surface = pygame.display.get_surface()
         width_w = surface.get_width()
         height_w = surface.get_height()
