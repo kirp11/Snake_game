@@ -23,6 +23,7 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
+WBLUE = (123,200,246)
 WGREEN = (153,255,153)
 BGREEN = (0,69,36)
 YELLOW = (255, 255, 0)
@@ -41,6 +42,12 @@ bariere = pygame.image.load('bariere.jpg')
 bariere.set_colorkey(WHITE)
 bariere_image = pygame.transform.scale(bariere, (25, 25))
 
+snowFall = []
+for i in range(100):
+    x = random.randrange(0, 600)
+    y = random.randrange(50, 700)
+    snowFall.append([x, y])
+
 class Window:
     def __init__(self, lenght=None, high=None, frase=None, color=None):
         self.lenght = lenght
@@ -50,6 +57,8 @@ class Window:
         self.screen = None
         self.level = "Не выбрано"
         self.theme = "Не выбрано"
+
+
 
     def view(self):
         self.screen = pygame.display.set_mode((self.lenght, self.high))
@@ -69,7 +78,33 @@ class Window:
         self.color = WGREEN
         self.view()
         esc_font_text = pygame.font.SysFont('Verdana', 16)
-        esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, BLUE)
+        esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, GREEN)
+        self.screen.blit(esc_text, (240, 20))
+
+    def winter_theme_game(self):
+        self.lenght = 600
+        self.high = 700
+        self.frase = "Snake game"
+        self.color = WBLUE
+        self.view()
+
+    def snowFall(self):
+
+        # clock = pygame.time.Clock()
+        for j in range(len(snowFall)):
+            pygame.draw.circle(self.screen, WHITE, snowFall[j], 2)
+
+            snowFall[j][1] += 1.5
+            if snowFall[j][1] > self.high:
+                y = random.randrange(20, 50)
+                snowFall[j][1] = y
+
+                x = random.randrange(0, self.lenght)
+                snowFall[j][0] = x
+
+
+        esc_font_text = pygame.font.SysFont('Verdana', 16)
+        esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, BLACK)
         self.screen.blit(esc_text, (240, 20))
 
 
@@ -290,7 +325,8 @@ class Game:
     def control(self):
         if self.window.frase == "Snake game":
             if self.check_full():
-                self.window.game()
+                self.window.winter_theme_game()
+                self.window.snowFall()
                 self.counter()
                 self.barrier.frame()
                 self.snake.movie()
@@ -480,6 +516,13 @@ class Barrier:
         frame = pygame.draw.rect(self.screen, (51,102,0), [0, 50, width_w, height_w], FAKTOR*2)
         return frame
 
+    def winter_frame(self):
+
+        width_w = self.screen.get_width()
+        height_w = self.screen.get_height()-50
+        frame = pygame.draw.rect(self.screen, WHITE, [0, 50, width_w, height_w], FAKTOR*2)
+        return frame
+
     def field(self, count_barriers):
         surface = pygame.display.get_surface()
         width_w = surface.get_width()
@@ -495,6 +538,22 @@ class Barrier:
             rect_position = [self.lst_barier_x[i], self.lst_barier_y[i], 25, 25]
             barrier = pygame.draw.rect(self.screen, BLACK, rect_position)
             self.barrier_list.append(barrier)
+
+        def field(self, count_barriers):
+            surface = pygame.display.get_surface()
+            width_w = surface.get_width()
+            height_w = surface.get_height()
+            n = 0
+            while n != count_barriers:
+                barrier_x = random.randint(20, (width_w - 20))
+                self.lst_barier_x.append(barrier_x)
+                barrier_y = random.randint(70, (height_w - 20))
+                self.lst_barier_y.append(barrier_y)
+                n += 1
+            for i in range(count_barriers):
+                rect_position = [self.lst_barier_x[i], self.lst_barier_y[i], 25, 25]
+                barrier = pygame.draw.rect(self.screen, WHITE, rect_position)
+                self.barrier_list.append(barrier)
             # barrier.blit(bariere_image, self.lst_barier_x[i], self.lst_barier_y[i])
 
 
