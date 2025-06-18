@@ -83,7 +83,7 @@ class Window:
         self.color = WGREEN
         self.view()
         esc_font_text = pygame.font.SysFont('Verdana', 16)
-        esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, GREEN)
+        esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, BLACK)
         self.screen.blit(esc_text, (240, 20))
 
     def winter_theme_game(self):
@@ -346,23 +346,8 @@ class Game:
 
     def control(self):
         if self.window.frase == "Snake game":
-            if self.check_full():
-                self.window.summer_theme_game()
-                # self.window.snowFall()
-                self.counter()
-                self.barrier.frame()
-                self.snake.movie()
-                self.food.create()
-                self.cross_with_food()
-                self.cross_barrier()
-                self.check_on_pause()
-                if self.window.level == "ЛЮБИТЕЛЬ":
-                    self.snake.speed = 10
-                    self.barrier.field(5)
-                elif self.window.level == "ПРОФИ":
-                    self.snake.speed = 10
-                    self.barrier.field(10)
-                    self.cross_with_self()
+            self.generate_window()
+
         elif self.window.frase == "Game over":
             self.window.game_over(self.rezult)
         elif self.window.frase == "Main menu":
@@ -375,6 +360,34 @@ class Game:
             self.window.setting_menu()
         # elif self.window.frase == "Quit":
         #     event.type = pygame.QUIT
+
+    def generate_window(self):
+        if self.check_full():
+            if self.window.theme == "SUMMER":
+                self.window.summer_theme_game()
+                self.barrier.summer_frame()
+            elif self.window.theme == "WINTER":
+                self.window.winter_theme_game()
+                self.barrier.winter_frame()
+                self.window.snowFall()
+            elif self.window.theme == "Voice":
+                self.window.game()
+                self.barrier.frame()
+            self.counter()
+            self.snake.movie()
+            self.food.create()
+            self.cross_with_food()
+            self.cross_barrier()
+            self.check_on_pause()
+            if self.window.level == "ЛЮБИТЕЛЬ":
+                self.snake.speed = 10
+                self.barrier.field(5)
+            elif self.window.level == "ПРОФИ":
+                self.snake.speed = 10
+                self.barrier.field(10)
+                self.cross_with_self()
+
+
 
     def check_full(self):
         if self.window.level == "Не выбрано" or self.window.theme == "Не выбрано":
