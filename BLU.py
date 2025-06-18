@@ -41,7 +41,7 @@ food_image = pygame.transform.scale(food, (25, 25))
 
 bariere = pygame.image.load('bariere.jpg')
 bariere.set_colorkey(WHITE)
-bariere_image = pygame.transform.scale(bariere, (25, 25))
+bariere_image = pygame.transform.scale(bariere, (40, 40))
 
 
 summer_img = pygame.image.load('summer.jpg')
@@ -577,26 +577,18 @@ class Barrier:
             self.lst_barier_y.append(barrier_y)
             n +=1
         for i in range(count_barriers):
-            rect_position = [self.lst_barier_x[i], self.lst_barier_y[i], 25, 25]
-            barrier = pygame.draw.rect(self.screen, BLACK, rect_position)
-            self.barrier_list.append(barrier)
+            rect_position = self.lst_barier_x[i], self.lst_barier_y[i]
+                # , 25, 25]
+            # barrier = pygame.draw.rect(self.screen, BLACK, rect_position)
+            #
+            # self.screen.blit(bariere_image, self.lst_barier_x[i], self.lst_barier_y[i])
 
-        def field(self, count_barriers):
-            surface = pygame.display.get_surface()
-            width_w = surface.get_width()
-            height_w = surface.get_height()
-            n = 0
-            while n != count_barriers:
-                barrier_x = random.randint(20, (width_w - 20))
-                self.lst_barier_x.append(barrier_x)
-                barrier_y = random.randint(70, (height_w - 20))
-                self.lst_barier_y.append(barrier_y)
-                n += 1
-            for i in range(count_barriers):
-                rect_position = [self.lst_barier_x[i], self.lst_barier_y[i], 25, 25]
-                barrier = pygame.draw.rect(self.screen, WHITE, rect_position)
-                self.barrier_list.append(barrier)
-            # barrier.blit(bariere_image, self.lst_barier_x[i], self.lst_barier_y[i])
+
+            rect = bariere_image.get_rect()
+            rect.center = rect_position
+            self.screen.blit(bariere_image, rect)
+            barrier = pygame.draw.rect(self.screen, WHITE, rect, 1)
+            self.barrier_list.append(barrier)
 
 
 
