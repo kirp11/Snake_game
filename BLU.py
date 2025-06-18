@@ -27,6 +27,7 @@ WBLUE = (123,200,246)
 WGREEN = (153,255,153)
 BGREEN = (0,69,36)
 YELLOW = (255, 255, 0)
+ORANGE = (255,165,0)
 
 end_image = pygame.image.load('game_over.jpg')
 # snake_head_image = pygame.image.load('snake_head.png')
@@ -41,6 +42,10 @@ food_image = pygame.transform.scale(food, (25, 25))
 bariere = pygame.image.load('bariere.jpg')
 bariere.set_colorkey(WHITE)
 bariere_image = pygame.transform.scale(bariere, (25, 25))
+
+
+summer_img = pygame.image.load('summer.jpg')
+summer_image = pygame.transform.scale(summer_img, (600, 700))
 
 snowFall = []
 for i in range(100):
@@ -87,6 +92,23 @@ class Window:
         self.frase = "Snake game"
         self.color = WBLUE
         self.view()
+        esc_font_text = pygame.font.SysFont('Verdana', 16)
+        esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, WHITE)
+        self.screen.blit(esc_text, (240, 20))
+
+
+    def summer_theme_game(self):
+        self.lenght = 600
+        self.high = 700
+        self.frase = "Snake game"
+        self.color = WHITE
+        self.view()
+
+        self.screen.blit(summer_image, (0, 50))
+        esc_font_text = pygame.font.SysFont('Verdana', 16)
+        esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, BLACK)
+        self.screen.blit(esc_text, (240, 20))
+
 
     def snowFall(self):
 
@@ -325,8 +347,8 @@ class Game:
     def control(self):
         if self.window.frase == "Snake game":
             if self.check_full():
-                self.window.winter_theme_game()
-                self.window.snowFall()
+                self.window.summer_theme_game()
+                # self.window.snowFall()
                 self.counter()
                 self.barrier.frame()
                 self.snake.movie()
@@ -521,6 +543,13 @@ class Barrier:
         width_w = self.screen.get_width()
         height_w = self.screen.get_height()-50
         frame = pygame.draw.rect(self.screen, WHITE, [0, 50, width_w, height_w], FAKTOR*2)
+        return frame
+
+    def summer_frame(self):
+
+        width_w = self.screen.get_width()
+        height_w = self.screen.get_height()-50
+        frame = pygame.draw.rect(self.screen, ORANGE, [0, 50, width_w, height_w], FAKTOR*2)
         return frame
 
     def field(self, count_barriers):
