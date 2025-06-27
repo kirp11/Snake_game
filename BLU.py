@@ -542,8 +542,8 @@ class Food:
         #             self.food_y = random.randint(70, (height_w - 20))
 
         while self.food_x == self.stop_x and self.food_y == self.stop_y:
-            self.food_x = random.randint(20,(width_w-20))
-            self.food_y = random.randint(70,(height_w-20))
+            self.food_x = random.randint(30,(width_w-30))
+            self.food_y = random.randint(80,(height_w-30))
         # pygame.draw.circle(self.screen, (0, 0, 128), (self.food_x, self.food_y), FAKTOR*2)
         self.screen.blit(food_image, dest=(self.food_x-10, self.food_y-10))
 
@@ -579,13 +579,24 @@ class Barrier:
         surface = pygame.display.get_surface()
         width_w = surface.get_width()
         height_w = surface.get_height()
-        n = 0
-        while n!= count_barriers:
-            barrier_x = random.randint(20, (width_w - 20))
-            self.lst_barier_x.append(barrier_x)
-            barrier_y = random.randint(70, (height_w - 20))
-            self.lst_barier_y.append(barrier_y)
-            n +=1
+        # n = 0
+        barrier_x = 0
+        barrier_y = 0
+        while len(self.lst_barier_x) != count_barriers:
+            if len(self.barrier_list)==0:
+                barrier_x = random.randint(40, (width_w - 40))
+                self.lst_barier_x.append(barrier_x)
+                barrier_y = random.randint(80, (height_w - 40))
+                self.lst_barier_y.append(barrier_y)
+            else:
+                while self.check_cross_with_selfbarier(barrier_x, self.lst_barier_x) and self.check_cross_with_selfbarier(barrier_y, self.lst_barier_y):
+                    barrier_x = random.randint(40, (width_w - 40))
+                    barrier_y = random.randint(80, (height_w - 40))
+                    # print("gh")
+                self.lst_barier_x.append(barrier_x)
+                self.lst_barier_y.append(barrier_y)
+            # print(":::::::::")
+            # n +=1
         for i in range(count_barriers):
             rect_position = self.lst_barier_x[i], self.lst_barier_y[i]
                 # , 25, 25]
@@ -598,6 +609,15 @@ class Barrier:
             self.screen.blit(bariere_image, rect)
             barrier = pygame.draw.rect(self.screen, WHITE, rect, 1)
             self.barrier_list.append(barrier)
+
+    @staticmethod
+    def check_cross_with_selfbarier(barrier, list_barrier):
+        print("))))))")
+        for i in list_barrier:
+            if barrier <= i + 60 and barrier >= i - 60:
+                return True
+        return False
+
 
 
 running = True
