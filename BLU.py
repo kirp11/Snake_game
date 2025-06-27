@@ -73,8 +73,10 @@ class Window:
     def get_frase(self):
         return self.frase
 
+
     def set_frase(self, frase):
         self.frase = frase
+
 
     def game(self):
         self.lenght = 600
@@ -415,7 +417,7 @@ class Game:
         if self.condition_of_cross():
             self.snake.add_chain()
             self.count += 1
-            self.food = Food(surface, self.snake.head.x, self.snake.head.y)
+            self.food = Food(surface, self.barrier.lst_barier_x, self.barrier.lst_barier_y)
 
     def cross_barrier(self):
         if self.check_cross_frame() or self.check_cross_field_barrier():
@@ -531,6 +533,14 @@ class Food:
         surface = pygame.display.get_surface()
         width_w = surface.get_width()
         height_w = surface.get_height()
+        # for i in self.stop_x:
+        #     if self.food_x <= i + 5:
+        #         for j in self.stop_y:
+        #             if self.food_y <= j + 5:
+        #
+        #             self.food_x = random.randint(20, (width_w - 20))
+        #             self.food_y = random.randint(70, (height_w - 20))
+
         while self.food_x == self.stop_x and self.food_y == self.stop_y:
             self.food_x = random.randint(20,(width_w-20))
             self.food_y = random.randint(70,(height_w-20))
@@ -583,15 +593,11 @@ class Barrier:
             #
             # self.screen.blit(bariere_image, self.lst_barier_x[i], self.lst_barier_y[i])
 
-
             rect = bariere_image.get_rect()
             rect.center = rect_position
             self.screen.blit(bariere_image, rect)
             barrier = pygame.draw.rect(self.screen, WHITE, rect, 1)
             self.barrier_list.append(barrier)
-
-
-
 
 
 running = True
