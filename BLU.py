@@ -58,7 +58,7 @@ for i in range(100):
 class Records:
     def __init__(self, result=None):
         self.result = result
-        self.records = [[]*5]
+        self.records = [["",""],["",""],["",""],["",""],["",""],]
 
     def check_on_record(self):
         # if len(self.records) ==0:
@@ -72,12 +72,14 @@ class Records:
     def add_result(self, name):
         if self.check_on_record():
             for i in range(len(self.records)):
-                if self.records[i][1] < self.result:
-                    buff_name = self.records[i][0]
-                    buff_result = self.records[i][1]
-                    self.records[i][1] = self.result
-                    self.records[i][0] = name
-                    self.result = buff_result
+                if self.records[i][1] == "":
+                    self.records[i][1] = 0
+                    if self.records[i][1] < self.result:
+                        buff_name = self.records[i][0]
+                        buff_result = self.records[i][1]
+                        self.records[i][1] = self.result
+                        self.records[i][0] = name
+                        self.result = buff_result
 
 
 class Window:
@@ -315,7 +317,7 @@ class Window:
         pygame_widgets.update(events)
 
 
-    def records(self):
+    def records(self, list_records):
         self.lenght = 600
         self.high = 400
         self.frase = "Records"
@@ -327,10 +329,24 @@ class Window:
         res_surface = rec_font.render('РЕЗУЛЬТАТ', False, BLACK)
 
 
-        to_menu_button = Button(self.screen, 200, 300, 200, 60, inactiveColour=GREEN, radius=30,
+        to_menu_button = Button(self.screen, 200, 330, 200, 60, inactiveColour=GREEN, radius=30,
         pressedColour=WGREEN, text="В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
 
         to_menu_button.draw()
+
+
+        res_font = pygame.font.SysFont('Verdana', 20)
+        text_surface_1 = res_font.render(str(1)+"                      "+str(list_records[0][0])+"                      "+str(list_records[0][1]), True, WHITE)
+        text_surface_2 = res_font.render(str(2)+"                      "+str(list_records[1][0])+"                      "+str(list_records[1][1]), True, WHITE)
+        text_surface_3 = res_font.render(str(3)+"                      "+str(list_records[2][0])+"                      "+str(list_records[2][1]), True, WHITE)
+        text_surface_4 = res_font.render(str(4)+"                      "+str(list_records[3][0])+"                      "+str(list_records[3][1]), True, WHITE)
+        text_surface_5 = res_font.render(str(5)+"                      "+str(list_records[4][0])+"                      "+str(list_records[4][1]), True, WHITE)
+
+        self.screen.blit(text_surface_1, (80,80))
+        self.screen.blit(text_surface_2, (80, 130))
+        self.screen.blit(text_surface_3, (80, 180))
+        self.screen.blit(text_surface_4, (80, 230))
+        self.screen.blit(text_surface_5, (80, 280))
 
         self.screen.blit(place_surface, (60, 20))
         self.screen.blit(name_surface, (250, 20))
@@ -396,6 +412,7 @@ class Game:
         self.barrier = Barrier(self.window.screen)
         self.count = 0
         self.rezult = 0
+        self.record = Records()
 
 
     def control(self):
@@ -413,7 +430,7 @@ class Game:
         elif self.window.frase == "Settings menu":
             self.window.setting_menu()
         elif self.window.frase == "Records":
-            self.window.records()
+            self.window.records(self.record.records)
         # elif self.window.frase == "Quit":
         #     event.type = pygame.QUIT
 
