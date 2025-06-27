@@ -171,7 +171,7 @@ class Window:
         game_button = Button(self.screen, 100, 80, 300, 80, inactiveColour=YELLOW, radius=40,
         pressedColour=(0, 255, 0), hoverColour = GREEN, text="НАЧАТЬ ИГРУ", onClick=lambda: self.set_frase("Snake game"))
         record_button = Button(self.screen, 100, 180, 300, 80, inactiveColour=YELLOW, radius=40,
-        pressedColour=(0, 255, 0), hoverColour = GREEN, text="ТАБЛИЦА РЕКОРДОВ",onClick=None)
+        pressedColour=(0, 255, 0), hoverColour = GREEN, text="ТАБЛИЦА РЕКОРДОВ",onClick=lambda: self.set_frase("Records"))
         setting_button = Button(self.screen, 100, 280, 300, 80, inactiveColour=YELLOW, radius=40,
         pressedColour=(0, 255, 0), hoverColour = GREEN, text="НАСТРОЙКИ",onClick=lambda: self.set_frase("Settings menu"))
         exit_button = Button(self.screen, 100, 380, 300, 80, inactiveColour=YELLOW, radius=40,
@@ -315,6 +315,31 @@ class Window:
         pygame_widgets.update(events)
 
 
+    def records(self):
+        self.lenght = 600
+        self.high = 400
+        self.frase = "Records"
+        self.color = SANDY
+        self.view()
+        rec_font = pygame.font.SysFont('Verdana', 20)
+        place_surface = rec_font.render('МЕСТО', False, BLACK)
+        name_surface = rec_font.render('ИМЯ', False, BLACK)
+        res_surface = rec_font.render('РЕЗУЛЬТАТ', False, BLACK)
+
+
+        to_menu_button = Button(self.screen, 200, 300, 200, 60, inactiveColour=GREEN, radius=30,
+        pressedColour=WGREEN, text="В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
+
+        to_menu_button.draw()
+
+        self.screen.blit(place_surface, (60, 20))
+        self.screen.blit(name_surface, (250, 20))
+        self.screen.blit(res_surface, (410, 20))
+
+        events = pygame.event.get()
+        pygame_widgets.update(events)
+
+
 
     def pause(self):
         self.lenght = 400
@@ -387,6 +412,8 @@ class Game:
             self.window.pause()
         elif self.window.frase == "Settings menu":
             self.window.setting_menu()
+        elif self.window.frase == "Records":
+            self.window.records()
         # elif self.window.frase == "Quit":
         #     event.type = pygame.QUIT
 
