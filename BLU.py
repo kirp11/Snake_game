@@ -28,6 +28,7 @@ WGREEN = (153,255,153)
 BGREEN = (0,69,36)
 YELLOW = (255, 255, 0)
 ORANGE = (255,165,0)
+SANDY = (205,170,127)
 
 end_image = pygame.image.load('game_over.jpg')
 # snake_head_image = pygame.image.load('snake_head.png')
@@ -52,6 +53,32 @@ for i in range(100):
     x = random.randrange(0, 600)
     y = random.randrange(50, 700)
     snowFall.append([x, y])
+
+
+class Records:
+    def __init__(self, result=None):
+        self.result = result
+        self.records = [[]*5]
+
+    def check_on_record(self):
+        # if len(self.records) ==0:
+        #     return True
+        for i in range(len(self.records)):
+            if self.records[i][1] < self.result:
+                return True
+        return False
+
+
+    def add_result(self, name):
+        if self.check_on_record():
+            for i in range(len(self.records)):
+                if self.records[i][1] < self.result:
+                    buff_name = self.records[i][0]
+                    buff_result = self.records[i][1]
+                    self.records[i][1] = self.result
+                    self.records[i][0] = name
+                    self.result = buff_result
+
 
 class Window:
     def __init__(self, lenght=None, high=None, frase=None, color=None):
