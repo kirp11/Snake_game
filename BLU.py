@@ -40,15 +40,7 @@ SANDY = (205,170,127)
 
 
 
-
-
-
-
-
-
-
 end_image = pygame.image.load(os.path.join('src/images','game_over.jpg'))
-# snake_head_image = pygame.image.load('snake_head.png')
 snake_head = pygame.image.load(os.path.join('src/images','snake_head.png'))
 snake_head.set_colorkey((246,246,246))
 snake_head_image = pygame.transform.scale(snake_head, (22, 22))
@@ -102,12 +94,13 @@ class Records:
 
 
 class Window:
-    def __init__(self, lenght=None, high=None, frase=None, color=None):
+    def __init__(self, lenght=500, high=500, frase=None, color=None):
         self.lenght = lenght
         self.high = high
         self.frase = frase
         self.color = color
-        self.screen = None
+        self.screen = pygame.display.set_mode((self.lenght, self.high))
+        pygame.display.set_caption("Start")
         self.level = "Не выбрано"
         self.theme = "Не выбрано"
         self.text = 'Игрок'
@@ -182,6 +175,9 @@ class Window:
 
 
     def menu(self):
+        current_title, icon_title =  pygame.display.get_caption()
+        if current_title == "Main menu":
+            return
         self.lenght = 500
         self.high = 500
         self.frase = "Main menu"
@@ -190,23 +186,26 @@ class Window:
         over_font = pygame.font.SysFont('Verdana', 30)
         text_surface = over_font.render('Выберите действие', False, GREEN)
 
-        game_button = Button(self.screen, 100, 80, 300, 80, inactiveColour=YELLOW, radius=40,
+        self.game_button = Button(self.screen, 100, 80, 300, 80, inactiveColour=YELLOW, radius=40,
         pressedColour=(0, 255, 0), hoverColour = GREEN, text="НАЧАТЬ ИГРУ", onClick=lambda: self.set_frase("Snake game"))
-        record_button = Button(self.screen, 100, 180, 300, 80, inactiveColour=YELLOW, radius=40,
+        self.record_button = Button(self.screen, 100, 180, 300, 80, inactiveColour=YELLOW, radius=40,
         pressedColour=(0, 255, 0), hoverColour = GREEN, text="ТАБЛИЦА РЕКОРДОВ",onClick=lambda: self.set_frase("Records"))
-        setting_button = Button(self.screen, 100, 280, 300, 80, inactiveColour=YELLOW, radius=40,
+        self.setting_button = Button(self.screen, 100, 280, 300, 80, inactiveColour=YELLOW, radius=40,
         pressedColour=(0, 255, 0), hoverColour = GREEN, text="НАСТРОЙКИ",onClick=lambda: self.set_frase("Settings menu"))
-        exit_button = Button(self.screen, 100, 380, 300, 80, inactiveColour=YELLOW, radius=40,
+        self.exit_button = Button(self.screen, 100, 380, 300, 80, inactiveColour=YELLOW, radius=40,
         pressedColour=(0, 255, 0), hoverColour = GREEN, text="ВЫХОД",onClick= lambda: self.set_frase("Quit"))
-        game_button.draw()
-        record_button.draw()
-        setting_button.draw()
-        exit_button.draw()
-
         self.screen.blit(text_surface, (100, 20))
 
-        events = pygame.event.get()
-        pygame_widgets.update(events)
+    def draw_menu(self):
+        self.game_button.draw()
+        self.record_button.draw()
+        self.setting_button.draw()
+        self.exit_button.draw()
+
+
+        #
+        # events = pygame.event.get()
+        # pygame_widgets.update(events)
 
     def set_level(self, level):
         self.level = level
@@ -285,8 +284,8 @@ class Window:
         summer_comlex_button.draw()
         voice_theme_button.draw()
 
-        choose_level = comlex_font.render(self.level, False, RED)
-        choose_theme = comlex_font.render(self.theme, False, RED)
+        choose_level = comlex_font.render(self.level, False, BLUE)
+        choose_theme = comlex_font.render(self.theme, False, BLUE)
 
 
         self.screen.blit(comlex_text_surface, (100, 10))
@@ -469,7 +468,8 @@ class Game:
         # main_sound.play()
 
 
-    def control(self):
+    def control(self,events):
+        self.window.screen.fill(self.window.color)
         if self.window.frase == "Snake game":
             self.generate_window()
             # main_sound.play()
@@ -478,6 +478,7 @@ class Game:
             self.window.game_over(self.rezult)
         elif self.window.frase == "Main menu":
             self.window.menu()
+            self.window.draw_menu()
         elif self.window.frase == "Warning window":
             self.window.warning()
         elif self.window.frase == "Pause menu":
@@ -492,6 +493,7 @@ class Game:
             # self.window.set_frase("Game over")
         # elif self.window.frase == "Quit":
         #     event.type = pygame.QUIT
+        pygame_widgets.update(events)
 
     def generate_window(self):
         if self.check_full():
@@ -774,15 +776,16 @@ running = True
 game = Game()
 
 while running:
-    for event in pygame.event.get():
+    events = pygame.event.get()
+    for event in events:
         # pygame_widgets.update(event)
         if event.type == pygame.QUIT or game.window.frase == "Quit":
             running = False
 
-    pygame.time.delay(60)
-    game.control()
+    pygame.time.delay(30)
+    game.control(events)
     # pygame.display.flip()
-    pygame_widgets.update(pygame.event.get())
+    # pygame_widgets.update(pygame.event.get())
 
     pygame.display.update()
 pygame.quit()
