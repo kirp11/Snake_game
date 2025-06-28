@@ -2,8 +2,12 @@ from venv import create
 
 import pygame
 pygame.init()
-from pygame_widgets.button import Button, ButtonArray
 import pygame_widgets
+from pygame_widgets.button import Button
+from pygame_widgets.textbox import TextBox
+
+
+from pygame.locals import *
 
 import random
 
@@ -56,30 +60,32 @@ for i in range(100):
 
 
 class Records:
-    def __init__(self, result=None):
+    def __init__(self, result=0):
         self.result = result
         self.records = [["",""],["",""],["",""],["",""],["",""],]
+        self.name = ""
 
     def check_on_record(self):
-        # if len(self.records) ==0:
-        #     return True
+        if len(self.records) ==0:
+            return True
         for i in range(len(self.records)):
+            if self.records[i][1] == "":
+                self.records[i][1] = 0
             if self.records[i][1] < self.result:
                 return True
         return False
 
 
     def add_result(self, name):
-        if self.check_on_record():
-            for i in range(len(self.records)):
-                if self.records[i][1] == "":
-                    self.records[i][1] = 0
-                    if self.records[i][1] < self.result:
-                        buff_name = self.records[i][0]
-                        buff_result = self.records[i][1]
-                        self.records[i][1] = self.result
-                        self.records[i][0] = name
-                        self.result = buff_result
+        for i in range(len(self.records)):
+            if self.records[i][1] == "":
+                self.records[i][1] = 0
+                if self.records[i][1] < self.result:
+                    buff_name = self.records[i][0]
+                    buff_result = self.records[i][1]
+                    self.records[i][1] = self.result
+                    self.records[i][0] = name
+                    self.result = buff_result
 
 
 class Window:
@@ -91,6 +97,7 @@ class Window:
         self.screen = None
         self.level = "Не выбрано"
         self.theme = "Не выбрано"
+        self.text = 'Игрок'
 
 
 
@@ -317,6 +324,38 @@ class Window:
         pygame_widgets.update(events)
 
 
+    def input_record(self):
+
+        self.lenght = 600
+        self.high = 400
+        self.frase = "Input_record"
+        self.color = SANDY
+        self.view()
+        in_font = pygame.font.SysFont('Verdana', 20)
+        in_surface1 = in_font.render('!! Вы попали в список рекордсменов !!', False, BLUE)
+        in_surface2 = in_font.render('Впишите свое имя для отражения на доске почета:',
+                                     False, BLUE)
+        self.screen.blit(in_surface1, (80, 60))
+        self.screen.blit(in_surface2, (15, 100))
+
+        def set_text(text):
+            # nonlocal text__box
+            # txxxt = text__box.getText()
+            self.text = text
+            self.set_frase("Game over")
+        text__box = TextBox(self.screen, 30, 150, 500, 60, fontSize=40, borderColour=(255, 0, 0), textColour=(0, 200, 0), onSubmit=lambda: set_text(text__box.getText()), radius=10, borderThickness=5, placeholderText="Игрок")
+        # self.screen.fill(self.color)
+        text__box.draw()
+        # to_menu_button = Button(self.screen, 200, 330, 200, 60, inactiveColour=GREEN, radius=30,
+        # pressedColour=WGREEN, text="В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
+        #
+        # to_menu_button.draw()
+        events = pygame.event.get()
+        pygame_widgets.update(events)
+        pygame.display.update()
+
+
+
     def records(self, list_records):
         self.lenght = 600
         self.high = 400
@@ -431,6 +470,10 @@ class Game:
             self.window.setting_menu()
         elif self.window.frase == "Records":
             self.window.records(self.record.records)
+        elif self.window.frase == "Input_record":
+            self.window.input_record()
+            self.record.add_result(self.window.text)
+            # self.window.set_frase("Game over")
         # elif self.window.frase == "Quit":
         #     event.type = pygame.QUIT
 
@@ -475,7 +518,7 @@ class Game:
 
 
     def condition_of_cross(self):
-        return (abs(self.food.food_x - self.snake.body[0].x) <= 2*FAKTOR and abs(self.food.food_y - self.snake.body[0].y)<= 2*FAKTOR)
+        return (abs(self.food.food_x - self.snake.body[0].x) <= 3*FAKTOR and abs(self.food.food_y - self.snake.body[0].y)<= 3*FAKTOR)
 
     def counter(self):
         surface = pygame.display.get_surface()
@@ -494,7 +537,12 @@ class Game:
         if self.check_cross_frame() or self.check_cross_field_barrier():
             self.snake = Snake(self.window.screen)
             self.rezult = self.count
-            self.window.set_frase("Game over")
+            self.record.result = self.count
+            if self.record.check_on_record():
+                self.window.set_frase("Input_record")
+            else:
+                self.window.set_frase("Game over")
+
             self.count = 0
             self.barrier.lst_barier_x = []
             self.barrier.lst_barier_y = []
@@ -696,13 +744,15 @@ game = Game()
 
 while running:
     for event in pygame.event.get():
+        # pygame_widgets.update(event)
         if event.type == pygame.QUIT or game.window.frase == "Quit":
             running = False
 
     pygame.time.delay(60)
     game.control()
-    pygame.display.flip()
+    # pygame.display.flip()
+    pygame_widgets.update(pygame.event.get())
 
-
+    pygame.display.update()
 pygame.quit()
 
