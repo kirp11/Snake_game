@@ -1,7 +1,11 @@
 from venv import create
 
+import os
+
+import mixer
 import pygame
 pygame.init()
+import pyglet
 import pygame_widgets
 from pygame_widgets.button import Button
 from pygame_widgets.textbox import TextBox
@@ -34,22 +38,31 @@ YELLOW = (255, 255, 0)
 ORANGE = (255,165,0)
 SANDY = (205,170,127)
 
-end_image = pygame.image.load('game_over.jpg')
+
+
+
+
+
+
+
+
+
+end_image = pygame.image.load(os.path.join('src/images','game_over.jpg'))
 # snake_head_image = pygame.image.load('snake_head.png')
-snake_head = pygame.image.load('snake_head.png')
+snake_head = pygame.image.load(os.path.join('src/images','snake_head.png'))
 snake_head.set_colorkey((246,246,246))
 snake_head_image = pygame.transform.scale(snake_head, (22, 22))
 
-food = pygame.image.load('food.jpg')
+food = pygame.image.load(os.path.join('src/images','food.jpg'))
 food.set_colorkey(WHITE)
 food_image = pygame.transform.scale(food, (25, 25))
 
-bariere = pygame.image.load('bariere.jpg')
+bariere = pygame.image.load(os.path.join('src/images','bariere.jpg'))
 bariere.set_colorkey(WHITE)
 bariere_image = pygame.transform.scale(bariere, (40, 40))
 
 
-summer_img = pygame.image.load('summer.jpg')
+summer_img = pygame.image.load(os.path.join('src/images','summer.jpg'))
 summer_image = pygame.transform.scale(summer_img, (600, 700))
 
 snowFall = []
@@ -452,11 +465,14 @@ class Game:
         self.count = 0
         self.rezult = 0
         self.record = Records()
+        # main_sound = pyglet.media.load(os.path.join('src/sounds', 'main.mp3'))
+        # main_sound.play()
 
 
     def control(self):
         if self.window.frase == "Snake game":
             self.generate_window()
+            # main_sound.play()
 
         elif self.window.frase == "Game over":
             self.window.game_over(self.rezult)
@@ -529,12 +545,16 @@ class Game:
     def cross_with_food(self):
         surface = pygame.display.get_surface()
         if self.condition_of_cross():
+            food_sound = pyglet.media.load(os.path.join('src/sounds', 'food.mp3'))
+            food_sound.play()
             self.snake.add_chain()
             self.count += 1
             self.food = Food(surface, self.barrier.lst_barier_x, self.barrier.lst_barier_y)
 
     def cross_barrier(self):
         if self.check_cross_frame() or self.check_cross_field_barrier():
+            over_sound = pyglet.media.load(os.path.join('src/sounds', 'over.mp3'))
+            over_sound.play()
             self.snake = Snake(self.window.screen)
             self.rezult = self.count
             self.record.result = self.count
@@ -564,6 +584,8 @@ class Game:
 
     def cross_with_self(self):
         if self.condition_of_cross_self():
+            over_sound = pyglet.media.load(os.path.join('src/sounds', 'over.mp3'))
+            over_sound.play()
             self.snake = Snake(self.window.screen)
             self.rezult = self.count
             self.window.set_frase("Game over")
@@ -614,13 +636,22 @@ class Snake:
         pressed = pygame.key.get_pressed()
         if  pressed[pygame.K_LEFT]:
             self.head.direction = "left"
+            press_sound = pyglet.media.load(os.path.join('src/sounds', 'press.mp3'))
+            press_sound.play()
         elif pressed[pygame.K_RIGHT]:
             self.head.direction = "right"
+            press_sound = pyglet.media.load(os.path.join('src/sounds', 'press.mp3'))
+            press_sound.play()
         elif pressed[pygame.K_UP]:
             self.head.direction = "up"
+            press_sound = pyglet.media.load(os.path.join('src/sounds', 'press.mp3'))
+            press_sound.play()
         elif pressed[pygame.K_DOWN]:
             self.head.direction = "down"
+            press_sound = pyglet.media.load(os.path.join('src/sounds', 'press.mp3'))
+            press_sound.play()
         self.choose_head_direction()
+
 
     def choose_head_direction(self):
         if self.head.direction == "right":
