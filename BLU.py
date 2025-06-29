@@ -391,33 +391,81 @@ class Window:
 
     def input_record(self):
 
+
+        current_title, icon_title = pygame.display.get_caption()
+        if current_title == "Input_record":
+
+
+            in_font = pygame.font.SysFont('Verdana', 20)
+            in_surface1 = in_font.render('!! Вы попали в список рекордсменов !!', False, BLUE)
+            in_surface2 = in_font.render('Впишите свое имя для отражения на доске почета:',
+                                         False, BLUE)
+            self.screen.blit(in_surface1, (80, 60))
+            self.screen.blit(in_surface2, (15, 100))
+
+            events = pygame.event.get()
+            pygame_widgets.update(events)
+            # pygame.display.update()
+
+            return
+
+
         self.lenght = 600
         self.high = 400
         self.frase = "Input_record"
         self.color = SANDY
         self.view()
-        in_font = pygame.font.SysFont('Verdana', 20)
-        in_surface1 = in_font.render('!! Вы попали в список рекордсменов !!', False, BLUE)
-        in_surface2 = in_font.render('Впишите свое имя для отражения на доске почета:',
-                                     False, BLUE)
-        self.screen.blit(in_surface1, (80, 60))
-        self.screen.blit(in_surface2, (15, 100))
+        # in_font = pygame.font.SysFont('Verdana', 20)
+        # in_surface1 = in_font.render('!! Вы попали в список рекордсменов !!', False, BLUE)
+        # in_surface2 = in_font.render('Впишите свое имя для отражения на доске почета:',
+        #                              False, BLUE)
+        # self.screen.blit(in_surface1, (80, 60))
+        # self.screen.blit(in_surface2, (15, 100))
 
-        def set_text(text):
-            # nonlocal text__box
-            # txxxt = text__box.getText()
-            self.text = text
-            self.set_frase("Game over")
-        text__box = TextBox(self.screen, 30, 150, 500, 60, fontSize=40, borderColour=(255, 0, 0), textColour=(0, 200, 0), onSubmit=lambda: set_text(text__box.getText()), radius=10, borderThickness=5, placeholderText="Игрок")
-        # self.screen.fill(self.color)
-        text__box.draw()
-        # to_menu_button = Button(self.screen, 200, 330, 200, 60, inactiveColour=GREEN, radius=30,
-        # pressedColour=WGREEN, text="В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
+        def draw_textbox():
+            def set_text():
+                # nonlocal text__box
+                txxxt = text__box.getText()
+                self.text = txxxt
+                self.set_frase("Game over")
+
+            # surface = pygame.display.get_surface()
+            text__box = TextBox(self.screen, 30, 150, 500, 60, fontSize=30, borderColour=WHITE,
+                                    textColour=BGREEN, onSubmit=set_text, radius=10, borderThickness=5,
+                                    placeholderText="Игрок")
+            # events = pygame.event.get()
+            # pygame_widgets.update(events)
+            self.screen.fill((255, 255, 255))
+
+        draw_textbox()
         #
-        # to_menu_button.draw()
-        events = pygame.event.get()
-        pygame_widgets.update(events)
-        pygame.display.update()
+        # pygame_widgets.update(events)
+        # pygame.display.update()
+
+        print("kfjvafklfj")
+
+
+
+
+
+            # self.screen.fill(self.color)
+            # text__box.draw()
+            # to_menu_button = Button(self.screen, 200, 330, 200, 60, inactiveColour=GREEN, radius=30,
+            # pressedColour=WGREEN, text="В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
+            #
+            # to_menu_button.draw()
+            # self.screen.fill((255, 255, 255))
+
+        # for event in events:
+        #     # pygame_widgets.update(event)
+        #     if event.type == pygame.K_RETURN:
+        #         # running = False
+        #         pygame_widgets.update(events)
+
+
+
+
+
 
 
 
@@ -492,8 +540,6 @@ class Window:
         events = pygame.event.get()
         pygame_widgets.update(events)
 
-
-
     def pause(self):
         current_title, icon_title = pygame.display.get_caption()
         if current_title == "Pause menu":
@@ -524,7 +570,6 @@ class Window:
 
         events = pygame.event.get()
         pygame_widgets.update(events)
-
 
     def warning(self):
 
@@ -600,6 +645,7 @@ class Game:
             self.window.draw_to_menu_button()
         elif self.window.frase == "Input_record":
             self.window.input_record()
+            # self.window.draw_textbox()
             self.record.add_result(self.window.text)
             # self.window.set_frase("Game over")
         # elif self.window.frase == "Quit":
