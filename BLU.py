@@ -391,6 +391,8 @@ class Window:
 
     def input_record(self):
 
+        events = pygame.event.get()
+        pygame_widgets.update(events)
 
         current_title, icon_title = pygame.display.get_caption()
         if current_title == "Input_record":
@@ -403,8 +405,7 @@ class Window:
             self.screen.blit(in_surface1, (80, 60))
             self.screen.blit(in_surface2, (15, 100))
 
-            events = pygame.event.get()
-            pygame_widgets.update(events)
+
             # pygame.display.update()
 
             return
@@ -426,23 +427,25 @@ class Window:
             def set_text():
                 # nonlocal text__box
                 txxxt = text__box.getText()
+                print(txxxt)
                 self.text = txxxt
+                text__box.hide()
                 self.set_frase("Game over")
 
-            # surface = pygame.display.get_surface()
-            text__box = TextBox(self.screen, 30, 150, 500, 60, fontSize=30, borderColour=WHITE,
+            surface = pygame.display.get_surface()
+            text__box = TextBox(surface, 30, 150, 500, 60, fontSize=30, borderColour=WHITE,
                                     textColour=BGREEN, onSubmit=set_text, radius=10, borderThickness=5,
                                     placeholderText="Игрок")
             # events = pygame.event.get()
             # pygame_widgets.update(events)
-            self.screen.fill((255, 255, 255))
+            # self.screen.fill((255, 255, 255))
 
         draw_textbox()
         #
         # pygame_widgets.update(events)
         # pygame.display.update()
 
-        print("kfjvafklfj")
+
 
 
 
@@ -645,6 +648,7 @@ class Game:
             self.window.draw_to_menu_button()
         elif self.window.frase == "Input_record":
             self.window.input_record()
+            # self.window.draw_to_menu_button()
             # self.window.draw_textbox()
             self.record.add_result(self.window.text)
             # self.window.set_frase("Game over")
