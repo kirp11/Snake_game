@@ -87,7 +87,6 @@ class Records:
             if self.records[0][1] == "":
                 self.records[0][1] = self.result
                 self.records[0][0] = name
-                print(self.records)
                 return
             for i in range(0, 5, 1):
 
@@ -95,7 +94,6 @@ class Records:
                     self.records.insert(i,[name, self.result])
                     self.records = self.records[:-1]
                     self.result = 0
-                    print(self.records)
                     return
 
 
@@ -724,6 +722,7 @@ class Game:
             self.count += 1
             self.food = Food(surface, self.barrier.lst_barier_x, self.barrier.lst_barier_y)
 
+
     def cross_barrier(self):
         if self.check_cross_frame() or self.check_cross_field_barrier():
             over_sound = pyglet.media.load(os.path.join('src/sounds', 'over.mp3'))
@@ -875,10 +874,12 @@ class Food:
         #             self.food_y = random.randint(70, (height_w - 20))
 
         while self.food_x == self.stop_x and self.food_y == self.stop_y:
-            self.food_x = random.randint(30,(width_w-30))
-            self.food_y = random.randint(80,(height_w-30))
-        # pygame.draw.circle(self.screen, (0, 0, 128), (self.food_x, self.food_y), FAKTOR*2)
-        self.screen.blit(food_image, dest=(self.food_x-10, self.food_y-10))
+            self.food_x = random.randint(30, (width_w - 30))
+            self.food_y = random.randint(80, (height_w - 30))
+
+
+        self.screen.blit(food_image, dest=(self.food_x - 10, self.food_y - 10))
+
 
 class Barrier:
     def __init__(self, screen):
