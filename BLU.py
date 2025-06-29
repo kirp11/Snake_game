@@ -65,32 +65,38 @@ for i in range(100):
 
 
 class Records:
-    def __init__(self, result=0):
-        self.result = result
-        self.records = [["",""],["",""],["",""],["",""],["",""],]
+    def __init__(self):
+        self.result = ""
+        self.records = [["",""],["",""],["",""],["",""],["",""]]
         self.name = ""
 
     def check_on_record(self):
-        if len(self.records) ==0:
-            return True
-        for i in range(len(self.records)):
+        if self.result!= 0:
+            i = 0
             if self.records[i][1] == "":
-                self.records[i][1] = 0
-            if self.records[i][1] < self.result:
                 return True
-        return False
+            while self.records[i][1] != "":
+                if self.records[i][1] < self.result:
+                    return True
+                i += 1
+            return False
 
 
     def add_result(self, name):
-        for i in range(len(self.records)):
-            if self.records[i][1] == "":
-                self.records[i][1] = 0
-                if self.records[i][1] < self.result:
-                    buff_name = self.records[i][0]
-                    buff_result = self.records[i][1]
-                    self.records[i][1] = self.result
-                    self.records[i][0] = name
-                    self.result = buff_result
+        if self.result!= 0:
+            if self.records[0][1] == "":
+                self.records[0][1] = self.result
+                self.records[0][0] = name
+                print(self.records)
+                return
+            for i in range(0, 5, 1):
+
+                if self.records[i][1] < self.result or self.records[i][1] == "":
+                    self.records.insert(i,[name, self.result])
+                    self.records = self.records[:-1]
+                    self.result = 0
+                    print(self.records)
+                    return
 
 
 class Window:
@@ -103,7 +109,8 @@ class Window:
         pygame.display.set_caption("Start")
         self.level = "Не выбрано"
         self.theme = "Не выбрано"
-        self.text = 'Игрок'
+        self.text = ""
+        self.flag = False
 
 
 
@@ -429,7 +436,7 @@ class Window:
                 txxxt = text__box.getText()
 
                 self.text = txxxt
-                print(self.text)
+                self.flag = True
                 text__box.hide()
                 self.set_frase("Game over")
 
@@ -519,11 +526,11 @@ class Window:
         name_surface = rec_font.render('ИМЯ', False, BLACK)
         res_surface = rec_font.render('РЕЗУЛЬТАТ', False, BLACK)
         res_font = pygame.font.SysFont('Verdana', 20)
-        text_surface_1 = res_font.render(str(1)+"                      "+str(list_records[0][0])+"                      "+str(list_records[0][1]), True, WHITE)
-        text_surface_2 = res_font.render(str(2)+"                      "+str(list_records[1][0])+"                      "+str(list_records[1][1]), True, WHITE)
-        text_surface_3 = res_font.render(str(3)+"                      "+str(list_records[2][0])+"                      "+str(list_records[2][1]), True, WHITE)
-        text_surface_4 = res_font.render(str(4)+"                      "+str(list_records[3][0])+"                      "+str(list_records[3][1]), True, WHITE)
-        text_surface_5 = res_font.render(str(5)+"                      "+str(list_records[4][0])+"                      "+str(list_records[4][1]), True, WHITE)
+        text_surface_1 = res_font.render(str(1)+"                      "+str(list_records[0][0])+"                      "+str(list_records[0][1]), True, BLACK)
+        text_surface_2 = res_font.render(str(2)+"                      "+str(list_records[1][0])+"                      "+str(list_records[1][1]), True, BLACK)
+        text_surface_3 = res_font.render(str(3)+"                      "+str(list_records[2][0])+"                      "+str(list_records[2][1]), True, BLACK)
+        text_surface_4 = res_font.render(str(4)+"                      "+str(list_records[3][0])+"                      "+str(list_records[3][1]), True, BLACK)
+        text_surface_5 = res_font.render(str(5)+"                      "+str(list_records[4][0])+"                      "+str(list_records[4][1]), True, BLACK)
 
         self.screen.blit(text_surface_1, (80,80))
         self.screen.blit(text_surface_2, (80, 130))
@@ -649,9 +656,11 @@ class Game:
             self.window.draw_to_menu_button()
         elif self.window.frase == "Input_record":
             self.window.input_record()
+            if self.window.flag:
             # self.window.draw_to_menu_button()
             # self.window.draw_textbox()
-            self.record.add_result(self.window.text)
+                self.record.add_result(self.window.text)
+                self.window.flag = False
             # self.window.set_frase("Game over")
         # elif self.window.frase == "Quit":
         #     event.type = pygame.QUIT
@@ -759,7 +768,10 @@ class Game:
             over_sound.play()
             self.snake = Snake(self.window.screen)
             self.rezult = self.count
-            self.window.set_frase("Game over")
+            if self.record.check_on_record():
+                self.window.set_frase("Input_record")
+            else:
+                self.window.set_frase("Game over")
             self.count = 0
             self.barrier.lst_barier_x = []
             self.barrier.lst_barier_y = []
