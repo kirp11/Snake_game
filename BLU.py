@@ -427,8 +427,9 @@ class Window:
             def set_text():
                 # nonlocal text__box
                 txxxt = text__box.getText()
-                print(txxxt)
+
                 self.text = txxxt
+                print(self.text)
                 text__box.hide()
                 self.set_frase("Game over")
 
@@ -733,7 +734,14 @@ class Game:
 
 
     def check_cross_frame(self):
-        return not self.barrier.frame().collidepoint(self.snake.head.x, self.snake.head.y)
+        if self.window.theme == "WINTER":
+            return not self.barrier.winter_frame().collidepoint(self.snake.head.x, self.snake.head.y)
+        if self.window.theme == "SUMMER":
+            return not self.barrier.summer_frame().collidepoint(self.snake.head.x, self.snake.head.y)
+        if self.window.theme == "Voice":
+            return not self.barrier.frame().collidepoint(self.snake.head.x, self.snake.head.y)
+
+
 
     def check_cross_field_barrier(self):
         for i in range(len(self.barrier.barrier_list)):
