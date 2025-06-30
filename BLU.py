@@ -720,7 +720,10 @@ class Game:
             food_sound.play()
             self.snake.add_chain()
             self.count += 1
-            self.food = Food(surface, self.barrier.lst_barier_x, self.barrier.lst_barier_y)
+            if self.window.level == "ЛЮБИТЕЛЬ" or self.window.level == "ПРОФИ":
+                self.food = Food(surface, self.barrier.lst_barier_x, self.barrier.lst_barier_y)
+            else:
+                self.food = Food(surface, self.snake.head.x, self.snake.head.y)
             self.food.check = False
 
 
@@ -819,20 +822,20 @@ class Snake:
         pressed = pygame.key.get_pressed()
         if  pressed[pygame.K_LEFT]:
             self.head.direction = "left"
-            press_sound = pyglet.media.load(os.path.join('src/sounds', 'press.mp3'))
-            press_sound.play()
+            # press_sound = pyglet.media.load(os.path.join('src/sounds', 'press.mp3'))
+            # press_sound.play()
         elif pressed[pygame.K_RIGHT]:
             self.head.direction = "right"
-            press_sound = pyglet.media.load(os.path.join('src/sounds', 'press.mp3'))
-            press_sound.play()
+            # press_sound = pyglet.media.load(os.path.join('src/sounds', 'press.mp3'))
+            # press_sound.play()
         elif pressed[pygame.K_UP]:
             self.head.direction = "up"
-            press_sound = pyglet.media.load(os.path.join('src/sounds', 'press.mp3'))
-            press_sound.play()
+            # press_sound = pyglet.media.load(os.path.join('src/sounds', 'press.mp3'))
+            # press_sound.play()
         elif pressed[pygame.K_DOWN]:
             self.head.direction = "down"
-            press_sound = pyglet.media.load(os.path.join('src/sounds', 'press.mp3'))
-            press_sound.play()
+            # press_sound = pyglet.media.load(os.path.join('src/sounds', 'press.mp3'))
+            # press_sound.play()
         self.choose_head_direction()
 
 
@@ -880,21 +883,21 @@ class Food:
             self.food_y = random.randint(80, (height_w - 30))
 
             if isinstance(self.stop_x, int):
-                if self.food_x <= self.stop_x + 30 and self.food_x >= self.stop_x - 30:
+                if self.food_x <= self.stop_x + 40 and self.food_x >= self.stop_x - 40:
                     self.check = False
                 else:
-                    if self.food_y <= self.stop_y + 30 and self.food_y >= self.stop_y - 30:
+                    if self.food_y <= self.stop_y + 40 and self.food_y >= self.stop_y - 40:
                         self.check = False
                     else:
                         self.check = True
             else:
 
                 for i in self.stop_x:
-                    if self.food_x <= i + 30 and self.food_x >= i - 30:
+                    if self.food_x <= i + 40 and self.food_x >= i - 40:
                         self.check = False
                     else:
                         for j in self.stop_y:
-                            if self.food_y <= j + 30 and self.food_y >= j - 30:
+                            if self.food_y <= j + 40 and self.food_y >= j - 40:
                                 self.check = False
                             else:
                                 self.check = True
