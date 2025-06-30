@@ -5,7 +5,7 @@ import os
 
 import pygame
 pygame.init()
-import pyglet
+pygame.mixer.init()
 import pygame_widgets
 from pygame_widgets.button import Button
 from pygame_widgets.textbox import TextBox
@@ -21,6 +21,12 @@ text_hard_level = "Змейка сталкивается с собой"
 text_winter_theme = "Тема холодной зимы"
 text_summer_theme = "Тема жаркого лета"
 text_voice_theme = "Озвучка голосом"
+
+
+main_sound = pygame.mixer.Sound(os.path.join("src/sounds", "main.wav"))
+food_sound = pygame.mixer.Sound(os.path.join('src/sounds', "food.wav"))
+over_sound = pygame.mixer.Sound(os.path.join('src/sounds', "over.wav"))
+press_sound = pygame.mixer.Sound(os.path.join('src/sounds', "press.wav"))
 
 
 
@@ -624,15 +630,30 @@ class Game:
         self.count = 0
         self.rezult = 0
         self.record = Records()
-        # main_sound = pyglet.media.load(os.path.join('src/sounds', 'main.mp3'))
-        # main_sound.play()
+        self.is_sound = False
 
 
-    def control(self,events):
+    def add_sound(self, sound):
+        if  self.is_sound == False:
+            sound.play()
+        self.is_sound = True
+
+    def stop_sound(self, sound):
+        sound.stop()
+        print("выкл")
+        self.is_sound = False
+
+
+
+
+
+    def control(self):
         self.window.screen.fill(self.window.color)
         if self.window.frase == "Snake game":
+            self.add_sound(main_sound)
             self.generate_window()
-            # main_sound.play()
+
+
 
         elif self.window.frase == "Game over":
             self.window.game_over(self.rezult)
@@ -716,7 +737,7 @@ class Game:
     def cross_with_food(self):
         surface = pygame.display.get_surface()
         if self.condition_of_cross():
-            food_sound = pyglet.media.load(os.path.join('src/sounds', 'food.mp3'))
+
             food_sound.play()
             self.snake.add_chain()
             self.count += 1
@@ -729,16 +750,17 @@ class Game:
 
     def cross_barrier(self):
         if self.check_cross_frame() or self.check_cross_field_barrier():
-            over_sound = pyglet.media.load(os.path.join('src/sounds', 'over.mp3'))
-            over_sound.play()
+
             self.snake = Snake(self.window.screen)
             self.rezult = self.count
             self.record.result = self.count
+            # over_sound.play()
             if self.record.check_on_record():
                 self.window.set_frase("Input_record")
             else:
                 self.window.set_frase("Game over")
-
+            self.stop_sound(main_sound)
+            over_sound.play()
             self.count = 0
             self.barrier.lst_barier_x = []
             self.barrier.lst_barier_y = []
@@ -767,14 +789,15 @@ class Game:
 
     def cross_with_self(self):
         if self.condition_of_cross_self():
-            over_sound = pyglet.media.load(os.path.join('src/sounds', 'over.mp3'))
-            over_sound.play()
+
             self.snake = Snake(self.window.screen)
             self.rezult = self.count
             if self.record.check_on_record():
                 self.window.set_frase("Input_record")
             else:
                 self.window.set_frase("Game over")
+            self.stop_sound(main_sound)
+            over_sound.play()
             self.count = 0
             self.barrier.lst_barier_x = []
             self.barrier.lst_barier_y = []
@@ -822,20 +845,16 @@ class Snake:
         pressed = pygame.key.get_pressed()
         if  pressed[pygame.K_LEFT]:
             self.head.direction = "left"
-            # press_sound = pyglet.media.load(os.path.join('src/sounds', 'press.mp3'))
-            # press_sound.play()
+            press_sound.play()
         elif pressed[pygame.K_RIGHT]:
             self.head.direction = "right"
-            # press_sound = pyglet.media.load(os.path.join('src/sounds', 'press.mp3'))
-            # press_sound.play()
+            press_sound.play()
         elif pressed[pygame.K_UP]:
             self.head.direction = "up"
-            # press_sound = pyglet.media.load(os.path.join('src/sounds', 'press.mp3'))
-            # press_sound.play()
+            press_sound.play()
         elif pressed[pygame.K_DOWN]:
             self.head.direction = "down"
-            # press_sound = pyglet.media.load(os.path.join('src/sounds', 'press.mp3'))
-            # press_sound.play()
+            press_sound.play()
         self.choose_head_direction()
 
 
@@ -975,7 +994,6 @@ class Barrier:
 
     @staticmethod
     def check_cross_with_selfbarier(barrier, list_barrier):
-        print("))))))")
         for i in list_barrier:
             if barrier <= i + 60 and barrier >= i - 60:
                 return True
@@ -995,7 +1013,7 @@ while running:
             running = False
 
     pygame.time.delay(30)
-    game.control(events)
+    game.control()
     # pygame.display.flip()
 
 
