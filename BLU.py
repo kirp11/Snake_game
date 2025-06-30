@@ -721,6 +721,7 @@ class Game:
             self.snake.add_chain()
             self.count += 1
             self.food = Food(surface, self.barrier.lst_barier_x, self.barrier.lst_barier_y)
+            self.food.check = False
 
 
     def cross_barrier(self):
@@ -860,6 +861,7 @@ class Food:
         self.stop_y = stop_y
         self.food_x = self.stop_x
         self.food_y = self.stop_y
+        self.check = False
 
     def create(self):
         surface = pygame.display.get_surface()
@@ -873,9 +875,33 @@ class Food:
         #             self.food_x = random.randint(20, (width_w - 20))
         #             self.food_y = random.randint(70, (height_w - 20))
 
-        while self.food_x == self.stop_x and self.food_y == self.stop_y:
+        while not self.check:
             self.food_x = random.randint(30, (width_w - 30))
             self.food_y = random.randint(80, (height_w - 30))
+
+            if isinstance(self.stop_x, int):
+                if self.food_x <= self.stop_x + 30 and self.food_x >= self.stop_x - 30:
+                    self.check = False
+                else:
+                    if self.food_y <= self.stop_y + 30 and self.food_y >= self.stop_y - 30:
+                        self.check = False
+                    else:
+                        self.check = True
+            else:
+
+                for i in self.stop_x:
+                    if self.food_x <= i + 30 and self.food_x >= i - 30:
+                        self.check = False
+                    else:
+                        for j in self.stop_y:
+                            if self.food_y <= j + 30 and self.food_y >= j - 30:
+                                self.check = False
+                            else:
+                                self.check = True
+
+        # while self.food_x == self.stop_x and self.food_y == self.stop_y:
+        #     self.food_x = random.randint(30, (width_w - 30))
+        #     self.food_y = random.randint(80, (height_w - 30))
 
 
         self.screen.blit(food_image, dest=(self.food_x - 10, self.food_y - 10))
