@@ -981,20 +981,21 @@ class Barrier:
         barrier_x = 0
         barrier_y = 0
         print(self.lst_barier_x)
-        while len(self.lst_barier_x) <= count_barriers:
+        while len(self.lst_barier_x) < count_barriers:
             if len(self.barrier_list)==0:
                 barrier_x = random.randint(40, (width_w - 40))
                 self.lst_barier_x.append(barrier_x)
                 barrier_y = random.randint(80, (height_w - 40))
                 self.lst_barier_y.append(barrier_y)
+                print(self.barrier_list)
             else:
                 while self.check_cross_with_selfbarier(barrier_x, self.lst_barier_x) + self.check_cross_with_selfbarier(barrier_y, self.lst_barier_y)==2:
                     print("lllllllllllll")
                     barrier_x = random.randint(40, (width_w - 40))
                     barrier_y = random.randint(80, (height_w - 40))
 
-            self.lst_barier_x.append(barrier_x)
-            self.lst_barier_y.append(barrier_y)
+                self.lst_barier_x.append(barrier_x)
+                self.lst_barier_y.append(barrier_y)
 
             # n +=1
         for i in range(count_barriers):
