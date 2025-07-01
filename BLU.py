@@ -23,11 +23,16 @@ text_summer_theme = "Тема жаркого лета"
 text_voice_theme = "Озвучка голосом"
 
 
-# main_sound = pygame.mixer.Sound(os.path.join("src/sounds", "main.wav"))
-# food_sound = pygame.mixer.Sound(os.path.join('src/sounds', "food.wav"))
-# over_sound = pygame.mixer.Sound(os.path.join('src/sounds', "over.wav"))
-# press_sound = pygame.mixer.Sound(os.path.join('src/sounds', "press.wav"))
-# fast_sound = pygame.mixer.Sound(os.path.join('src/sounds', "fast.wav"))
+main_sound = pygame.mixer.Sound(os.path.join("src/sounds", "main.wav"))
+food_sound = pygame.mixer.Sound(os.path.join('src/sounds', "food.wav"))
+over_sound = pygame.mixer.Sound(os.path.join('src/sounds', "over.wav"))
+press_sound = pygame.mixer.Sound(os.path.join('src/sounds', "press.wav"))
+fast_sound = pygame.mixer.Sound(os.path.join('src/sounds', "fast.wav"))
+
+voice_sound = []
+for i in range(1,16):
+    voice_sound.append(os.path.join("src/sounds/D_V_Rak", f"{i}.wav"))
+over_voice = pygame.mixer.Sound(os.path.join('src/sounds/D_V_Rak', "over.wav"))
 
 
 
@@ -336,8 +341,8 @@ class Window:
                                                pressedColour=WGREEN, text="SUMMER",
                                                onClick=lambda: self.set_theme("SUMMER"))
             voice_theme_button = Button(surface, 410, 180, 170, 50, inactiveColour=WHITE, radius=0,
-                                             pressedColour=WGREEN, text="Voice",
-                                             onClick=lambda: self.set_theme("Voice"))
+                                             pressedColour=WGREEN, text="Voice of D.V.Rak",
+                                             onClick=lambda: self.set_theme("Voice of D.V.Rak"))
 
             to_menu_button = Button(surface, 460, 290, 130, 50, inactiveColour=GREEN, radius=30,
                                          pressedColour=WGREEN, text="В МЕНЮ",
@@ -631,34 +636,49 @@ class Game:
         self.count = 0
         self.rezult = 0
         self.record = Records()
-        # self.is_sound = False
+        self.is_sound = False
 
 
-    # def add_main_sound(self):
-    #     if  self.is_sound == False:
-    #         if self.window.level == "НОВИЧОК":
-    #             main_sound.play()
-    #         else:
-    #             fast_sound.play()
-    #     self.is_sound = True
-    #
-    # def stop_main_sound(self):
-    #     if self.is_sound == True:
-    #         if self.window.level == "НОВИЧОК":
-    #             main_sound.stop()
-    #         else:
-    #             fast_sound.stop()
-    #
-    #     self.is_sound = False
+    def add_main_sound(self):
+        if  self.is_sound == False:
+            if self.window.level == "НОВИЧОК":
+                main_sound.set_volume(0.2)
+                main_sound.play(loops=-1)
+            else:
+                fast_sound.set_volume(0.2)
+                fast_sound.play(loops=-1)
+        self.is_sound = True
 
+    def stop_main_sound(self):
+        if self.is_sound == True:
+            if self.window.level == "НОВИЧОК":
+                main_sound.stop()
+            else:
+                fast_sound.stop()
 
+        self.is_sound = False
 
+    def food_music(self):
+        if self.window.theme == "Voice of D.V.Rak":
+            song = random.choice(voice_sound)
+            food_voice = pygame.mixer.Sound(song)
+            food_voice.set_volume(1.0)
+            food_voice.play()
+            return
+        food_sound.play()
+
+    def finish_sound(self):
+        if self.window.theme == "Voice of D.V.Rak":
+            over_voice.set_volume(1.0)
+            over_voice.play()
+            return
+        over_sound.play()
 
 
     def control(self):
         self.window.screen.fill(self.window.color)
         if self.window.frase == "Snake game":
-            # self.add_main_sound()
+            self.add_main_sound()
             self.generate_window()
 
         elif self.window.frase == "Game over":
@@ -671,7 +691,7 @@ class Game:
             self.window.warning()
             self.window.draw_warning_button()
         elif self.window.frase == "Pause menu":
-            # self.stop_main_sound()
+            self.stop_main_sound()
             self.window.pause()
             self.window.draw_pause_button()
         elif self.window.frase == "Settings menu":
@@ -701,7 +721,7 @@ class Game:
                 self.window.winter_theme_game()
                 self.barrier.winter_frame()
                 self.window.snowFall()
-            elif self.window.theme == "Voice":
+            elif self.window.theme == "Voice of D.V.Rak":
                 self.window.game()
                 self.barrier.frame()
             self.counter()
@@ -717,8 +737,6 @@ class Game:
                 self.snake.speed = 10
                 self.barrier.field(10)
                 self.cross_with_self()
-
-
 
     def check_full(self):
         if self.window.level == "Не выбрано" or self.window.theme == "Не выбрано":
@@ -744,8 +762,7 @@ class Game:
     def cross_with_food(self):
         surface = pygame.display.get_surface()
         if self.condition_of_cross():
-
-            # food_sound.play()
+            self.food_music()
             self.snake.add_chain()
             self.count += 1
             if self.window.level == "ЛЮБИТЕЛЬ" or self.window.level == "ПРОФИ":
@@ -761,13 +778,12 @@ class Game:
             self.snake = Snake(self.window.screen)
             self.rezult = self.count
             self.record.result = self.count
-            # over_sound.play()
+            self.finish_sound()
             if self.record.check_on_record():
                 self.window.set_frase("Input_record")
             else:
                 self.window.set_frase("Game over")
-            # self.stop_main_sound()
-            # over_sound.play()
+            self.stop_main_sound()
             self.count = 0
             self.barrier.lst_barier_x = []
             self.barrier.lst_barier_y = []
@@ -779,7 +795,7 @@ class Game:
             return not self.barrier.winter_frame().collidepoint(self.snake.head.x, self.snake.head.y)
         if self.window.theme == "SUMMER":
             return not self.barrier.summer_frame().collidepoint(self.snake.head.x, self.snake.head.y)
-        if self.window.theme == "Voice":
+        if self.window.theme == "Voice of D.V.Rak":
             return not self.barrier.frame().collidepoint(self.snake.head.x, self.snake.head.y)
 
 
@@ -799,12 +815,14 @@ class Game:
 
             self.snake = Snake(self.window.screen)
             self.rezult = self.count
+            self.finish_sound()
             if self.record.check_on_record():
                 self.window.set_frase("Input_record")
             else:
                 self.window.set_frase("Game over")
-            # self.stop_main_sound()
-            # over_sound.play()
+            self.stop_main_sound()
+
+
             self.count = 0
             self.barrier.lst_barier_x = []
             self.barrier.lst_barier_y = []
@@ -852,16 +870,20 @@ class Snake:
         pressed = pygame.key.get_pressed()
         if  pressed[pygame.K_LEFT]:
             self.head.direction = "left"
-            # press_sound.play()
+            press_sound.set_volume(0.2)
+            press_sound.play()
         elif pressed[pygame.K_RIGHT]:
             self.head.direction = "right"
-            # press_sound.play()
+            press_sound.set_volume(0.2)
+            press_sound.play()
         elif pressed[pygame.K_UP]:
             self.head.direction = "up"
-            # press_sound.play()
+            press_sound.set_volume(0.2)
+            press_sound.play()
         elif pressed[pygame.K_DOWN]:
             self.head.direction = "down"
-            # press_sound.play()
+            press_sound.set_volume(0.2)
+            press_sound.play()
         self.choose_head_direction()
 
 
