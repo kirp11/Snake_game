@@ -972,7 +972,7 @@ class Barrier:
             if barrier_x >= self.lst_barier_x[i] -70 and barrier_x <= self.lst_barier_x[i] + 70:
                 # print("пересек ч")
                 for j in range(i, len(self.lst_barier_y)):
-                    if barrier_y >= self.lst_barier_y[j] - 70 and barrier_x <= self.lst_barier_y[j] + 70:
+                    if barrier_y >= self.lst_barier_y[j] - 70 and barrier_y <= self.lst_barier_y[j] + 70:
                         # print("пересек")
                         return True
         return False
@@ -1003,8 +1003,8 @@ class Barrier:
                 # self.screen.blit(bariere_image, rect)
                 # barrier = pygame.draw.rect(self.screen, WHITE, rect, 1)
 
-                while self.check_cross_with_selfbarier(barrier_x, barrier_y) == True:
-                    print(self.check_cross_with_selfbarier(barrier_x, barrier_y))
+                while self.check_cross_with_selfbarier(barrier_x, barrier_y):
+                    # print(self.check_cross_with_selfbarier(barrier_x, barrier_y))
                     barrier_x = random.randint(40, (width_w - 40))
                     barrier_y = random.randint(80, (height_w - 40))
                     # rect_position = self.lst_barier_x[i], self.lst_barier_y[i]
@@ -1024,7 +1024,7 @@ class Barrier:
             # n +=1
         for i in range(len(self.lst_barier_x)):
             rect_position = self.lst_barier_x[i], self.lst_barier_y[i]
-            print(self.check_cross_with_selfbarier(self.lst_barier_x[i], self.lst_barier_y[i]))
+            # print(self.check_cross_with_selfbarier(self.lst_barier_x[i], self.lst_barier_y[i]))
             rect = bariere_image.get_rect()
             rect.center = rect_position
             self.screen.blit(bariere_image, rect)
