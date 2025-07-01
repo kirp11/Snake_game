@@ -50,7 +50,6 @@ ORANGE = (255,165,0)
 SANDY = (205,170,127)
 
 
-
 end_image = pygame.image.load(os.path.join('src/images','game_over.jpg'))
 snake_head = pygame.image.load(os.path.join('src/images','snake_head.png'))
 snake_head.set_colorkey((246,246,246))
@@ -64,10 +63,10 @@ bariere = pygame.image.load(os.path.join('src/images','bariere.jpg'))
 bariere.set_colorkey(WHITE)
 bariere_image = pygame.transform.scale(bariere, (40, 40))
 
-
 summer_img = pygame.image.load(os.path.join('src/images','summer.jpg'))
 summer_image = pygame.transform.scale(summer_img, (600, 700))
 
+#
 snowFall = []
 for i in range(100):
     x = random.randrange(0, 600)
@@ -122,11 +121,11 @@ class Window:
         self.flag = False
 
 
-
     def view(self):
         self.screen = pygame.display.set_mode((self.lenght, self.high))
         pygame.display.set_caption(self.frase)
         self.screen.fill(self.color)
+
 
     def get_frase(self):
         return self.frase
@@ -138,34 +137,24 @@ class Window:
 
     def game(self):
         current_title, icon_title = pygame.display.get_caption()
-        if current_title == "Snake game":
-
-            esc_font_text = pygame.font.SysFont('Verdana', 16)
-            esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, BLACK)
-            self.screen.blit(esc_text, (240, 20))
-            self.screen.fill(self.color)
-            return
-        self.lenght = 600
-        self.high = 700
-        self.frase = "Snake game"
-        self.color = WGREEN
-        self.view()
+        if current_title != "Snake game":
+            self.lenght = 600
+            self.high = 700
+            self.frase = "Snake game"
+            self.color = WGREEN
+            self.view()
         esc_font_text = pygame.font.SysFont('Verdana', 16)
         esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, BLACK)
         self.screen.blit(esc_text, (240, 20))
 
     def winter_theme_game(self):
         current_title, icon_title = pygame.display.get_caption()
-        if current_title == "Snake game":
-            esc_font_text = pygame.font.SysFont('Verdana', 16)
-            esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, WHITE)
-            self.screen.blit(esc_text, (240, 20))
-            return
-        self.lenght = 600
-        self.high = 700
-        self.frase = "Snake game"
-        self.color = WBLUE
-        self.view()
+        if current_title != "Snake game":
+            self.lenght = 600
+            self.high = 700
+            self.frase = "Snake game"
+            self.color = WBLUE
+            self.view()
         esc_font_text = pygame.font.SysFont('Verdana', 16)
         esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, WHITE)
         self.screen.blit(esc_text, (240, 20))
@@ -173,18 +162,12 @@ class Window:
 
     def summer_theme_game(self):
         current_title, icon_title = pygame.display.get_caption()
-        if current_title == "Snake game":
-            self.screen.blit(summer_image, (0, 50))
-            esc_font_text = pygame.font.SysFont('Verdana', 16)
-            esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, BLACK)
-            self.screen.blit(esc_text, (240, 20))
-            return
-        self.lenght = 600
-        self.high = 700
-        self.frase = "Snake game"
-        self.color = WHITE
-        self.view()
-
+        if current_title != "Snake game":
+            self.lenght = 600
+            self.high = 700
+            self.frase = "Snake game"
+            self.color = WHITE
+            self.view()
         self.screen.blit(summer_image, (0, 50))
         esc_font_text = pygame.font.SysFont('Verdana', 16)
         esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, BLACK)
@@ -192,18 +175,14 @@ class Window:
 
 
     def snowFall(self):
-
         for j in range(len(snowFall)):
             pygame.draw.circle(self.screen, WHITE, snowFall[j], 2)
-
             snowFall[j][1] += 1.5
             if snowFall[j][1] > self.high:
                 y = random.randrange(20, 50)
                 snowFall[j][1] = y
-
                 x = random.randrange(0, self.lenght)
                 snowFall[j][0] = x
-
 
         esc_font_text = pygame.font.SysFont('Verdana', 16)
         esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, BLACK)
@@ -213,13 +192,10 @@ class Window:
     def menu(self):
         current_title, icon_title =  pygame.display.get_caption()
         if current_title == "Main menu":
-
             over_font = pygame.font.SysFont('Verdana', 30)
             text_surface = over_font.render('Выберите действие', False, GREEN)
-
             self.screen.blit(text_surface, (100, 20))
             return
-
         self.lenght = 500
         self.high = 500
         self.frase = "Main menu"
@@ -246,7 +222,6 @@ class Window:
         record_button.draw()
         setting_button.draw()
         exit_button.draw()
-
         events = pygame.event.get()
         pygame_widgets.update(events)
 
@@ -287,29 +262,19 @@ class Window:
             self.screen.blit(choose_theme, (230, 300))
             comlex_font = pygame.font.SysFont('Verdana', 25)
             comlex_text_surface = comlex_font.render('Выберите уровень сложности:', False, BLACK)
-
             theme_font = pygame.font.SysFont('Verdana', 25)
             theme_text_surface = theme_font.render('Выберите тему оформления:', False, BLACK)
-
             choose_text_surface = theme_font.render('Выбран вариант игры:', False, BLACK)
             choose_font_comlex = pygame.font.SysFont('Verdana', 15)
             choose_text_comlex = choose_font_comlex.render('Сложность', False, BLACK)
             choose_font_theme = pygame.font.SysFont('Verdana', 15)
             choose_text_theme = choose_font_theme.render('Тема', False, BLACK)
-
             self.screen.blit(comlex_text_surface, (100, 10))
-
             self.screen.blit(theme_text_surface, (100, 130))
-
             self.screen.blit(choose_text_surface, (100, 250))
-
             self.screen.blit(choose_text_comlex, (70, 280))
-
             self.screen.blit(choose_text_theme, (260, 280))
-
             return
-
-
         self.lenght = 600
         self.high = 350
         self.frase = "Settings menu"
@@ -362,24 +327,12 @@ class Window:
 
     def game_over(self, count):
         current_title, icon_title =  pygame.display.get_caption()
-        if current_title == "Game over":
-            over_font = pygame.font.SysFont('Verdana', 50)
-            text_surface = over_font.render('GAME OVER', False, YELLOW)
-            over_font_result = pygame.font.SysFont('Verdana', 25)
-            text_surface_result = over_font_result.render("ВАШ РЕЗУЛЬТАТ: " + str(count), False, YELLOW)
-            over_font_low = pygame.font.SysFont('Verdana', 20)
-            text_surface_low = over_font_low.render('НАЧАТЬ ЗАНОВО?', False, GREEN)
-            self.screen.blit(text_surface, (40, 0))
-            self.screen.blit(end_image, (100, 80))
-            self.screen.blit(text_surface_result, (80, 220))
-            self.screen.blit(text_surface_low, (100, 260))
-            return
-
-        self.lenght = 400
-        self.high = 400
-        self.frase = "Game over"
-        self.color = BLUE
-        self.view()
+        if current_title != "Game over":
+            self.lenght = 400
+            self.high = 400
+            self.frase = "Game over"
+            self.color = BLUE
+            self.view()
         over_font = pygame.font.SysFont('Verdana', 50)
         text_surface = over_font.render('GAME OVER', False, YELLOW)
         over_font_result = pygame.font.SysFont('Verdana', 25)
@@ -397,22 +350,18 @@ class Window:
         pressedColour=(0, 255, 0), hoverColour = GREEN, text="ДА", onClick=lambda: self.set_frase("Snake game"))
         no_button = Button(self.screen, 30, 320, 120, 50, inactiveColour=YELLOW, radius=50,
         pressedColour=(0, 255, 0), hoverColour = RED, text="НЕТ", onClick=lambda: self.set_frase("Main menu"))
+
         yes_button.draw()
         no_button.draw()
-
         events = pygame.event.get()
         pygame_widgets.update(events)
 
 
     def input_record(self):
-
         events = pygame.event.get()
         pygame_widgets.update(events)
-
         current_title, icon_title = pygame.display.get_caption()
         if current_title == "Input_record":
-
-
             in_font = pygame.font.SysFont('Verdana', 20)
             in_surface1 = in_font.render('!! Вы попали в список рекордсменов !!', False, BLUE)
             in_surface2 = in_font.render('Впишите свое имя для отражения на доске почета:',
@@ -420,7 +369,6 @@ class Window:
             self.screen.blit(in_surface1, (80, 60))
             self.screen.blit(in_surface2, (15, 100))
             return
-
 
         self.lenght = 600
         self.high = 400
@@ -431,9 +379,7 @@ class Window:
 
         def draw_textbox():
             def set_text():
-                txxxt = text__box.getText()
-
-                self.text = txxxt
+                self.text = text__box.getText()
                 self.flag = True
                 text__box.hide()
                 self.set_frase("Game over")
@@ -447,45 +393,12 @@ class Window:
 
     def records(self, list_records):
         current_title, icon_title =  pygame.display.get_caption()
-        if current_title == "Records":
-            rec_font = pygame.font.SysFont('Verdana', 20)
-            place_surface = rec_font.render('МЕСТО', False, BLACK)
-            name_surface = rec_font.render('ИМЯ', False, BLACK)
-            res_surface = rec_font.render('РЕЗУЛЬТАТ', False, BLACK)
-            res_font = pygame.font.SysFont('Verdana', 20)
-            text_surface_1 = res_font.render(
-                str(1) + "                      " + str(list_records[0][0]) + "                      " + str(
-                    list_records[0][1]), True, WHITE)
-            text_surface_2 = res_font.render(
-                str(2) + "                      " + str(list_records[1][0]) + "                      " + str(
-                    list_records[1][1]), True, WHITE)
-            text_surface_3 = res_font.render(
-                str(3) + "                      " + str(list_records[2][0]) + "                      " + str(
-                    list_records[2][1]), True, WHITE)
-            text_surface_4 = res_font.render(
-                str(4) + "                      " + str(list_records[3][0]) + "                      " + str(
-                    list_records[3][1]), True, WHITE)
-            text_surface_5 = res_font.render(
-                str(5) + "                      " + str(list_records[4][0]) + "                      " + str(
-                    list_records[4][1]), True, WHITE)
-
-            self.screen.blit(text_surface_1, (80, 80))
-            self.screen.blit(text_surface_2, (80, 130))
-            self.screen.blit(text_surface_3, (80, 180))
-            self.screen.blit(text_surface_4, (80, 230))
-            self.screen.blit(text_surface_5, (80, 280))
-
-            self.screen.blit(place_surface, (60, 20))
-            self.screen.blit(name_surface, (250, 20))
-            self.screen.blit(res_surface, (410, 20))
-            return
-
-        self.lenght = 600
-        self.high = 400
-        self.frase = "Records"
-        self.color = SANDY
-        self.view()
-
+        if current_title != "Records":
+            self.lenght = 600
+            self.high = 400
+            self.frase = "Records"
+            self.color = SANDY
+            self.view()
         rec_font = pygame.font.SysFont('Verdana', 20)
         place_surface = rec_font.render('МЕСТО', False, BLACK)
         name_surface = rec_font.render('ИМЯ', False, BLACK)
@@ -512,25 +425,17 @@ class Window:
         pressedColour=WGREEN, text="В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
 
         to_menu_button.draw()
-
         events = pygame.event.get()
         pygame_widgets.update(events)
 
     def pause(self):
         current_title, icon_title = pygame.display.get_caption()
-        if current_title == "Pause menu":
-            question = pygame.font.SysFont('Verdana', 20)
-            text_question = question.render('ВЫЙТИ ИЗ ИГРЫ?', False, YELLOW)
-            self.screen.blit(text_question, (110, 50))
-            return
-
-
-        self.lenght = 400
-        self.high = 200
-        self.frase = "Pause menu"
-        self.color = BLUE
-        self.view()
-
+        if current_title != "Pause menu":
+            self.lenght = 400
+            self.high = 200
+            self.frase = "Pause menu"
+            self.color = BLUE
+            self.view()
         question = pygame.font.SysFont('Verdana', 20)
         text_question = question.render('ВЫЙТИ ИЗ ИГРЫ?', False, YELLOW)
         self.screen.blit(text_question, (110, 50))
@@ -543,25 +448,18 @@ class Window:
 
         output_button.draw()
         input_button.draw()
-
         events = pygame.event.get()
         pygame_widgets.update(events)
 
     def warning(self):
 
         current_title, icon_title = pygame.display.get_caption()
-        if current_title == "Warning window":
-            warning_font_text = pygame.font.SysFont('Verdana', 15)
-            warning_text = warning_font_text.render('ВЫБЕРИТЕ УРОВЕНЬ СЛОЖНОСТИ И / ИЛИ ТЕМУ', False, YELLOW)
-            self.screen.blit(warning_text, (15, 50))
-            return
-
-        self.lenght = 400
-        self.high = 200
-        self.frase = "Warning window"
-        self.color = BLUE
-        self.view()
-
+        if current_title != "Warning window":
+            self.lenght = 400
+            self.high = 200
+            self.frase = "Warning window"
+            self.color = BLUE
+            self.view()
         warning_font_text = pygame.font.SysFont('Verdana', 15)
         warning_text = warning_font_text.render('ВЫБЕРИТЕ УРОВЕНЬ СЛОЖНОСТИ И / ИЛИ ТЕМУ', False, YELLOW)
         self.screen.blit(warning_text, (15, 50))
@@ -574,10 +472,8 @@ class Window:
 
         output_button.draw()
         input_button.draw()
-
         events = pygame.event.get()
         pygame_widgets.update(events)
-
 
 
 class Game:
@@ -629,6 +525,7 @@ class Game:
             return
         over_sound.play()
 
+# основная распределительная функция
 
     def control(self):
         self.window.screen.fill(self.window.color)
@@ -661,6 +558,7 @@ class Game:
                 self.record.add_result(self.window.text)
                 self.window.flag = False
 
+# функция настроек окон
 
     def generate_window(self):
         if self.check_full():
