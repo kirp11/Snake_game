@@ -5,12 +5,10 @@ import os
 
 import pygame
 pygame.init()
-# pygame.mixer.init()
+pygame.mixer.init()
 import pygame_widgets
 from pygame_widgets.button import Button
 from pygame_widgets.textbox import TextBox
-
-
 from pygame.locals import *
 
 import random
@@ -35,8 +33,9 @@ for i in range(1,16):
 over_voice = pygame.mixer.Sound(os.path.join('src/sounds/D_V_Rak', "over.wav"))
 
 
-
 FAKTOR = 5
+
+
 # Цвета (R, G, B)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -194,7 +193,6 @@ class Window:
 
     def snowFall(self):
 
-        # clock = pygame.time.Clock()
         for j in range(len(snowFall)):
             pygame.draw.circle(self.screen, WHITE, snowFall[j], 2)
 
@@ -421,10 +419,6 @@ class Window:
                                          False, BLUE)
             self.screen.blit(in_surface1, (80, 60))
             self.screen.blit(in_surface2, (15, 100))
-
-
-            # pygame.display.update()
-
             return
 
 
@@ -433,16 +427,10 @@ class Window:
         self.frase = "Input_record"
         self.color = SANDY
         self.view()
-        # in_font = pygame.font.SysFont('Verdana', 20)
-        # in_surface1 = in_font.render('!! Вы попали в список рекордсменов !!', False, BLUE)
-        # in_surface2 = in_font.render('Впишите свое имя для отражения на доске почета:',
-        #                              False, BLUE)
-        # self.screen.blit(in_surface1, (80, 60))
-        # self.screen.blit(in_surface2, (15, 100))
+
 
         def draw_textbox():
             def set_text():
-                # nonlocal text__box
                 txxxt = text__box.getText()
 
                 self.text = txxxt
@@ -454,40 +442,7 @@ class Window:
             text__box = TextBox(surface, 30, 150, 500, 60, fontSize=30, borderColour=WHITE,
                                     textColour=BGREEN, onSubmit=set_text, radius=10, borderThickness=5,
                                     placeholderText="Игрок")
-            # events = pygame.event.get()
-            # pygame_widgets.update(events)
-            # self.screen.fill((255, 255, 255))
-
         draw_textbox()
-        #
-        # pygame_widgets.update(events)
-        # pygame.display.update()
-
-
-
-
-
-
-
-            # self.screen.fill(self.color)
-            # text__box.draw()
-            # to_menu_button = Button(self.screen, 200, 330, 200, 60, inactiveColour=GREEN, radius=30,
-            # pressedColour=WGREEN, text="В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
-            #
-            # to_menu_button.draw()
-            # self.screen.fill((255, 255, 255))
-
-        # for event in events:
-        #     # pygame_widgets.update(event)
-        #     if event.type == pygame.K_RETURN:
-        #         # running = False
-        #         pygame_widgets.update(events)
-
-
-
-
-
-
 
 
     def records(self, list_records):
@@ -703,14 +658,9 @@ class Game:
         elif self.window.frase == "Input_record":
             self.window.input_record()
             if self.window.flag:
-            # self.window.draw_to_menu_button()
-            # self.window.draw_textbox()
                 self.record.add_result(self.window.text)
                 self.window.flag = False
-            # self.window.set_frase("Game over")
-        # elif self.window.frase == "Quit":
-        #     event.type = pygame.QUIT
-        # pygame_widgets.update(events)
+
 
     def generate_window(self):
         if self.check_full():
@@ -799,16 +749,17 @@ class Game:
             return not self.barrier.frame().collidepoint(self.snake.head.x, self.snake.head.y)
 
 
-
     def check_cross_field_barrier(self):
         for i in range(len(self.barrier.barrier_list)):
             if self.barrier.barrier_list[i].collidepoint(self.snake.head.x, self.snake.head.y):
                 return True
 
+
     def condition_of_cross_self(self):
         for i in range(1, len(self.snake.body)):
             if self.snake.head.x == self.snake.body[i].x and self.snake.head.y == self.snake.body[i].y:
                 return True
+
 
     def cross_with_self(self):
         if self.condition_of_cross_self():
@@ -821,13 +772,10 @@ class Game:
             else:
                 self.window.set_frase("Game over")
             self.stop_main_sound()
-
-
             self.count = 0
             self.barrier.lst_barier_x = []
             self.barrier.lst_barier_y = []
             self.barrier.barrier_list = []
-
 
 
 class Chain:
@@ -835,6 +783,7 @@ class Chain:
         self.x = x
         self.y = y
         self.direction = direction
+
 
 class Snake:
     def __init__(self, screen):
@@ -849,7 +798,6 @@ class Snake:
 
     def movie(self):
         self.handler_direction_head()
-        # pygame.draw.circle(self.screen, BLUE, (self.body[0].x, self.body[0].y), FAKTOR*2)
         self.screen.blit(snake_head_image, dest = (self.body[0].x-10, self.body[0].y-10))
         for i in range(1, len(self.body)):
             self.body[i].x = self.way_head[i*int(20/self.speed)][0]
@@ -918,13 +866,7 @@ class Food:
         surface = pygame.display.get_surface()
         width_w = surface.get_width()
         height_w = surface.get_height()
-        # for i in self.stop_x:
-        #     if self.food_x <= i + 5:
-        #         for j in self.stop_y:
-        #             if self.food_y <= j + 5:
-        #
-        #             self.food_x = random.randint(20, (width_w - 20))
-        #             self.food_y = random.randint(70, (height_w - 20))
+
 
         while not self.check:
             self.food_x = random.randint(30, (width_w - 30))
@@ -939,7 +881,6 @@ class Food:
                     else:
                         self.check = True
             else:
-
                 for i in self.stop_x:
                     if self.food_x <= i + 40 and self.food_x >= i - 40:
                         self.check = False
@@ -949,12 +890,6 @@ class Food:
                                 self.check = False
                             else:
                                 self.check = True
-
-        # while self.food_x == self.stop_x and self.food_y == self.stop_y:
-        #     self.food_x = random.randint(30, (width_w - 30))
-        #     self.food_y = random.randint(80, (height_w - 30))
-
-
         self.screen.blit(food_image, dest=(self.food_x - 10, self.food_y - 10))
 
 
@@ -966,21 +901,18 @@ class Barrier:
         self.barrier_list = []
 
     def frame(self):
-
         width_w = self.screen.get_width()
         height_w = self.screen.get_height()-50
         frame = pygame.draw.rect(self.screen, (51,102,0), [0, 50, width_w, height_w], FAKTOR*2)
         return frame
 
     def winter_frame(self):
-
         width_w = self.screen.get_width()
         height_w = self.screen.get_height()-50
         frame = pygame.draw.rect(self.screen, WHITE, [0, 50, width_w, height_w], FAKTOR*2)
         return frame
 
     def summer_frame(self):
-
         width_w = self.screen.get_width()
         height_w = self.screen.get_height()-50
         frame = pygame.draw.rect(self.screen, ORANGE, [0, 50, width_w, height_w], FAKTOR*2)
@@ -988,14 +920,10 @@ class Barrier:
 
 
     def check_cross_with_selfbarier(self, barrier_x, barrier_y):
-
         for i in range(len(self.lst_barier_x)):
-
             if barrier_x >= self.lst_barier_x[i] -70 and barrier_x <= self.lst_barier_x[i] + 70:
-                # print("пересек ч")
                 for j in range(i, len(self.lst_barier_y)):
                     if barrier_y >= self.lst_barier_y[j] - 70 and barrier_y <= self.lst_barier_y[j] + 70:
-                        # print("пересек")
                         return True
         return False
 
@@ -1003,60 +931,27 @@ class Barrier:
         surface = pygame.display.get_surface()
         width_w = surface.get_width()
         height_w = surface.get_height()
-        # n = 0
-        barrier_x = 0
-        barrier_y = 0
-        # i = 0
-        # print(self.lst_barier_x)
         while len(self.lst_barier_x) < count_barriers:
-            # print("check")
             if len(self.lst_barier_x)==0:
                 barrier_x = random.randint(40, (width_w - 40))
-                # self.lst_barier_x.append(barrier_x)
                 barrier_y = random.randint(80, (height_w - 40))
-                # self.lst_barier_y.append(barrier_y)
-                # print(self.barrier_list)
             else:
                 barrier_x = random.randint(40, (width_w - 40))
                 barrier_y = random.randint(80, (height_w - 40))
-                # rect_position = self.lst_barier_x[i], self.lst_barier_y[i]
-                # rect = bariere_image.get_rect()
-                # rect.center = rect_position
-                # self.screen.blit(bariere_image, rect)
-                # barrier = pygame.draw.rect(self.screen, WHITE, rect, 1)
-
                 while self.check_cross_with_selfbarier(barrier_x, barrier_y):
-                    # print(self.check_cross_with_selfbarier(barrier_x, barrier_y))
                     barrier_x = random.randint(40, (width_w - 40))
                     barrier_y = random.randint(80, (height_w - 40))
-                    # rect_position = self.lst_barier_x[i], self.lst_barier_y[i]
-                    # rect = bariere_image.get_rect()
-                    # rect.center = rect_position
-                    # self.screen.blit(bariere_image, rect)
-                    # barrier = pygame.draw.rect(self.screen, WHITE, rect, 1)
-            # i += 1
-
-                    # print("lllllllllllll")
-                    # barrier_x = random.randint(40, (width_w - 40))
-                    # barrier_y = random.randint(80, (height_w - 40))
-
             self.lst_barier_x.append(barrier_x)
             self.lst_barier_y.append(barrier_y)
 
-            # n +=1
+
         for i in range(len(self.lst_barier_x)):
             rect_position = self.lst_barier_x[i], self.lst_barier_y[i]
-            # print(self.check_cross_with_selfbarier(self.lst_barier_x[i], self.lst_barier_y[i]))
             rect = bariere_image.get_rect()
             rect.center = rect_position
             self.screen.blit(bariere_image, rect)
             barrier = pygame.draw.rect(self.screen, WHITE, rect, 1)
-            # self.check_cross_with_selfbarier(barrier, self.barrier_list)
             self.barrier_list.append(barrier)
-            # i +=1
-
-
-
 
 
 running = True
@@ -1064,17 +959,13 @@ game = Game()
 
 while running:
     events = pygame.event.get()
-    # pygame_widgets.update(events)
     for event in events:
-        # pygame_widgets.update(event)
         if event.type == pygame.QUIT or game.window.frase == "Quit":
             running = False
 
     pygame.time.delay(30)
     game.control()
-    # pygame.display.flip()
-
-
     pygame.display.update()
+
 pygame.quit()
 
