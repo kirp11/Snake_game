@@ -99,7 +99,7 @@ class Game:
     def control(self):
         self.window.get_screen().fill(self.window.get_color())
         if self.window.get_frase() == "Snake game":
-            self.add_main_sound()
+
             self.generate_window()
 
         elif self.window.get_frase() == "Game over":
@@ -141,6 +141,7 @@ class Game:
             elif self.window.get_theme() == "Voice of D.V.Rak":
                 self.window.game()
                 self.barrier.frame()
+            self.add_main_sound()
             self.counter()
             self.snake.movie()
             self.food.create()
