@@ -1,5 +1,5 @@
 
-from texts_images_sounds import  *
+from src.texts_images_sounds import  *
 import pygame
 
 

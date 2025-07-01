@@ -1,16 +1,18 @@
+import sys
+
 from venv import create
-
-# from constants import *
-
-from texts_images_sounds import *
-
-from class_records import  Records
-from class_Window import Window
-from class_snake import Snake, Chain
-from class_food import Food
-from  class_barrier import Barrier
-
 import os
+
+from src.texts_images_sounds import *
+
+from src.class_records import  Records
+from src.class_Window import Window
+from src.class_snake import Snake, Chain
+from src.class_food import Food
+from  src.class_barrier import Barrier
+
+
+
 
 
 import pygame

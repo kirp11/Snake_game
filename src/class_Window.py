@@ -1,6 +1,6 @@
 
-from constants import *
-from texts_images_sounds import  *
+from src.constants import *
+from src.texts_images_sounds import  *
 
 import pygame
 import pygame_widgets
