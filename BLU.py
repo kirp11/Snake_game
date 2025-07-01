@@ -76,117 +76,183 @@ for i in range(100):
 
 class Records:
     def __init__(self):
-        self.result = ""
-        self.records = [["",""],["",""],["",""],["",""],["",""]]
-        self.name = ""
+        self.__result = ""
+        self.__records = [["", ""], ["", ""], ["", ""], ["", ""], ["", ""]]
+        self.__name = ""
+
+
+    def get_result(self):
+        return self.__result
+
+    def get_records(self):
+        return self.__records
+
+    def get_name(self):
+        return self.__name
+
+    def set_result(self, result: int):
+        self.__result = result
+
+    def set_records(self, records:list):
+        self.__records = records
+
+    def set_name(self, name:str):
+        self.__name = name
 
     def check_on_record(self):
-        if self.result!= 0:
+        if self.__result!= 0:
             i = 0
-            if self.records[i][1] == "":
+            if self.__records[i][1] == "":
                 return True
-            while self.records[i][1] != "":
-                if self.records[i][1] < self.result:
+            while self.__records[i][1] != "":
+                if self.__records[i][1] < self.__result:
                     return True
                 i += 1
             return False
 
 
     def add_result(self, name):
-        if self.result!= 0:
-            if self.records[0][1] == "":
-                self.records[0][1] = self.result
-                self.records[0][0] = name
+        if self.__result!= 0:
+            if self.__records[0][1] == "":
+                self.__records[0][1] = self.__result
+                self.__records[0][0] = name
                 return
             for i in range(0, 5, 1):
 
-                if self.records[i][1] < self.result or self.records[i][1] == "":
-                    self.records.insert(i,[name, self.result])
-                    self.records = self.records[:-1]
-                    self.result = 0
+                if self.__records[i][1] < self.__result or self.__records[i][1] == "":
+                    self.__records.insert(i, [name, self.__result])
+                    self.__records = self.__records[:-1]
+                    self.__result = 0
                     return
 
 
 class Window:
     def __init__(self, lenght=500, high=500, frase=None, color=None):
-        self.lenght = lenght
-        self.high = high
-        self.frase = frase
-        self.color = color
-        self.screen = pygame.display.set_mode((self.lenght, self.high))
+        self.__lenght = lenght
+        self.__high = high
+        self.__frase = frase
+        self.__color = color
+        self.__screen = pygame.display.set_mode((self.__lenght, self.__high))
         pygame.display.set_caption("Start")
-        self.level = "Не выбрано"
-        self.theme = "Не выбрано"
-        self.text = ""
-        self.flag = False
+        self.__level = "Не выбрано"
+        self.__theme = "Не выбрано"
+        self.__text = ""
+        self.__flag = False
 
+    def get_lenght(self):
+        return self.__lenght
 
-    def view(self):
-        self.screen = pygame.display.set_mode((self.lenght, self.high))
-        pygame.display.set_caption(self.frase)
-        self.screen.fill(self.color)
-
+    def get_high(self):
+        return self.__high
 
     def get_frase(self):
-        return self.frase
+        return self.__frase
 
+    def get_color(self):
+        return self.__color
+
+    def get_screen(self):
+        return self.__screen
+
+    def get_level(self):
+        return self.__level
+
+    def get_theme(self):
+        return self.__theme
+
+    def get_text(self):
+        return self.__text
+
+    def get_flag(self):
+        return self.__flag
+
+    def set_lenght(self, lenght):
+        self.__lenght = lenght
+
+    def set_high(self, high):
+        self.__high = high
 
     def set_frase(self, frase):
-        self.frase = frase
+        self.__frase = frase
+
+    def set_color(self, color):
+        self.__color = color
+
+    def set_screen(self):
+        lenght = self.get_lenght()
+        high = self.get_high()
+        self.__screen = pygame.display.set_mode((lenght, high))
+
+    def set_level(self, level):
+        self.__level = level
+
+    def set_theme(self, theme):
+        self.__theme = theme
+
+    def set_text(self, text):
+        self.__text = text
+
+    def set_flag(self, flag):
+        self.__flag = flag
+
+    def view(self):
+        self.__screen = pygame.display.set_mode((self.__lenght, self.__high))
+        pygame.display.set_caption(self.__frase)
+        self.__screen.fill(self.__color)
 
 
     def game(self):
         current_title, icon_title = pygame.display.get_caption()
         if current_title != "Snake game":
-            self.lenght = 600
-            self.high = 700
-            self.frase = "Snake game"
-            self.color = WGREEN
+            self.__lenght = 600
+            self.__high = 700
+            self.__frase = "Snake game"
+            self.__color = WGREEN
             self.view()
         esc_font_text = pygame.font.SysFont('Verdana', 16)
         esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, BLACK)
-        self.screen.blit(esc_text, (240, 20))
+        self.__screen.blit(esc_text, (240, 20))
 
     def winter_theme_game(self):
         current_title, icon_title = pygame.display.get_caption()
         if current_title != "Snake game":
-            self.lenght = 600
-            self.high = 700
-            self.frase = "Snake game"
-            self.color = WBLUE
+            self.__lenght = 600
+            self.__high = 700
+            self.__frase = "Snake game"
+            self.__color = WBLUE
             self.view()
         esc_font_text = pygame.font.SysFont('Verdana', 16)
         esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, WHITE)
-        self.screen.blit(esc_text, (240, 20))
+        self.__screen.blit(esc_text, (240, 20))
 
 
     def summer_theme_game(self):
         current_title, icon_title = pygame.display.get_caption()
         if current_title != "Snake game":
-            self.lenght = 600
-            self.high = 700
-            self.frase = "Snake game"
-            self.color = WHITE
+            self.__lenght = 600
+            self.__high = 700
+            self.__frase = "Snake game"
+            self.__color = WHITE
             self.view()
-        self.screen.blit(summer_image, (0, 50))
+        self.__screen.blit(summer_image, (0, 50))
         esc_font_text = pygame.font.SysFont('Verdana', 16)
         esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, BLACK)
-        self.screen.blit(esc_text, (240, 20))
+        self.__screen.blit(esc_text, (240, 20))
 
 
     def snowFall(self):
         for j in range(len(snowFall)):
-            pygame.draw.circle(self.screen, WHITE, snowFall[j], 2)
+            pygame.draw.circle(self.__screen, WHITE, snowFall[j], 2)
             snowFall[j][1] += 1.5
-            if snowFall[j][1] > self.high:
+            if snowFall[j][1] > self.__high:
                 y = random.randrange(20, 50)
                 snowFall[j][1] = y
-                x = random.randrange(0, self.lenght)
+                x = random.randrange(0, self.__lenght)
                 snowFall[j][0] = x
 
         esc_font_text = pygame.font.SysFont('Verdana', 16)
         esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, BLACK)
-        self.screen.blit(esc_text, (240, 20))
+        self.__screen.blit(esc_text, (240, 20))
 
 
     def menu(self):
@@ -194,12 +260,12 @@ class Window:
         if current_title == "Main menu":
             over_font = pygame.font.SysFont('Verdana', 30)
             text_surface = over_font.render('Выберите действие', False, GREEN)
-            self.screen.blit(text_surface, (100, 20))
+            self.__screen.blit(text_surface, (100, 20))
             return
-        self.lenght = 500
-        self.high = 500
-        self.frase = "Main menu"
-        self.color = WHITE
+        self.__lenght = 500
+        self.__high = 500
+        self.__frase = "Main menu"
+        self.__color = WHITE
         self.view()
 
 
@@ -225,11 +291,6 @@ class Window:
         events = pygame.event.get()
         pygame_widgets.update(events)
 
-    def set_level(self, level):
-        self.level = level
-
-    def set_theme(self, theme):
-        self.theme = theme
 
     def display_tooltip(self):
         mouse_x, mouse_y = pygame.mouse.get_pos()
@@ -249,17 +310,16 @@ class Window:
 
         font_mouse = pygame.font.SysFont(None, 28)
         text_mouse = font_mouse.render(text_dir, False, BLUE)
-
-        self.screen.blit(text_mouse, (mouse_x-110, mouse_y+30))
+        self.__screen.blit(text_mouse, (mouse_x - 110, mouse_y + 30))
 
     def setting_menu(self):
         current_title, icon_title = pygame.display.get_caption()
         if current_title == "Settings menu":
             comlex_font = pygame.font.SysFont('Verdana', 25)
-            choose_level = comlex_font.render(self.level, False, BLUE)
-            choose_theme = comlex_font.render(self.theme, False, BLUE)
-            self.screen.blit(choose_level, (40, 300))
-            self.screen.blit(choose_theme, (230, 300))
+            choose_level = comlex_font.render(self.__level, False, BLUE)
+            choose_theme = comlex_font.render(self.__theme, False, BLUE)
+            self.__screen.blit(choose_level, (40, 300))
+            self.__screen.blit(choose_theme, (230, 300))
             comlex_font = pygame.font.SysFont('Verdana', 25)
             comlex_text_surface = comlex_font.render('Выберите уровень сложности:', False, BLACK)
             theme_font = pygame.font.SysFont('Verdana', 25)
@@ -269,16 +329,16 @@ class Window:
             choose_text_comlex = choose_font_comlex.render('Сложность', False, BLACK)
             choose_font_theme = pygame.font.SysFont('Verdana', 15)
             choose_text_theme = choose_font_theme.render('Тема', False, BLACK)
-            self.screen.blit(comlex_text_surface, (100, 10))
-            self.screen.blit(theme_text_surface, (100, 130))
-            self.screen.blit(choose_text_surface, (100, 250))
-            self.screen.blit(choose_text_comlex, (70, 280))
-            self.screen.blit(choose_text_theme, (260, 280))
+            self.__screen.blit(comlex_text_surface, (100, 10))
+            self.__screen.blit(theme_text_surface, (100, 130))
+            self.__screen.blit(choose_text_surface, (100, 250))
+            self.__screen.blit(choose_text_comlex, (70, 280))
+            self.__screen.blit(choose_text_theme, (260, 280))
             return
-        self.lenght = 600
-        self.high = 350
-        self.frase = "Settings menu"
-        self.color = YELLOW
+        self.__lenght = 600
+        self.__high = 350
+        self.__frase = "Settings menu"
+        self.__color = YELLOW
         self.view()
 
 
@@ -328,10 +388,10 @@ class Window:
     def game_over(self, count):
         current_title, icon_title =  pygame.display.get_caption()
         if current_title != "Game over":
-            self.lenght = 400
-            self.high = 400
-            self.frase = "Game over"
-            self.color = BLUE
+            self.__lenght = 400
+            self.__high = 400
+            self.__frase = "Game over"
+            self.__color = BLUE
             self.view()
         over_font = pygame.font.SysFont('Verdana', 50)
         text_surface = over_font.render('GAME OVER', False, YELLOW)
@@ -339,17 +399,17 @@ class Window:
         text_surface_result = over_font_result.render("ВАШ РЕЗУЛЬТАТ: "+str(count), False, YELLOW)
         over_font_low = pygame.font.SysFont('Verdana', 20)
         text_surface_low = over_font_low.render('НАЧАТЬ ЗАНОВО?', False, GREEN)
-        self.screen.blit(text_surface, (40, 0))
-        self.screen.blit(end_image, (100, 80))
-        self.screen.blit(text_surface_result, (80, 220))
-        self.screen.blit(text_surface_low, (100, 260))
+        self.__screen.blit(text_surface, (40, 0))
+        self.__screen.blit(end_image, (100, 80))
+        self.__screen.blit(text_surface_result, (80, 220))
+        self.__screen.blit(text_surface_low, (100, 260))
 
     def draw_over_button(self):
 
-        yes_button = Button(self.screen, 260, 320, 120, 50, inactiveColour=YELLOW, radius=50,
-        pressedColour=(0, 255, 0), hoverColour = GREEN, text="ДА", onClick=lambda: self.set_frase("Snake game"))
-        no_button = Button(self.screen, 30, 320, 120, 50, inactiveColour=YELLOW, radius=50,
-        pressedColour=(0, 255, 0), hoverColour = RED, text="НЕТ", onClick=lambda: self.set_frase("Main menu"))
+        yes_button = Button(self.__screen, 260, 320, 120, 50, inactiveColour=YELLOW, radius=50,
+                            pressedColour=(0, 255, 0), hoverColour = GREEN, text="ДА", onClick=lambda: self.set_frase("Snake game"))
+        no_button = Button(self.__screen, 30, 320, 120, 50, inactiveColour=YELLOW, radius=50,
+                           pressedColour=(0, 255, 0), hoverColour = RED, text="НЕТ", onClick=lambda: self.set_frase("Main menu"))
 
         yes_button.draw()
         no_button.draw()
@@ -366,21 +426,21 @@ class Window:
             in_surface1 = in_font.render('!! Вы попали в список рекордсменов !!', False, BLUE)
             in_surface2 = in_font.render('Впишите свое имя для отражения на доске почета:',
                                          False, BLUE)
-            self.screen.blit(in_surface1, (80, 60))
-            self.screen.blit(in_surface2, (15, 100))
+            self.__screen.blit(in_surface1, (80, 60))
+            self.__screen.blit(in_surface2, (15, 100))
             return
 
-        self.lenght = 600
-        self.high = 400
-        self.frase = "Input_record"
-        self.color = SANDY
+        self.__lenght = 600
+        self.__high = 400
+        self.__frase = "Input_record"
+        self.__color = SANDY
         self.view()
 
 
         def draw_textbox():
             def set_text():
-                self.text = text__box.getText()
-                self.flag = True
+                self.__text = text__box.getText()
+                self.__flag = True
                 text__box.hide()
                 self.set_frase("Game over")
 
@@ -394,10 +454,10 @@ class Window:
     def records(self, list_records):
         current_title, icon_title =  pygame.display.get_caption()
         if current_title != "Records":
-            self.lenght = 600
-            self.high = 400
-            self.frase = "Records"
-            self.color = SANDY
+            self.__lenght = 600
+            self.__high = 400
+            self.__frase = "Records"
+            self.__color = SANDY
             self.view()
         rec_font = pygame.font.SysFont('Verdana', 20)
         place_surface = rec_font.render('МЕСТО', False, BLACK)
@@ -410,19 +470,19 @@ class Window:
         text_surface_4 = res_font.render(str(4)+"                      "+str(list_records[3][0])+"                      "+str(list_records[3][1]), True, BLACK)
         text_surface_5 = res_font.render(str(5)+"                      "+str(list_records[4][0])+"                      "+str(list_records[4][1]), True, BLACK)
 
-        self.screen.blit(text_surface_1, (80,80))
-        self.screen.blit(text_surface_2, (80, 130))
-        self.screen.blit(text_surface_3, (80, 180))
-        self.screen.blit(text_surface_4, (80, 230))
-        self.screen.blit(text_surface_5, (80, 280))
+        self.__screen.blit(text_surface_1, (80, 80))
+        self.__screen.blit(text_surface_2, (80, 130))
+        self.__screen.blit(text_surface_3, (80, 180))
+        self.__screen.blit(text_surface_4, (80, 230))
+        self.__screen.blit(text_surface_5, (80, 280))
 
-        self.screen.blit(place_surface, (60, 20))
-        self.screen.blit(name_surface, (250, 20))
-        self.screen.blit(res_surface, (410, 20))
+        self.__screen.blit(place_surface, (60, 20))
+        self.__screen.blit(name_surface, (250, 20))
+        self.__screen.blit(res_surface, (410, 20))
 
     def draw_to_menu_button(self):
-        to_menu_button = Button(self.screen, 200, 330, 200, 60, inactiveColour=GREEN, radius=30,
-        pressedColour=WGREEN, text="В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
+        to_menu_button = Button(self.__screen, 200, 330, 200, 60, inactiveColour=GREEN, radius=30,
+                                pressedColour=WGREEN, text="В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
 
         to_menu_button.draw()
         events = pygame.event.get()
@@ -431,20 +491,20 @@ class Window:
     def pause(self):
         current_title, icon_title = pygame.display.get_caption()
         if current_title != "Pause menu":
-            self.lenght = 400
-            self.high = 200
-            self.frase = "Pause menu"
-            self.color = BLUE
+            self.__lenght = 400
+            self.__high = 200
+            self.__frase = "Pause menu"
+            self.__color = BLUE
             self.view()
         question = pygame.font.SysFont('Verdana', 20)
         text_question = question.render('ВЫЙТИ ИЗ ИГРЫ?', False, YELLOW)
-        self.screen.blit(text_question, (110, 50))
+        self.__screen.blit(text_question, (110, 50))
 
     def draw_pause_button(self):
-        output_button = Button(self.screen, 210, 120, 160, 30, inactiveColour=YELLOW, radius=40,
-        pressedColour=RED, hoverColour = RED, text="ВЫЙТИ В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
-        input_button = Button(self.screen, 20, 120, 160, 30, inactiveColour=YELLOW, radius=40,
-        pressedColour=GREEN, hoverColour = GREEN, text="ВЕРНУТЬСЯ В ИГРУ", onClick=lambda: self.set_frase("Snake game"))
+        output_button = Button(self.__screen, 210, 120, 160, 30, inactiveColour=YELLOW, radius=40,
+                               pressedColour=RED, hoverColour = RED, text="ВЫЙТИ В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
+        input_button = Button(self.__screen, 20, 120, 160, 30, inactiveColour=YELLOW, radius=40,
+                              pressedColour=GREEN, hoverColour = GREEN, text="ВЕРНУТЬСЯ В ИГРУ", onClick=lambda: self.set_frase("Snake game"))
 
         output_button.draw()
         input_button.draw()
@@ -455,20 +515,20 @@ class Window:
 
         current_title, icon_title = pygame.display.get_caption()
         if current_title != "Warning window":
-            self.lenght = 400
-            self.high = 200
-            self.frase = "Warning window"
-            self.color = BLUE
+            self.__lenght = 400
+            self.__high = 200
+            self.__frase = "Warning window"
+            self.__color = BLUE
             self.view()
         warning_font_text = pygame.font.SysFont('Verdana', 15)
         warning_text = warning_font_text.render('ВЫБЕРИТЕ УРОВЕНЬ СЛОЖНОСТИ И / ИЛИ ТЕМУ', False, YELLOW)
-        self.screen.blit(warning_text, (15, 50))
+        self.__screen.blit(warning_text, (15, 50))
 
     def draw_warning_button(self):
-        output_button = Button(self.screen, 210, 120, 160, 30, inactiveColour=YELLOW, radius=40,
-        pressedColour=RED, hoverColour = RED, text="НАЗАД В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
-        input_button = Button(self.screen, 20, 120, 160, 30, inactiveColour=YELLOW, radius=40,
-        pressedColour=GREEN, hoverColour = GREEN, text="К НАСТРОЙКАМ", onClick=lambda: self.set_frase("Settings menu"))
+        output_button = Button(self.__screen, 210, 120, 160, 30, inactiveColour=YELLOW, radius=40,
+                               pressedColour=RED, hoverColour = RED, text="НАЗАД В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
+        input_button = Button(self.__screen, 20, 120, 160, 30, inactiveColour=YELLOW, radius=40,
+                              pressedColour=GREEN, hoverColour = GREEN, text="К НАСТРОЙКАМ", onClick=lambda: self.set_frase("Settings menu"))
 
         output_button.draw()
         input_button.draw()
@@ -481,36 +541,56 @@ class Game:
 
         self.window = Window()
         self.window.menu()
-        self.snake = Snake(self.window.screen)
-        self.food = Food(self.window.screen, self.snake.body[0].x, self.snake.body[0].y)
-        self.barrier = Barrier(self.window.screen)
-        self.count = 0
-        self.rezult = 0
+        self.snake = Snake(self.window.get_screen())
+        self.food = Food(self.window.get_screen(), self.snake.body[0].get_x(), self.snake.body[0].get_y())
+        self.barrier = Barrier(self.window.get_screen())
         self.record = Records()
-        self.is_sound = False
+        self.__count = 0
+        self.__rezult = 0
+        self.__is_sound = False
+
+    def get_count(self):
+        return self.__count
+
+    def get_rezult(self):
+        return self.__rezult
+
+    def get_is_sound(self):
+        return self.__is_sound
+
+    def set_count(self, count):
+        self.__count += count
+
+    def zero_count(self):
+        self.__count = 0
+
+    def set_rezult(self, rezult):
+        self.__rezult = rezult
+
+    def set_is_sound(self, is_sound):
+        self.__is_sound = is_sound
 
 
     def add_main_sound(self):
-        if  self.is_sound == False:
-            if self.window.level == "НОВИЧОК":
+        if  self.get_is_sound() == False:
+            if self.window.get_level() == "НОВИЧОК":
                 main_sound.set_volume(0.2)
                 main_sound.play(loops=-1)
             else:
                 fast_sound.set_volume(0.2)
                 fast_sound.play(loops=-1)
-        self.is_sound = True
+        self.set_is_sound(True)
 
     def stop_main_sound(self):
-        if self.is_sound == True:
-            if self.window.level == "НОВИЧОК":
+        if self.get_is_sound() == True:
+            if self.window.get_level() == "НОВИЧОК":
                 main_sound.stop()
             else:
                 fast_sound.stop()
-
-        self.is_sound = False
+        self.set_is_sound(False)
 
     def food_music(self):
-        if self.window.theme == "Voice of D.V.Rak":
+        if self.window.get_theme() == "Voice of D.V.Rak":
             song = random.choice(voice_sound)
             food_voice = pygame.mixer.Sound(song)
             food_voice.set_volume(1.0)
@@ -519,7 +599,7 @@ class Game:
         food_sound.play()
 
     def finish_sound(self):
-        if self.window.theme == "Voice of D.V.Rak":
+        if self.window.get_theme() == "Voice of D.V.Rak":
             over_voice.set_volume(1.0)
             over_voice.play()
             return
@@ -528,48 +608,48 @@ class Game:
 # основная распределительная функция
 
     def control(self):
-        self.window.screen.fill(self.window.color)
-        if self.window.frase == "Snake game":
+        self.window.get_screen().fill(self.window.get_color())
+        if self.window.get_frase() == "Snake game":
             self.add_main_sound()
             self.generate_window()
 
-        elif self.window.frase == "Game over":
-            self.window.game_over(self.rezult)
+        elif self.window.get_frase() == "Game over":
+            self.window.game_over(self.get_rezult())
             self.window.draw_over_button()
-        elif self.window.frase == "Main menu":
+        elif self.window.get_frase() == "Main menu":
             self.window.menu()
             self.window.draw_menu_button()
-        elif self.window.frase == "Warning window":
+        elif self.window.get_frase() == "Warning window":
             self.window.warning()
             self.window.draw_warning_button()
-        elif self.window.frase == "Pause menu":
+        elif self.window.get_frase() == "Pause menu":
             self.stop_main_sound()
             self.window.pause()
             self.window.draw_pause_button()
-        elif self.window.frase == "Settings menu":
+        elif self.window.get_frase() == "Settings menu":
             self.window.setting_menu()
             self.window.draw_setting_buttons()
-        elif self.window.frase == "Records":
-            self.window.records(self.record.records)
+        elif self.window.get_frase() == "Records":
+            self.window.records(self.record.get_records())
             self.window.draw_to_menu_button()
-        elif self.window.frase == "Input_record":
+        elif self.window.get_frase() == "Input_record":
             self.window.input_record()
-            if self.window.flag:
-                self.record.add_result(self.window.text)
-                self.window.flag = False
+            if self.window.get_flag():
+                self.record.add_result(self.window.get_text())
+                self.window.set_flag(False)
 
 # функция настроек окон
 
     def generate_window(self):
         if self.check_full():
-            if self.window.theme == "SUMMER":
+            if self.window.get_theme() == "SUMMER":
                 self.window.summer_theme_game()
                 self.barrier.summer_frame()
-            elif self.window.theme == "WINTER":
+            elif self.window.get_theme() == "WINTER":
                 self.window.winter_theme_game()
                 self.barrier.winter_frame()
                 self.window.snowFall()
-            elif self.window.theme == "Voice of D.V.Rak":
+            elif self.window.get_theme() == "Voice of D.V.Rak":
                 self.window.game()
                 self.barrier.frame()
             self.counter()
@@ -578,16 +658,16 @@ class Game:
             self.cross_with_food()
             self.cross_barrier()
             self.check_on_pause()
-            if self.window.level == "ЛЮБИТЕЛЬ":
-                self.snake.speed = 10
+            if self.window.get_level() == "ЛЮБИТЕЛЬ":
+                self.snake.set_speed(10)
                 self.barrier.field(5)
-            elif self.window.level == "ПРОФИ":
-                self.snake.speed = 10
+            elif self.window.get_level() == "ПРОФИ":
+                self.snake.set_speed(10)
                 self.barrier.field(10)
                 self.cross_with_self()
 
     def check_full(self):
-        if self.window.level == "Не выбрано" or self.window.theme == "Не выбрано":
+        if self.window.get_level() == "Не выбрано" or self.window.get_theme() == "Не выбрано":
             self.window.set_frase("Warning window")
             return False
         return True
@@ -599,12 +679,12 @@ class Game:
 
 
     def condition_of_cross(self):
-        return (abs(self.food.food_x - self.snake.body[0].x) <= 3*FAKTOR and abs(self.food.food_y - self.snake.body[0].y)<= 3*FAKTOR)
+        return (abs(self.food.get_food_x() - self.snake.body[0].get_x()) <= 3 * FAKTOR and abs(self.food.get_food_y() - self.snake.body[0].get_y()) <= 3 * FAKTOR)
 
     def counter(self):
         surface = pygame.display.get_surface()
         font_count = pygame.font.SysFont('Verdana', 30)
-        text_count = font_count.render("Ваш счет: "+str(self.count), True, BLUE)
+        text_count = font_count.render("Ваш счет: " + str(self.__count), True, BLUE)
         surface.blit(text_count,(10,10))
 
     def cross_with_food(self):
@@ -612,65 +692,65 @@ class Game:
         if self.condition_of_cross():
             self.food_music()
             self.snake.add_chain()
-            self.count += 1
-            if self.window.level == "ЛЮБИТЕЛЬ" or self.window.level == "ПРОФИ":
+            self.set_count(1)
+            if self.window.get_level() == "ЛЮБИТЕЛЬ" or self.window.get_level() == "ПРОФИ":
                 self.food = Food(surface, self.barrier.lst_barier_x, self.barrier.lst_barier_y)
             else:
-                self.food = Food(surface, self.snake.head.x, self.snake.head.y)
-            self.food.check = False
+                self.food = Food(surface, self.snake.head.get_x(), self.snake.head.get_y())
+            self.food.__check = False
 
 
     def cross_barrier(self):
         if self.check_cross_frame() or self.check_cross_field_barrier():
 
-            self.snake = Snake(self.window.screen)
-            self.rezult = self.count
-            self.record.result = self.count
+            self.snake = Snake(self.window.get_screen())
+            self.set_rezult(self.get_count())
+            self.record.set_result(self.get_count())
             self.finish_sound()
             if self.record.check_on_record():
                 self.window.set_frase("Input_record")
             else:
                 self.window.set_frase("Game over")
             self.stop_main_sound()
-            self.count = 0
+            self.zero_count()
             self.barrier.lst_barier_x = []
             self.barrier.lst_barier_y = []
             self.barrier.barrier_list = []
 
 
     def check_cross_frame(self):
-        if self.window.theme == "WINTER":
-            return not self.barrier.winter_frame().collidepoint(self.snake.head.x, self.snake.head.y)
-        if self.window.theme == "SUMMER":
-            return not self.barrier.summer_frame().collidepoint(self.snake.head.x, self.snake.head.y)
-        if self.window.theme == "Voice of D.V.Rak":
-            return not self.barrier.frame().collidepoint(self.snake.head.x, self.snake.head.y)
+        if self.window.get_theme() == "WINTER":
+            return not self.barrier.winter_frame().collidepoint(self.snake.head.get_x(), self.snake.head.get_y())
+        if self.window.get_theme() == "SUMMER":
+            return not self.barrier.summer_frame().collidepoint(self.snake.head.get_x(), self.snake.head.get_y())
+        if self.window.get_theme() == "Voice of D.V.Rak":
+            return not self.barrier.frame().collidepoint(self.snake.head.get_x(), self.snake.head.get_y())
 
 
     def check_cross_field_barrier(self):
         for i in range(len(self.barrier.barrier_list)):
-            if self.barrier.barrier_list[i].collidepoint(self.snake.head.x, self.snake.head.y):
+            if self.barrier.barrier_list[i].collidepoint(self.snake.head.get_x(), self.snake.head.get_y()):
                 return True
 
 
     def condition_of_cross_self(self):
         for i in range(1, len(self.snake.body)):
-            if self.snake.head.x == self.snake.body[i].x and self.snake.head.y == self.snake.body[i].y:
+            if self.snake.head.get_x() == self.snake.body[i].get_x() and self.snake.head.get_y() == self.snake.body[i].get_y():
                 return True
 
 
     def cross_with_self(self):
         if self.condition_of_cross_self():
 
-            self.snake = Snake(self.window.screen)
-            self.rezult = self.count
+            self.snake = Snake(self.window.get_screen())
+            self.set_rezult(self.get_count())
             self.finish_sound()
             if self.record.check_on_record():
                 self.window.set_frase("Input_record")
             else:
                 self.window.set_frase("Game over")
             self.stop_main_sound()
-            self.count = 0
+            self.zero_count()
             self.barrier.lst_barier_x = []
             self.barrier.lst_barier_y = []
             self.barrier.barrier_list = []
@@ -678,9 +758,33 @@ class Game:
 
 class Chain:
     def __init__(self, x, y, direction):
-        self.x = x
-        self.y = y
-        self.direction = direction
+        self.__x = x
+        self.__y = y
+        self.__direction = direction
+
+    def get_x(self):
+        return self.__x
+
+    def get_y(self):
+        return self.__y
+
+    def get_direction(self):
+        return self.__direction
+
+    def set_x(self, x):
+        self.__x = x
+
+    def change_x(self, x):
+        self.__x += x
+
+    def change_y(self, y):
+        self.__y += y
+
+    def set_y(self, y):
+        self.__y = y
+
+    def set_direction(self, direction):
+        self.__direction = direction
 
 
 class Snake:
@@ -689,25 +793,45 @@ class Snake:
         self.head = Chain(300, 300, "right")
         self.body = []
         self.way_head = [[]]
-        self.delta_x = 0
-        self.delta_y = 0
+        self.__delta_x = 0
+        self.__delta_y = 0
+        self.__speed = 5
         self.body.append(self.head)
-        self.speed = 5
+
+    def get_delta_x(self):
+        return self.__delta_x
+
+    def get_delta_y(self):
+        return self.__delta_y
+
+    def get_speed(self):
+        return self.__speed
+
+
+    def set_delta_x(self, delta_x):
+        self.__delta_x = delta_x
+
+    def set_delta_y(self, delta_y):
+        self.__delta_y = delta_y
+
+    def set_speed(self, speed):
+        self.__speed = speed
+
 
     def movie(self):
         self.handler_direction_head()
-        self.screen.blit(snake_head_image, dest = (self.body[0].x-10, self.body[0].y-10))
+        self.screen.blit(snake_head_image, dest = (self.body[0].get_x() - 10, self.body[0].get_y() - 10))
         for i in range(1, len(self.body)):
-            self.body[i].x = self.way_head[i*int(20/self.speed)][0]
-            self.body[i].y = self.way_head[i*int(20/self.speed)][1]
+            self.body[i].set_x(self.way_head[i * int(20 / self.__speed)][0])
+            self.body[i].set_y(self.way_head[i * int(20 / self.__speed)][1])
 
-            pygame.draw.circle(self.screen, BGREEN, (self.body[i].x, self.body[i].y), FAKTOR*2)
+            pygame.draw.circle(self.screen, BGREEN, (self.body[i].get_x(), self.body[i].get_y()), FAKTOR * 2)
 
 
     def handler_direction_head(self):
-        self.head.x += self.delta_x
-        self.head.y += self.delta_y
-        self.way_head.insert(0, [self.head.x, self.head.y])
+        self.head.change_x(self.get_delta_x())
+        self.head.change_y(self.get_delta_y())
+        self.way_head.insert(0, [self.head.get_x(), self.head.get_y()])
 
         self.handler_press()
 
@@ -715,37 +839,37 @@ class Snake:
     def handler_press(self):
         pressed = pygame.key.get_pressed()
         if  pressed[pygame.K_LEFT]:
-            self.head.direction = "left"
+            self.head.set_direction("left")
             press_sound.set_volume(0.2)
             press_sound.play()
         elif pressed[pygame.K_RIGHT]:
-            self.head.direction = "right"
+            self.head.set_direction("right")
             press_sound.set_volume(0.2)
             press_sound.play()
         elif pressed[pygame.K_UP]:
-            self.head.direction = "up"
+            self.head.set_direction("up")
             press_sound.set_volume(0.2)
             press_sound.play()
         elif pressed[pygame.K_DOWN]:
-            self.head.direction = "down"
+            self.head.set_direction("down")
             press_sound.set_volume(0.2)
             press_sound.play()
         self.choose_head_direction()
 
 
     def choose_head_direction(self):
-        if self.head.direction == "right":
-            self.delta_x = self.speed
-            self.delta_y = 0
-        elif self.head.direction == "left":
-            self.delta_y = 0
-            self.delta_x = -self.speed
-        elif self.head.direction == "up":
-            self.delta_x = 0
-            self.delta_y = -self.speed
-        elif self.head.direction == "down":
-            self.delta_x = 0
-            self.delta_y = self.speed
+        if self.head.get_direction()== "right":
+            self.set_delta_x(self.get_speed())
+            self.set_delta_y(0)
+        elif self.head.get_direction() == "left":
+            self.set_delta_y(0)
+            self.set_delta_x(-self.get_speed())
+        elif self.head.get_direction() == "up":
+            self.set_delta_x(0)
+            self.set_delta_y(-self.get_speed())
+        elif self.head.get_direction() == "down":
+            self.set_delta_x(0)
+            self.set_delta_y(self.get_speed())
 
     def add_chain(self):
         chain = Chain(None, None, None)
@@ -754,11 +878,37 @@ class Snake:
 class Food:
     def __init__(self, screen, stop_x, stop_y):
         self.screen = screen
-        self.stop_x = stop_x
-        self.stop_y = stop_y
-        self.food_x = self.stop_x
-        self.food_y = self.stop_y
-        self.check = False
+        self.__stop_x = stop_x
+        self.__stop_y = stop_y
+        self.__food_x = self.get_stop_x()
+        self.__food_y = self.get_stop_y()
+        self.__check = False
+
+    def get_stop_x(self):
+        return self.__stop_x
+
+    def get_stop_y(self):
+        return self.__stop_y
+
+    def get_food_x(self):
+        return self.__food_x
+
+    def get_food_y(self):
+        return self.__food_y
+
+    def get_check(self):
+        return self.__check
+
+    def set_food_x(self, food_x):
+        self.__food_x = food_x
+
+    def set_food_y(self, food_y):
+        self.__food_y = food_y
+
+    def set_check(self, check):
+        self.__check = check
+
+
 
     def create(self):
         surface = pygame.display.get_surface()
@@ -766,29 +916,29 @@ class Food:
         height_w = surface.get_height()
 
 
-        while not self.check:
-            self.food_x = random.randint(30, (width_w - 30))
-            self.food_y = random.randint(80, (height_w - 30))
+        while not self.get_check():
+            self.set_food_x(random.randint(30, (width_w - 30)))
+            self.set_food_y(random.randint(80, (height_w - 30)))
 
-            if isinstance(self.stop_x, int):
-                if self.food_x <= self.stop_x + 40 and self.food_x >= self.stop_x - 40:
-                    self.check = False
+            if isinstance(self.get_stop_x(), int):
+                if self.get_food_x() <= self.get_stop_x() + 40 and self.get_food_x() >= self.get_stop_x() - 40:
+                    self.set_check(False)
                 else:
-                    if self.food_y <= self.stop_y + 40 and self.food_y >= self.stop_y - 40:
-                        self.check = False
+                    if self.get_food_y() <= self.get_stop_y() + 40 and self.get_food_y() >= self.get_stop_y() - 40:
+                        self.set_check(False)
                     else:
-                        self.check = True
+                        self.set_check(True)
             else:
-                for i in self.stop_x:
-                    if self.food_x <= i + 40 and self.food_x >= i - 40:
-                        self.check = False
+                for i in self.get_stop_x():
+                    if self.get_food_x() <= i + 40 and self.get_food_x() >= i - 40:
+                        self.set_check(False)
                     else:
-                        for j in self.stop_y:
-                            if self.food_y <= j + 40 and self.food_y >= j - 40:
-                                self.check = False
+                        for j in self.__stop_y:
+                            if self.get_food_y() <= j + 40 and self.get_food_y() >= j - 40:
+                                self.set_check(False)
                             else:
-                                self.check = True
-        self.screen.blit(food_image, dest=(self.food_x - 10, self.food_y - 10))
+                                self.set_check(True)
+        self.screen.blit(food_image, dest=(self.get_food_x() - 10, self.get_food_y() - 10))
 
 
 class Barrier:
@@ -858,7 +1008,7 @@ game = Game()
 while running:
     events = pygame.event.get()
     for event in events:
-        if event.type == pygame.QUIT or game.window.frase == "Quit":
+        if event.type == pygame.QUIT or game.window.get_frase() == "Quit":
             running = False
 
     pygame.time.delay(30)
