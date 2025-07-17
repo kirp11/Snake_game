@@ -1,5 +1,4 @@
 
-from src.constants import *
 from src.texts_images_sounds import  *
 
 import pygame_widgets
@@ -82,54 +81,39 @@ class Window:
         self.__screen.fill(self.__color)
 
 
-    def game(self):
-        current_title, icon_title = pygame.display.get_caption()
-        if current_title != "Snake game":
-            self.__lenght = 600
-            self.__high = 700
-            self.__frase = "Snake game"
-            self.__color = WGREEN
-            self.view()
-        esc_font_text = pygame.font.SysFont('Verdana', 16)
-        esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, BLACK)
-        self.__screen.blit(esc_text, (240, 20))
-
-    def winter_theme_game(self):
-        current_title, icon_title = pygame.display.get_caption()
-        if current_title != "Snake game":
-            self.__lenght = 600
-            self.__high = 700
-            self.__frase = "Snake game"
-            self.__color = WBLUE
-            self.view()
-        esc_font_text = pygame.font.SysFont('Verdana', 16)
-        esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, WHITE)
-        self.__screen.blit(esc_text, (240, 20))
-
-
-    def summer_theme_game(self):
-        current_title, icon_title = pygame.display.get_caption()
-        if current_title != "Snake game":
-            self.__lenght = 600
-            self.__high = 700
-            self.__frase = "Snake game"
+    def create_theme_fill(self):
+        if self.get_theme() == SUMMER:
             self.__color = WHITE
+        elif self.get_theme() == WINTER:
+            self.__color = WBLUE
+        else:
+            self.__color = WGREEN
+
+
+    def create_game(self):
+        current_title, icon_title = pygame.display.get_caption()
+        if current_title != SNAKE:
+            self.__lenght = 600
+            self.__high = 700
+            self.__frase = SNAKE
+            self.create_theme_fill()
             self.view()
-        self.__screen.blit(summer_image, (0, 50))
+        if self.get_theme() == SUMMER:
+            self.__screen.blit(summer_image, (0, 50))
         esc_font_text = pygame.font.SysFont('Verdana', 16)
         esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, BLACK)
         self.__screen.blit(esc_text, (240, 20))
 
 
-    def snowFall(self):
-        for j in range(len(snowFall)):
-            pygame.draw.circle(self.__screen, WHITE, snowFall[j], 2)
-            snowFall[j][1] += 1.5
-            if snowFall[j][1] > self.__high:
+    def snow_fall(self):
+        for j in range(len(snowfall)):
+            pygame.draw.circle(self.__screen, WHITE, snowfall[j], 2)
+            snowfall[j][1] += 1.5
+            if snowfall[j][1] > self.__high:
                 y = random.randrange(20, 50)
-                snowFall[j][1] = y
+                snowfall[j][1] = y
                 x = random.randrange(0, self.__lenght)
-                snowFall[j][0] = x
+                snowfall[j][0] = x
 
         esc_font_text = pygame.font.SysFont('Verdana', 16)
         esc_text = esc_font_text.render('Взять паузу/выйти в меню - нажмите Esc', False, BLACK)
@@ -145,7 +129,7 @@ class Window:
             return
         self.__lenght = 500
         self.__high = 500
-        self.__frase = "Main menu"
+        self.__frase = MAIN_MENU
         self.__color = WHITE
         self.view()
 
@@ -155,16 +139,16 @@ class Window:
 
         game_button = Button(surface, 100, 80, 300, 80, inactiveColour=YELLOW, radius=40,
                              pressedColour=(0, 255, 0), hoverColour=GREEN, text="НАЧАТЬ ИГРУ",
-                             onClick=lambda: self.set_frase("Snake game"))
+                             onClick=lambda: self.set_frase(SNAKE))
         record_button = Button(surface, 100, 180, 300, 80, inactiveColour=YELLOW, radius=40,
                                pressedColour=(0, 255, 0), hoverColour=GREEN, text="ТАБЛИЦА РЕКОРДОВ",
-                               onClick=lambda: self.set_frase("Records"))
+                               onClick=lambda: self.set_frase(RECORDS))
         setting_button = Button(surface, 100, 280, 300, 80, inactiveColour=YELLOW, radius=40,
                                      pressedColour=(0, 255, 0), hoverColour=GREEN, text="НАСТРОЙКИ",
-                                     onClick=lambda: self.set_frase("Settings menu"))
+                                     onClick=lambda: self.set_frase(SETTING))
         exit_button = Button(surface, 100, 380, 300, 80, inactiveColour=YELLOW, radius=40,
                                   pressedColour=(0, 255, 0), hoverColour=GREEN, text="ВЫХОД",
-                                  onClick=lambda: self.set_frase("Quit"))
+                                  onClick=lambda: self.set_frase(QUIT))
         game_button.draw()
         record_button.draw()
         setting_button.draw()
@@ -195,7 +179,7 @@ class Window:
 
     def setting_menu(self):
         current_title, icon_title = pygame.display.get_caption()
-        if current_title == "Settings menu":
+        if current_title == SETTING:
             comlex_font = pygame.font.SysFont('Verdana', 25)
             choose_level = comlex_font.render(self.__level, False, BLUE)
             choose_theme = comlex_font.render(self.__theme, False, BLUE)
@@ -218,7 +202,7 @@ class Window:
             return
         self.__lenght = 600
         self.__high = 350
-        self.__frase = "Settings menu"
+        self.__frase = SETTING
         self.__color = YELLOW
         self.view()
 
@@ -229,28 +213,28 @@ class Window:
             surface = pygame.display.get_surface()
 
             easy_comlex_button = Button(surface, 30, 60, 170, 50, inactiveColour=WHITE, radius=0,
-                                             pressedColour=WGREEN, text="НОВИЧОК",
-                                             onClick=lambda: self.set_level("НОВИЧОК"))
+                                             pressedColour=WGREEN, text=EASY,
+                                             onClick=lambda: self.set_level(EASY))
             medium_comlex_button = Button(surface, 220, 60, 170, 50, inactiveColour=WHITE, radius=0,
-                                               pressedColour=WGREEN, text="ЛЮБИТЕЛЬ",
-                                               onClick=lambda: self.set_level("ЛЮБИТЕЛЬ"))
+                                               pressedColour=WGREEN, text=MEDIUM,
+                                               onClick=lambda: self.set_level(MEDIUM))
             hard_comlex_button = Button(surface, 410, 60, 170, 50, inactiveColour=WHITE, radius=0,
-                                             pressedColour=WGREEN, text="ПРОФИ",
-                                             onClick=lambda: self.set_level("ПРОФИ"))
+                                             pressedColour=WGREEN, text=HARD,
+                                             onClick=lambda: self.set_level(HARD))
 
             winter_theme_button = Button(surface, 30, 180, 170, 50, inactiveColour=WHITE, radius=0,
-                                              pressedColour=WGREEN, text="WINTER",
-                                              onClick=lambda: self.set_theme("WINTER"))
+                                              pressedColour=WGREEN, text=WINTER,
+                                              onClick=lambda: self.set_theme(WINTER))
             summer_comlex_button = Button(surface, 220, 180, 170, 50, inactiveColour=WHITE, radius=0,
-                                               pressedColour=WGREEN, text="SUMMER",
-                                               onClick=lambda: self.set_theme("SUMMER"))
+                                               pressedColour=WGREEN, text=SUMMER,
+                                               onClick=lambda: self.set_theme(SUMMER))
             voice_theme_button = Button(surface, 410, 180, 170, 50, inactiveColour=WHITE, radius=0,
-                                             pressedColour=WGREEN, text="Voice of D.V.Rak",
-                                             onClick=lambda: self.set_theme("Voice of D.V.Rak"))
+                                             pressedColour=WGREEN, text=DVRAK,
+                                             onClick=lambda: self.set_theme(DVRAK))
 
             to_menu_button = Button(surface, 460, 290, 130, 50, inactiveColour=GREEN, radius=30,
                                          pressedColour=WGREEN, text="В МЕНЮ",
-                                         onClick=lambda: self.set_frase("Main menu"))
+                                         onClick=lambda: self.set_frase(MAIN_MENU))
             self.display_tooltip()
             easy_comlex_button.draw()
             medium_comlex_button.draw()
@@ -268,10 +252,10 @@ class Window:
 
     def game_over(self, count):
         current_title, icon_title =  pygame.display.get_caption()
-        if current_title != "Game over":
+        if current_title != GAME_OVER:
             self.__lenght = 400
             self.__high = 400
-            self.__frase = "Game over"
+            self.__frase = GAME_OVER
             self.__color = BLUE
             self.view()
         over_font = pygame.font.SysFont('Verdana', 50)
@@ -288,9 +272,9 @@ class Window:
     def draw_over_button(self):
 
         yes_button = Button(self.__screen, 260, 320, 120, 50, inactiveColour=YELLOW, radius=50,
-                            pressedColour=(0, 255, 0), hoverColour = GREEN, text="ДА", onClick=lambda: self.set_frase("Snake game"))
+                            pressedColour=(0, 255, 0), hoverColour = GREEN, text="ДА", onClick=lambda: self.set_frase(SNAKE))
         no_button = Button(self.__screen, 30, 320, 120, 50, inactiveColour=YELLOW, radius=50,
-                           pressedColour=(0, 255, 0), hoverColour = RED, text="НЕТ", onClick=lambda: self.set_frase("Main menu"))
+                           pressedColour=(0, 255, 0), hoverColour = RED, text="НЕТ", onClick=lambda: self.set_frase(MAIN_MENU))
 
         yes_button.draw()
         no_button.draw()
@@ -302,7 +286,7 @@ class Window:
         events = pygame.event.get()
         pygame_widgets.update(events)
         current_title, icon_title = pygame.display.get_caption()
-        if current_title == "Input_record":
+        if current_title == INPUT:
             in_font = pygame.font.SysFont('Verdana', 20)
             in_surface1 = in_font.render('!! Вы попали в список рекордсменов !!', False, BLUE)
             in_surface2 = in_font.render('Впишите свое имя для отражения на доске почета:',
@@ -313,7 +297,7 @@ class Window:
 
         self.__lenght = 600
         self.__high = 400
-        self.__frase = "Input_record"
+        self.__frase = INPUT
         self.__color = SANDY
         self.view()
 
@@ -323,7 +307,7 @@ class Window:
                 self.__text = text__box.getText()
                 self.__flag = True
                 text__box.hide()
-                self.set_frase("Game over")
+                self.set_frase(GAME_OVER)
 
             surface = pygame.display.get_surface()
             text__box = TextBox(surface, 30, 150, 500, 60, fontSize=30, borderColour=WHITE,
@@ -334,10 +318,10 @@ class Window:
 
     def records(self, list_records):
         current_title, icon_title =  pygame.display.get_caption()
-        if current_title != "Records":
+        if current_title != RECORDS:
             self.__lenght = 600
             self.__high = 400
-            self.__frase = "Records"
+            self.__frase = RECORDS
             self.__color = SANDY
             self.view()
         rec_font = pygame.font.SysFont('Verdana', 20)
@@ -363,7 +347,7 @@ class Window:
 
     def draw_to_menu_button(self):
         to_menu_button = Button(self.__screen, 200, 330, 200, 60, inactiveColour=GREEN, radius=30,
-                                pressedColour=WGREEN, text="В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
+                                pressedColour=WGREEN, text="В МЕНЮ", onClick=lambda: self.set_frase(MAIN_MENU))
 
         to_menu_button.draw()
         events = pygame.event.get()
@@ -371,10 +355,10 @@ class Window:
 
     def pause(self):
         current_title, icon_title = pygame.display.get_caption()
-        if current_title != "Pause menu":
+        if current_title != PAUSE:
             self.__lenght = 400
             self.__high = 200
-            self.__frase = "Pause menu"
+            self.__frase = PAUSE
             self.__color = BLUE
             self.view()
         question = pygame.font.SysFont('Verdana', 20)
@@ -383,9 +367,9 @@ class Window:
 
     def draw_pause_button(self):
         output_button = Button(self.__screen, 210, 120, 160, 30, inactiveColour=YELLOW, radius=40,
-                               pressedColour=RED, hoverColour = RED, text="ВЫЙТИ В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
+                               pressedColour=RED, hoverColour = RED, text="ВЫЙТИ В МЕНЮ", onClick=lambda: self.set_frase(MAIN_MENU))
         input_button = Button(self.__screen, 20, 120, 160, 30, inactiveColour=YELLOW, radius=40,
-                              pressedColour=GREEN, hoverColour = GREEN, text="ВЕРНУТЬСЯ В ИГРУ", onClick=lambda: self.set_frase("Snake game"))
+                              pressedColour=GREEN, hoverColour = GREEN, text="ВЕРНУТЬСЯ В ИГРУ", onClick=lambda: self.set_frase(SNAKE))
 
         output_button.draw()
         input_button.draw()
@@ -395,10 +379,10 @@ class Window:
     def warning(self):
 
         current_title, icon_title = pygame.display.get_caption()
-        if current_title != "Warning window":
+        if current_title != WARN_W:
             self.__lenght = 400
             self.__high = 200
-            self.__frase = "Warning window"
+            self.__frase = WARN_W
             self.__color = BLUE
             self.view()
         warning_font_text = pygame.font.SysFont('Verdana', 15)
@@ -407,9 +391,9 @@ class Window:
 
     def draw_warning_button(self):
         output_button = Button(self.__screen, 210, 120, 160, 30, inactiveColour=YELLOW, radius=40,
-                               pressedColour=RED, hoverColour = RED, text="НАЗАД В МЕНЮ", onClick=lambda: self.set_frase("Main menu"))
+                               pressedColour=RED, hoverColour = RED, text="НАЗАД В МЕНЮ", onClick=lambda: self.set_frase(MAIN_MENU))
         input_button = Button(self.__screen, 20, 120, 160, 30, inactiveColour=YELLOW, radius=40,
-                              pressedColour=GREEN, hoverColour = GREEN, text="К НАСТРОЙКАМ", onClick=lambda: self.set_frase("Settings menu"))
+                              pressedColour=GREEN, hoverColour = GREEN, text="К НАСТРОЙКАМ", onClick=lambda: self.set_frase(SETTING))
 
         output_button.draw()
         input_button.draw()

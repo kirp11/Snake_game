@@ -1,6 +1,6 @@
 
-
 from src.game import  Game
+from src.texts_images_sounds import *
 import pygame
 pygame.init()
 pygame.mixer.init()
@@ -14,7 +14,7 @@ class Programm:
         while running:
             events = pygame.event.get()
             for event in events:
-                if event.type == pygame.QUIT or game.window.get_frase() == "Quit":
+                if event.type == pygame.QUIT or game.window.get_frase() == QUIT:
                     running = False
 
             pygame.time.delay(30)

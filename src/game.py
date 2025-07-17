@@ -8,8 +8,6 @@ from src.texts_images_sounds import *
 from src.GUI import  Records, Window
 from src.entyties import Snake, Chain, Food, Barrier
 
-
-
 from pygame.locals import *
 
 import random
@@ -52,34 +50,34 @@ class Game:
 
     def add_main_sound(self):
         if  self.get_is_sound() == False:
-            if self.window.get_level() == "НОВИЧОК":
-                main_sound.set_volume(0.2)
+            if self.window.get_level() == EASY:
+                main_sound.set_volume(LEVEL_SOUND_MAIN)
                 main_sound.play(loops=-1)
             else:
-                fast_sound.set_volume(0.2)
+                fast_sound.set_volume(LEVEL_SOUND_MAIN)
                 fast_sound.play(loops=-1)
         self.set_is_sound(True)
 
     def stop_main_sound(self):
         if self.get_is_sound() == True:
-            if self.window.get_level() == "НОВИЧОК":
+            if self.window.get_level() == EASY:
                 main_sound.stop()
             else:
                 fast_sound.stop()
         self.set_is_sound(False)
 
     def food_music(self):
-        if self.window.get_theme() == "Voice of D.V.Rak":
+        if self.window.get_theme() == DVRAK:
             song = random.choice(voice_sound)
             food_voice = pygame.mixer.Sound(song)
-            food_voice.set_volume(1.0)
+            food_voice.set_volume(LEVEL_SOUND_FOOD)
             food_voice.play()
             return
         food_sound.play()
 
     def finish_sound(self):
-        if self.window.get_theme() == "Voice of D.V.Rak":
-            over_voice.set_volume(1.0)
+        if self.window.get_theme() == DVRAK:
+            over_voice.set_volume(LEVEL_SOUND_FOOD)
             over_voice.play()
             return
         over_sound.play()
@@ -88,30 +86,31 @@ class Game:
 
     def control(self):
         self.window.get_screen().fill(self.window.get_color())
-        if self.window.get_frase() == "Snake game":
+        frase = self.window.get_frase()
+        if frase == SNAKE:
 
             self.generate_window()
 
-        elif self.window.get_frase() == "Game over":
+        elif frase == GAME_OVER:
             self.window.game_over(self.get_rezult())
             self.window.draw_over_button()
-        elif self.window.get_frase() == "Main menu":
+        elif frase == MAIN_MENU:
             self.window.menu()
             self.window.draw_menu_button()
-        elif self.window.get_frase() == "Warning window":
+        elif frase == WARN_W:
             self.window.warning()
             self.window.draw_warning_button()
-        elif self.window.get_frase() == "Pause menu":
+        elif frase == PAUSE:
             self.stop_main_sound()
             self.window.pause()
             self.window.draw_pause_button()
-        elif self.window.get_frase() == "Settings menu":
+        elif frase == SETTING:
             self.window.setting_menu()
             self.window.draw_setting_buttons()
-        elif self.window.get_frase() == "Records":
+        elif frase == RECORDS:
             self.window.records(self.record.get_records())
             self.window.draw_to_menu_button()
-        elif self.window.get_frase() == "Input_record":
+        elif frase == INPUT:
             self.window.input_record()
             if self.window.get_flag():
                 self.record.add_result(self.window.get_text())
@@ -121,15 +120,15 @@ class Game:
 
     def generate_window(self):
         if self.check_full():
-            if self.window.get_theme() == "SUMMER":
-                self.window.summer_theme_game()
+            if self.window.get_theme() == SUMMER:
+                self.window.create_game()
                 self.barrier.summer_frame()
-            elif self.window.get_theme() == "WINTER":
-                self.window.winter_theme_game()
+            elif self.window.get_theme() == WINTER:
+                self.window.create_game()
                 self.barrier.winter_frame()
-                self.window.snowFall()
-            elif self.window.get_theme() == "Voice of D.V.Rak":
-                self.window.game()
+                self.window.snow_fall()
+            elif self.window.get_theme() == DVRAK:
+                self.window.create_game()
                 self.barrier.frame()
             self.add_main_sound()
             self.counter()
@@ -138,24 +137,24 @@ class Game:
             self.cross_with_food()
             self.cross_barrier()
             self.check_on_pause()
-            if self.window.get_level() == "ЛЮБИТЕЛЬ":
+            if self.window.get_level() == MEDIUM:
                 self.snake.set_speed(10)
                 self.barrier.field(5)
-            elif self.window.get_level() == "ПРОФИ":
+            elif self.window.get_level() == HARD:
                 self.snake.set_speed(10)
                 self.barrier.field(10)
                 self.cross_with_self()
 
     def check_full(self):
         if self.window.get_level() == "Не выбрано" or self.window.get_theme() == "Не выбрано":
-            self.window.set_frase("Warning window")
+            self.window.set_frase(WARN_W)
             return False
         return True
 
 
     def check_on_pause(self):
         if pygame.key.get_pressed()[pygame.K_ESCAPE]:
-            self.window.set_frase("Pause menu")
+            self.window.set_frase(PAUSE)
 
 
     def condition_of_cross(self):
@@ -173,7 +172,7 @@ class Game:
             self.food_music()
             self.snake.add_chain()
             self.set_count(1)
-            if self.window.get_level() == "ЛЮБИТЕЛЬ" or self.window.get_level() == "ПРОФИ":
+            if self.window.get_level() == MEDIUM or self.window.get_level() == HARD:
                 self.food = Food(surface, self.barrier.lst_barier_x, self.barrier.lst_barier_y)
             else:
                 self.food = Food(surface, self.snake.head.get_x(), self.snake.head.get_y())
@@ -188,9 +187,9 @@ class Game:
             self.record.set_result(self.get_count())
             self.finish_sound()
             if self.record.check_on_record():
-                self.window.set_frase("Input_record")
+                self.window.set_frase(INPUT)
             else:
-                self.window.set_frase("Game over")
+                self.window.set_frase(GAME_OVER)
             self.stop_main_sound()
             self.zero_count()
             self.barrier.lst_barier_x = []
@@ -199,11 +198,11 @@ class Game:
 
 
     def check_cross_frame(self):
-        if self.window.get_theme() == "WINTER":
+        if self.window.get_theme() == WINTER:
             return not self.barrier.winter_frame().collidepoint(self.snake.head.get_x(), self.snake.head.get_y())
-        if self.window.get_theme() == "SUMMER":
+        if self.window.get_theme() == SUMMER:
             return not self.barrier.summer_frame().collidepoint(self.snake.head.get_x(), self.snake.head.get_y())
-        if self.window.get_theme() == "Voice of D.V.Rak":
+        if self.window.get_theme() == DVRAK:
             return not self.barrier.frame().collidepoint(self.snake.head.get_x(), self.snake.head.get_y())
 
 
@@ -226,9 +225,9 @@ class Game:
             self.set_rezult(self.get_count())
             self.finish_sound()
             if self.record.check_on_record():
-                self.window.set_frase("Input_record")
+                self.window.set_frase(INPUT)
             else:
-                self.window.set_frase("Game over")
+                self.window.set_frase(GAME_OVER)
             self.stop_main_sound()
             self.zero_count()
             self.barrier.lst_barier_x = []

@@ -1,6 +1,5 @@
-from src.constants import *
-from src.texts_images_sounds import  *
 
+from src.texts_images_sounds import  *
 
 class Chain:
     def __init__(self, x, y, direction):
