@@ -2,7 +2,6 @@
 from src.constants import *
 from src.texts_images_sounds import  *
 
-import pygame
 import pygame_widgets
 from pygame_widgets.button import Button
 from pygame_widgets.textbox import TextBox

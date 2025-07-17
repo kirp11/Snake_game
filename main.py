@@ -2,6 +2,8 @@
 
 from src.game import  Game
 import pygame
+pygame.init()
+pygame.mixer.init()
 
 class Programm:
 

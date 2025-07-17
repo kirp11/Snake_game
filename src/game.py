@@ -8,9 +8,7 @@ from src.texts_images_sounds import *
 from src.GUI import  Records, Window
 from src.entyties import Snake, Chain, Food, Barrier
 
-import pygame
-pygame.init()
-pygame.mixer.init()
+
 
 from pygame.locals import *
 

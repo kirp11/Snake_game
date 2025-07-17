@@ -1,6 +1,6 @@
 from src.constants import *
 from src.texts_images_sounds import  *
-import pygame
+
 
 class Chain:
     def __init__(self, x, y, direction):
