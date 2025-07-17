@@ -5,15 +5,8 @@ import os
 
 from src.texts_images_sounds import *
 
-from src.class_records import  Records
-from src.class_Window import Window
-from src.class_snake import Snake, Chain
-from src.class_food import Food
-from  src.class_barrier import Barrier
-
-
-
-
+from src.GUI import  Records, Window
+from src.entyties import Snake, Chain, Food, Barrier
 
 import pygame
 pygame.init()
@@ -22,7 +15,6 @@ pygame.mixer.init()
 from pygame.locals import *
 
 import random
-
 
 
 class Game:
