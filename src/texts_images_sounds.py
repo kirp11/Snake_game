@@ -35,11 +35,11 @@ text_summer_theme = "Тема жаркого лета"
 text_voice_theme = "Озвучка голосом преподавателя"
 
 
-main_sound = pygame.mixer.Sound(os.path.join("resources/sounds", "main.wav"))
-food_sound = pygame.mixer.Sound(os.path.join('resources/sounds', "food.wav"))
-over_sound = pygame.mixer.Sound(os.path.join('resources/sounds', "over.wav"))
-press_sound = pygame.mixer.Sound(os.path.join('resources/sounds', "press.wav"))
-fast_sound = pygame.mixer.Sound(os.path.join('resources/sounds', "fast.wav"))
+main_sound = pygame.mixer.Sound(os.path.join("resources\sounds", "main.wav"))
+food_sound = pygame.mixer.Sound(os.path.join('resources\sounds', "food.wav"))
+over_sound = pygame.mixer.Sound(os.path.join('resources\sounds', "over.wav"))
+press_sound = pygame.mixer.Sound(os.path.join('resources\sounds', "press.wav"))
+fast_sound = pygame.mixer.Sound(os.path.join('resources\sounds', "fast.wav"))
 
 
 voice_sound = []
